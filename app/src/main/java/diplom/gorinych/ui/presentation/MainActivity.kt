@@ -1,4 +1,4 @@
-package diplom.gorinych
+package diplom.gorinych.ui.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
