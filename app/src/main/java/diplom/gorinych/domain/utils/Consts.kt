@@ -39,3 +39,4 @@ const val ADDONS = "tb_addons"
 
 const val FORMAT_YYYY_MM_DD ="yyyy-MM-dd"
 const val LOCAL_RU ="Ru"
+const val ROLE_ADMIN = "admin"

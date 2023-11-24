@@ -44,7 +44,8 @@ class LoginViewModel @Inject constructor(
                             } else {
                                 if (!result.data.isBlocked) {
                                     _state.value.copy(
-                                        message = "success"
+                                        message = "success",
+                                        idUser = result.data.id
                                     )
                                         .updateStateUI()
                                 } else {

@@ -22,7 +22,20 @@ class HouseRepositoryImpl @Inject constructor(
             )
             Resource.Success(result?.mapToUser())
         } catch (error: Exception) {
-            Resource.Error(error.localizedMessage?: "Unknown error")
+            Resource.Error(error.localizedMessage ?: "Unknown error")
+        }
+    }
+
+    override suspend fun getUserById(
+        userId: Int
+    ): Resource<User> {
+        return try {
+            val result = dao.getUserById(
+                userId = userId
+            )
+            Resource.Success(result.mapToUser())
+        } catch (error: Exception) {
+            Resource.Error(error.localizedMessage ?: "Unknown error")
         }
     }
 }

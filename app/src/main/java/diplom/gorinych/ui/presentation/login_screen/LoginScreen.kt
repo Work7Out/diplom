@@ -11,19 +11,26 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
     val onEvent = viewModel::onEvent
+    val scope = rememberCoroutineScope()
 
     Box(
         modifier = modifier
@@ -48,8 +55,16 @@ fun LoginScreen(
                 value = state.value.password,
                 onValueChange = {
                     onEvent(LoginEvent.SetPassword(it))
+                    scope.launch {
+                        delay(1000)
+                        if (state.value.idUser!=-1) {
+                            navController.navigate("roleScreen/${state.value.idUser}")
+                        }
+                    }
                 })
-            Button(onClick = { onEvent(LoginEvent.OnLogin) }) {
+            Button(onClick = {
+                onEvent(LoginEvent.OnLogin)
+            }) {
                 Text(text = "login")
             }
             if (state.value.message != null) {

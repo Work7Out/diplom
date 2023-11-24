@@ -14,7 +14,10 @@ interface HouseDao {
     //UserEntity
     @Query("SELECT * FROM $USERS WHERE name = :login AND password=:password")
     suspend fun getUserByLoginAndPassword(
-        login:String,
-        password:String
+        login: String,
+        password: String
     ): UserEntity?
+
+    @Query("SELECT * FROM $USERS WHERE id = :userId")
+    suspend fun getUserById(userId: Int): UserEntity
 }
