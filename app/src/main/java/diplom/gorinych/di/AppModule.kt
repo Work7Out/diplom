@@ -20,6 +20,8 @@ object AppModule {
             app,
             HouseBotDatabase::class.java,
             DB
-        ).build()
+        )
+            .createFromAsset("database.db")
+            .build()
     }
 }

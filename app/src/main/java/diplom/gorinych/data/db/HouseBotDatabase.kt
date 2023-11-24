@@ -18,6 +18,6 @@ import androidx.room.RoomDatabase
 )
 abstract class HouseBotDatabase : RoomDatabase() {
 
-    abstract val noteDao: NoteDao
+    abstract val houseDao: HouseDao
 
 }
