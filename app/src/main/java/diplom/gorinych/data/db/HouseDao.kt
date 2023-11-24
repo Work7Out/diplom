@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import diplom.gorinych.domain.utils.FEEDBACK
 import diplom.gorinych.domain.utils.HOUSE
 import diplom.gorinych.domain.utils.USERS
 
@@ -29,4 +30,19 @@ interface HouseDao {
     //HouseEntity
     @Query("SELECT * FROM $HOUSE")
     suspend fun getAllHouses() : List<HouseEntity>
+
+    @Query("SELECT * FROM $HOUSE WHERE id = :houseId")
+    suspend fun getHouseById(
+        houseId:Int
+    ) : HouseEntity
+
+
+
+
+    //FeedBackEntity
+    @Query("SELECT * FROM $FEEDBACK WHERE ID_HOUSE = :houseId")
+    suspend fun getFeedBackByHouse(
+        houseId:Int
+    ) : List<FeedBackEntity>
+
 }

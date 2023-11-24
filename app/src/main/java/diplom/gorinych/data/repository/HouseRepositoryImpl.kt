@@ -1,10 +1,13 @@
 package diplom.gorinych.data.repository
 
 import diplom.gorinych.data.db.HouseBotDatabase
+import diplom.gorinych.data.mapper.mapToFeedback
+import diplom.gorinych.data.mapper.mapToHouseDetail
 import diplom.gorinych.data.mapper.mapToHouses
 import diplom.gorinych.data.mapper.mapToUser
 import diplom.gorinych.data.mapper.mapToUserEntity
 import diplom.gorinych.domain.model.House
+import diplom.gorinych.domain.model.HouseDetail
 import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.Resource
@@ -50,6 +53,21 @@ class HouseRepositoryImpl @Inject constructor(
         return try {
             val result = dao.getAllHouses()
             Resource.Success(result.mapToHouses())
+        } catch (error: Exception) {
+            Resource.Error(error.localizedMessage ?: "Unknown error")
+        }
+    }
+
+    override suspend fun getDetailHouse(
+        idHouse: Int
+    ): Resource<HouseDetail> {
+        return try {
+            val resultHouse = dao.getHouseById(idHouse)
+            val resultFeedbacks = dao.getFeedBackByHouse(idHouse)
+            Resource.Success(mapToHouseDetail(
+                houseEntity = resultHouse,
+                feedbacks = resultFeedbacks.map { it.mapToFeedback() }
+            ))
         } catch (error: Exception) {
             Resource.Error(error.localizedMessage ?: "Unknown error")
         }

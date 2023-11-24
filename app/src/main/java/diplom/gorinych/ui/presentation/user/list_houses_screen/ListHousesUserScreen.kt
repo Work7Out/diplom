@@ -32,7 +32,6 @@ fun ListHousesUserScreen(
     viewModel: ListHousesViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
-    Log.d("TAG4", "house ${state.value.user?.name}")
     Scaffold(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
@@ -66,14 +65,15 @@ fun ListHousesUserScreen(
             modifier = modifier
                 .padding(padding)
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp)
+                .padding(horizontal = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(state.value.houses) { house ->
                 ItemHouse(
                     onClick = {
-
+                        navController.navigate("houseDetailScreen/${house.id}/${state.value.user?.id}")
                     },
-                    house = house
+                    house = house,
                 )
             }
         }
