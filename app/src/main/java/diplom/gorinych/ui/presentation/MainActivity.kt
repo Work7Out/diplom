@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import diplom.gorinych.ui.presentation.login_screen.LoginScreen
 import diplom.gorinych.ui.theme.MyApplicationTheme
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -21,20 +22,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
-                Sample()
+                LoginScreen()
             }
         }
-    }
-}
-
-@Composable
-fun Sample(
-    viewModel: MainViewModel = hiltViewModel()
-) {
-    Button(
-        modifier = Modifier.fillMaxWidth(),
-        onClick = { viewModel.addNews() }) {
-
     }
 }
 
