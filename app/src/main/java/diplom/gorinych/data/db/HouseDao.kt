@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
+import diplom.gorinych.domain.utils.HOUSE
 import diplom.gorinych.domain.utils.USERS
 
 @Dao
@@ -20,4 +22,11 @@ interface HouseDao {
 
     @Query("SELECT * FROM $USERS WHERE id = :userId")
     suspend fun getUserById(userId: Int): UserEntity
+
+    @Update
+    suspend fun updateUserEntity(userEntity: UserEntity)
+
+    //HouseEntity
+    @Query("SELECT * FROM $HOUSE")
+    suspend fun getAllHouses() : List<HouseEntity>
 }

@@ -4,5 +4,6 @@ data class LoginScreenState(
     val message:String? = null,
     val login: String = "",
     val password: String = "",
-    val idUser: Int = -1
+    val idUser: Int = -1,
+    val role: String = ""
 )

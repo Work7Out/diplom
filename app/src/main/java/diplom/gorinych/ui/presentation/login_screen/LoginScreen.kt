@@ -58,7 +58,11 @@ fun LoginScreen(
                     scope.launch {
                         delay(1000)
                         if (state.value.idUser!=-1) {
-                            navController.navigate("roleScreen/${state.value.idUser}")
+                            if (state.value.role=="admin") {
+
+                            } else {
+                                navController.navigate("listHousesUserScreen/${state.value.idUser}")
+                            }
                         }
                     }
                 })

@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import diplom.gorinych.ui.presentation.login_screen.LoginScreen
-import diplom.gorinych.ui.presentation.role_screen.RoleScreen
+import diplom.gorinych.ui.presentation.user.list_houses_screen.ListHousesUserScreen
 
 @Composable
 fun NavController(
@@ -18,10 +18,10 @@ fun NavController(
     NavHost(navController = navController, startDestination = startDestination) {
         composable(NavigationDestination.LoginScreenDestination.destination) { LoginScreen(navController) }
         composable(
-            NavigationDestination.RoleDestination.destination,
+            NavigationDestination.ListHouseUserDestination.destination,
             arguments = listOf(navArgument("idUser") {
                 type = NavType.IntType
             })
-        ) { RoleScreen() }
+        ) { ListHousesUserScreen(navController) }
     }
 }
