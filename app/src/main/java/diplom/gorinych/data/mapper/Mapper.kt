@@ -2,11 +2,13 @@ package diplom.gorinych.data.mapper
 
 import diplom.gorinych.R
 import diplom.gorinych.data.db.FeedBackEntity
+import diplom.gorinych.data.db.HistoryEntity
 import diplom.gorinych.data.db.HouseEntity
 import diplom.gorinych.data.db.UserEntity
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
+import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 
 
@@ -84,5 +86,31 @@ fun mapToHouseDetail(
         price = houseEntity.price,
         image = R.drawable.image,
         feedbacks = feedbacks
+    )
+}
+
+fun HistoryEntity.mapToReserve(): Reserve {
+    return Reserve(
+        id = this.id,
+        idUser = this.idUser,
+        idHouse = this.idHouse,
+        dateBegin = this.dateBegin,
+        dateEnd = this.dateEnd,
+        dateCreate = this.dateCreate,
+        amount = this.amount,
+        confirmReservation = this.confirmReservation
+    )
+}
+
+fun Reserve.mapToHistoryEntity(): HistoryEntity {
+    return HistoryEntity(
+        id = this.id,
+        idUser = this.idUser,
+        idHouse = this.idHouse,
+        dateBegin = this.dateBegin,
+        dateEnd = this.dateEnd,
+        dateCreate = this.dateCreate,
+        amount = this.amount,
+        confirmReservation = this.confirmReservation
     )
 }

@@ -1,6 +1,7 @@
 package diplom.gorinych.data.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -44,5 +45,13 @@ interface HouseDao {
     suspend fun getFeedBackByHouse(
         houseId:Int
     ) : List<FeedBackEntity>
+
+
+    //HISTORY
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertReserve(historyEntity: HistoryEntity)
+
+    @Delete
+    fun deleteReserve(historyEntity: HistoryEntity)
 
 }

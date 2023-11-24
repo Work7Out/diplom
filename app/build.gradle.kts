@@ -80,6 +80,9 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+
+    implementation ("io.github.boguszpawlowski.composecalendar:kotlinx-datetime:1.1.1")
+    implementation ("io.github.boguszpawlowski.composecalendar:composecalendar:1.1.1")
 }
 
 kapt{

@@ -1,13 +1,16 @@
 package diplom.gorinych.data.repository
 
+import diplom.gorinych.data.db.HistoryEntity
 import diplom.gorinych.data.db.HouseBotDatabase
 import diplom.gorinych.data.mapper.mapToFeedback
+import diplom.gorinych.data.mapper.mapToHistoryEntity
 import diplom.gorinych.data.mapper.mapToHouseDetail
 import diplom.gorinych.data.mapper.mapToHouses
 import diplom.gorinych.data.mapper.mapToUser
 import diplom.gorinych.data.mapper.mapToUserEntity
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
+import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.Resource
@@ -72,4 +75,30 @@ class HouseRepositoryImpl @Inject constructor(
             Resource.Error(error.localizedMessage ?: "Unknown error")
         }
     }
+
+    override suspend fun addReserve(
+        idUser: Int,
+        idHouse: Int,
+        dateBegin: String,
+        dateEnd: String,
+        confirmReservation: String,
+        amount: Double,
+        dateCreate: String
+    ) {
+        dao.insertReserve(HistoryEntity(
+            idHouse = idHouse,
+            idUser = idUser,
+            amount = amount,
+            confirmReservation = confirmReservation,
+            dateBegin = dateBegin,
+            dateEnd = dateEnd,
+            dateCreate = dateCreate
+        ))
+    }
+
+    override suspend fun deleteReserve(reserve: Reserve) {
+        dao.deleteReserve(reserve.mapToHistoryEntity())
+    }
+
+
 }

@@ -8,15 +8,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -29,6 +32,11 @@ import androidx.navigation.NavController
 import diplom.gorinych.R
 import diplom.gorinych.ui.presentation.base.ItemFeedback
 import diplom.gorinych.ui.theme.Purple40
+import io.github.boguszpawlowski.composecalendar.CalendarState
+import io.github.boguszpawlowski.composecalendar.SelectableCalendar
+import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
+import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
+import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 
 @Composable
 fun HouseDetailScreen(
@@ -37,9 +45,18 @@ fun HouseDetailScreen(
     viewModel: HouseDetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
+    val onEvent = viewModel::onEvent
+    val isReserved = remember {
+        mutableStateOf(false)
+    }
+    val calendarState: CalendarState<DynamicSelectionState> = rememberSelectableCalendarState(
+        initialSelectionMode = SelectionMode.Period,
+        initialSelection = listOf()
+    )
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(10.dp)
     ) {
         IconButton(onClick = {
@@ -88,6 +105,41 @@ fun HouseDetailScreen(
                     name = state.value.nameUser
                 )
             }
+        }
+        Spacer(modifier = modifier.height(5.dp))
+        Text(
+            modifier = modifier.fillMaxWidth(),
+            text = "Выберите даты для бронирования",
+        )
+        SelectableCalendar(
+            modifier = modifier
+                .fillMaxWidth(),
+            calendarState = calendarState,
+        )
+        Spacer(modifier = modifier.height(5.dp))
+        //calendarState.selectionState.selection.first()
+        Button(
+            modifier = modifier
+                .fillMaxWidth(),
+            enabled = calendarState.selectionState.selection.isNotEmpty(),
+            onClick = {
+                if (isReserved.value) {
+
+                } else {
+                    onEvent(HouseDetailEvent.AddReserve(
+                        dateBegin = calendarState.selectionState.selection.first(),
+                        dateEnd = calendarState.selectionState.selection.last(),
+                        calendarState.selectionState.selection.size
+                    ))
+                }
+                calendarState.selectionState.selection = emptyList()
+                isReserved.value = !isReserved.value
+
+            }) {
+            Text(
+                modifier = modifier.fillMaxWidth(),
+                text = if (isReserved.value) "Отменить бронь" else "Забронировать",
+            )
         }
     }
 }
