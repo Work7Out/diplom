@@ -46,9 +46,6 @@ fun HouseDetailScreen(
 ) {
     val state = viewModel.state.collectAsState()
     val onEvent = viewModel::onEvent
-    val isReserved = remember {
-        mutableStateOf(false)
-    }
     val calendarState: CalendarState<DynamicSelectionState> = rememberSelectableCalendarState(
         initialSelectionMode = SelectionMode.Period,
         initialSelection = listOf()
@@ -123,22 +120,19 @@ fun HouseDetailScreen(
                 .fillMaxWidth(),
             enabled = calendarState.selectionState.selection.isNotEmpty(),
             onClick = {
-                if (isReserved.value) {
-
-                } else {
-                    onEvent(HouseDetailEvent.AddReserve(
+                onEvent(
+                    HouseDetailEvent.AddReserve(
                         dateBegin = calendarState.selectionState.selection.first(),
                         dateEnd = calendarState.selectionState.selection.last(),
                         calendarState.selectionState.selection.size
-                    ))
-                }
+                    )
+                )
                 calendarState.selectionState.selection = emptyList()
-                isReserved.value = !isReserved.value
 
             }) {
             Text(
                 modifier = modifier.fillMaxWidth(),
-                text = if (isReserved.value) "Отменить бронь" else "Забронировать",
+                text = "Забронировать",
             )
         }
     }
