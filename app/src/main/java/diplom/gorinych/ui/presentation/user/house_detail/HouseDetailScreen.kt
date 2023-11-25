@@ -57,7 +57,8 @@ fun HouseDetailScreen(
     if (isShowDialog.value) {
         Dialog(onDismissRequest = { isShowDialog.value = false }) {
             FeedbackDialog(
-
+                isShowDialog = isShowDialog,
+                onEvent = onEvent
             )
         }
     }
@@ -149,7 +150,6 @@ fun HouseDetailScreen(
         Button(
             modifier = modifier
                 .fillMaxWidth(),
-            enabled = calendarState.selectionState.selection.isNotEmpty(),
             onClick = {
                 isShowDialog.value = true
             }) {

@@ -71,7 +71,7 @@ fun ListHousesUserScreen(
             items(state.value.houses) { house ->
                 ItemHouse(
                     onClick = {
-                        navController.navigate("houseDetailScreen/${house.id}/${state.value.user?.id}")
+                        navController.navigate("houseDetailScreen/${state.value.user?.id}/${house.id}")
                     },
                     house = house,
                 )

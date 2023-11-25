@@ -4,10 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.domain.utils.formatLocalDateRu
+import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailEvent.AddFeedback
+import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailEvent.AddReserve
 import diplom.gorinych.ui.presentation.user.list_houses_screen.ListHousesScreenState
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +34,7 @@ class HouseDetailViewModel @Inject constructor(
 
     fun onEvent(houseDetailEvent: HouseDetailEvent) {
         when (houseDetailEvent) {
-            is HouseDetailEvent.AddReserve -> {
+            is AddReserve -> {
                 val price = _state.value.house?.price?:0.0
                 viewModelScope.launch {
                     repository.addReserve(
@@ -45,6 +48,19 @@ class HouseDetailViewModel @Inject constructor(
                     )
                 }
             }
+
+            is AddFeedback -> {
+                viewModelScope.launch {
+                    repository.insertFeedback(
+                        idUser = _state.value.idUser,
+                        idHouse = _state.value.house?.id?:-1,
+                        dateCreate = LocalDate.now().formatLocalDateRu(),
+                        isBlocked = false,
+                        rang = houseDetailEvent.rang,
+                        content = houseDetailEvent.content
+                    )
+                }
+            }
         }
     }
 
@@ -52,6 +68,11 @@ class HouseDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = savedStateHandle.get<Int>("idUser") ?: return@launch
             val houseId = savedStateHandle.get<Int>("idHouse") ?: return@launch
+            _state.value.copy(
+                idUser = userId,
+                idHouse = houseId
+            )
+                .updateStateUI()
             when (val resultUser = repository.getUserById(userId)) {
                 is Resource.Error -> {
                     _state.value.copy(
@@ -62,7 +83,6 @@ class HouseDetailViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     _state.value.copy(
-                        idUser = resultUser.data?.id ?: -1,
                         nameUser = resultUser.data?.name ?: ""
                     )
                         .updateStateUI()

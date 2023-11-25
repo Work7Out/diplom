@@ -9,6 +9,11 @@ sealed class HouseDetailEvent {
         val valueDays: Int,
     ): HouseDetailEvent()
 
+    class AddFeedback(
+        val rang:Int,
+        val content:String
+    ):HouseDetailEvent()
+
   /*  class DeleteReserve(
         val id: Int,
         val idUser: Int,

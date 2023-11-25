@@ -6,5 +6,7 @@ data class HouseDetailScreenState (
     val message:String? = null,
     val house: HouseDetail? = null,
     val idUser: Int = -1,
-    val nameUser: String = ""
+    val nameUser: String = "",
+    val idHouse: Int = -1,
+
 )
