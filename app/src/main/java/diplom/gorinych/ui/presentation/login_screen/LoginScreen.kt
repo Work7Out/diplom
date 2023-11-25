@@ -61,7 +61,7 @@ fun LoginScreen(
                     delay(1000)
                     if (state.value.idUser!=-1) {
                         if (state.value.role=="admin") {
-
+                            navController.navigate("usersScreen/${state.value.idUser}")
                         } else {
                             navController.navigate("listHousesUserScreen/${state.value.idUser}")
                         }

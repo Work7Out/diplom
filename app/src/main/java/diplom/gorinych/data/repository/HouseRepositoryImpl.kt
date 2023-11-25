@@ -132,4 +132,15 @@ class HouseRepositoryImpl @Inject constructor(
             Resource.Error(error.localizedMessage ?: "Unknown error")
         }
     }
+
+    override suspend fun getAllUsers(): Resource<List<User>> {
+        return try {
+            val result = dao.getAllUsers()
+            Resource.Success(result.map {
+                it.mapToUser()
+            })
+        } catch (error: Exception) {
+            Resource.Error(error.localizedMessage ?: "Unknown error")
+        }
+    }
 }

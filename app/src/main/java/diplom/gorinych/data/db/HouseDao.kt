@@ -26,6 +26,9 @@ interface HouseDao {
     @Query("SELECT * FROM $USERS WHERE id = :userId")
     suspend fun getUserById(userId: Int): UserEntity
 
+    @Query("SELECT * FROM $USERS")
+    suspend fun getAllUsers(): List<UserEntity>
+
     @Update
     suspend fun updateUserEntity(userEntity: UserEntity)
 

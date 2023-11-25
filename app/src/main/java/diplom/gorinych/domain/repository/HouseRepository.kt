@@ -33,4 +33,5 @@ interface HouseRepository {
     )
 
     suspend fun getReserveByUser(idUser: Int): Resource<List<Reserve>>
+    suspend fun getAllUsers(): Resource<List<User>>
 }
