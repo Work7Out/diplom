@@ -2,13 +2,16 @@ package diplom.gorinych.ui.presentation.admin.users
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import diplom.gorinych.domain.model.User
@@ -22,6 +25,7 @@ fun ItemUser(
     idUser: Int,
     onEvent: (UsersScreenEvent) -> Unit
 ) {
+    val roles = listOf("user", "admin")
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -51,6 +55,29 @@ fun ItemUser(
                 modifier = modifier.fillMaxWidth(),
                 text = if (user.isBlocked) "Разблокировать" else "Заблокировать",
             )
+        }
+        if (idUser != user.id) {
+            Spacer(modifier = modifier.height(5.dp))
+            roles.forEach { role ->
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                )
+                {
+                    RadioButton(
+                        selected = (role == user.role),
+                        onClick = {
+                            onEvent(
+                                UsersScreenEvent.OnChangeRoleUser(
+                                    role = role,
+                                    user = user
+                                )
+                            )
+                        }
+                    )
+                    Text(text = role)
+                }
+            }
         }
     }
 }
