@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import diplom.gorinych.domain.utils.FEEDBACK
+import diplom.gorinych.domain.utils.HISTORY
 import diplom.gorinych.domain.utils.HOUSE
 import diplom.gorinych.domain.utils.USERS
 
@@ -54,6 +55,11 @@ interface HouseDao {
     //HISTORY
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReserve(historyEntity: HistoryEntity)
+
+    @Query("SELECT * FROM $HISTORY WHERE ID_USER = :userId")
+    suspend fun getHistoryByUser(
+        userId:Int
+    ) : List<HistoryEntity>
 
     @Delete
     fun deleteReserve(historyEntity: HistoryEntity)

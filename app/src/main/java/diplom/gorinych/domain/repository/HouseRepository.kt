@@ -31,4 +31,6 @@ interface HouseRepository {
         isBlocked:Boolean,
         rang:Int
     )
+
+    suspend fun getReserveByUser(idUser: Int): Resource<List<Reserve>>
 }

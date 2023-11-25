@@ -4,21 +4,18 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.domain.utils.formatLocalDateRu
 import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailEvent.AddFeedback
 import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailEvent.AddReserve
-import diplom.gorinych.ui.presentation.user.list_houses_screen.ListHousesScreenState
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.now
+import java.time.LocalDate
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import javax.inject.Inject
 
 @HiltViewModel
 class HouseDetailViewModel @Inject constructor(

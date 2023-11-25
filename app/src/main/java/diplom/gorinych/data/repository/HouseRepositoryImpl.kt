@@ -7,6 +7,7 @@ import diplom.gorinych.data.mapper.mapToFeedback
 import diplom.gorinych.data.mapper.mapToHistoryEntity
 import diplom.gorinych.data.mapper.mapToHouseDetail
 import diplom.gorinych.data.mapper.mapToHouses
+import diplom.gorinych.data.mapper.mapToReserve
 import diplom.gorinych.data.mapper.mapToUser
 import diplom.gorinych.data.mapper.mapToUserEntity
 import diplom.gorinych.domain.model.House
@@ -121,4 +122,14 @@ class HouseRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getReserveByUser(idUser:Int): Resource<List<Reserve>> {
+        return try {
+            val result = dao.getHistoryByUser(userId = idUser)
+            Resource.Success(result.map {
+                it.mapToReserve()
+            })
+        } catch (error: Exception) {
+            Resource.Error(error.localizedMessage ?: "Unknown error")
+        }
+    }
 }

@@ -1,6 +1,5 @@
-package diplom.gorinych.ui.presentation.user.list_houses_screen
+package diplom.gorinych.ui.presentation.user.history_user
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,14 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import diplom.gorinych.R
-import diplom.gorinych.ui.presentation.base.ItemHouse
+import diplom.gorinych.ui.presentation.base.ItemHistory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListHousesUserScreen(
+fun HistoryUserScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    viewModel: ListHousesViewModel = hiltViewModel()
+    viewModel: HistoryUserScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
     Scaffold(
@@ -43,7 +42,7 @@ fun ListHousesUserScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 IconButton(onClick = {
-                    navController.navigate("listHousesUserScreen/${state.value.user?.id}")
+                    navController.navigate("listHousesUserScreen/${state.value.idUser}")
                 }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.baseline_house_24),
@@ -51,7 +50,7 @@ fun ListHousesUserScreen(
                     )
                 }
                 IconButton(onClick = {
-                    navController.navigate("historyUserScreen/${state.value.user?.id}")
+                    navController.navigate("historyUserScreen/${state.value.idUser}")
                 }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.baseline_history_24),
@@ -68,13 +67,8 @@ fun ListHousesUserScreen(
                 .padding(horizontal = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(state.value.houses) { house ->
-                ItemHouse(
-                    onClick = {
-                        navController.navigate("houseDetailScreen/${state.value.user?.id}/${house.id}")
-                    },
-                    house = house,
-                )
+            items(state.value.reserves) { reserve ->
+                ItemHistory(reserve = reserve)
             }
         }
     }

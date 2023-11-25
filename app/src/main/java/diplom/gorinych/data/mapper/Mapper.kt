@@ -63,17 +63,6 @@ fun FeedBackEntity.mapToFeedback(): Feedback {
     )
 }
 
-fun Feedback.mapToFeedBackEntity(): FeedBackEntity {
-    return FeedBackEntity(
-        content = this.content,
-        dateFeedback = this.dateFeedback,
-        idUser = this.idUser,
-        idHouse = this.idHouse,
-        isBlocked = this.isBlocked,
-        rang = this.rang
-    )
-}
-
 fun mapToHouseDetail(
     houseEntity: HouseEntity,
     feedbacks: List<Feedback>
