@@ -59,6 +59,7 @@ class HouseDetailViewModel @Inject constructor(
                         rang = houseDetailEvent.rang,
                         content = houseDetailEvent.content
                     )
+                    getHouse(_state.value.house?.id?:-1)
                 }
             }
         }
@@ -88,25 +89,27 @@ class HouseDetailViewModel @Inject constructor(
                         .updateStateUI()
                 }
             }
-            when (val resultHouses = repository.getDetailHouse(houseId)) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = resultHouses.message
-                    )
-                        .updateStateUI()
-                }
-
-                is Resource.Success -> {
-                    _state.value.copy(
-                        house = resultHouses.data
-                    )
-                        .updateStateUI()
-                }
-            }
+            getHouse(houseId)
         }
     }
 
+    private suspend fun getHouse(id:Int) {
+        when (val resultHouses = repository.getDetailHouse(id)) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    message = resultHouses.message
+                )
+                    .updateStateUI()
+            }
 
+            is Resource.Success -> {
+                _state.value.copy(
+                    house = resultHouses.data
+                )
+                    .updateStateUI()
+            }
+        }
+    }
     private fun HouseDetailScreenState.updateStateUI() {
         _state.update {
             this
