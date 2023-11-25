@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.Resource.Error
 import diplom.gorinych.domain.utils.Resource.Success
+import diplom.gorinych.ui.presentation.user.history_user.HistoryUserEvent.OnDeleteReserve
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,6 +27,17 @@ class HistoryUserScreenViewModel @Inject constructor(
         loadData()
     }
 
+
+    fun onEvent(historyUserEvent: HistoryUserEvent) {
+        when (historyUserEvent) {
+            is OnDeleteReserve -> {
+                viewModelScope.launch {
+                    repository.deleteReserve(historyUserEvent.reserve)
+                    getHistory(_state.value.idUser)
+                }
+            }
+        }
+    }
 
     private fun loadData() {
         viewModelScope.launch {

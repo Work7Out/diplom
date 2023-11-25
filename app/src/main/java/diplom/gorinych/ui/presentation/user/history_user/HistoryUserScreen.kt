@@ -31,6 +31,7 @@ fun HistoryUserScreen(
     viewModel: HistoryUserScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
+    val onEvent = viewModel::onEvent
     Scaffold(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
@@ -68,7 +69,9 @@ fun HistoryUserScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(state.value.reserves) { reserve ->
-                ItemHistory(reserve = reserve)
+                ItemHistory(
+                    reserve = reserve,
+                    onEvent = onEvent)
             }
         }
     }

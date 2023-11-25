@@ -12,13 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import diplom.gorinych.domain.model.Reserve
-import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailEvent.AddFeedback
+import diplom.gorinych.ui.presentation.user.history_user.HistoryUserEvent
 import diplom.gorinych.ui.theme.PurpleGrey80
 
 @Composable
 fun ItemHistory(
     modifier: Modifier = Modifier,
-    reserve: Reserve
+    reserve: Reserve,
+    onEvent: (HistoryUserEvent) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -38,7 +39,7 @@ fun ItemHistory(
             modifier = modifier
                 .fillMaxWidth(),
             onClick = {
-
+                onEvent(HistoryUserEvent.OnDeleteReserve(reserve))
             }) {
             Text(
                 modifier = modifier.fillMaxWidth(),

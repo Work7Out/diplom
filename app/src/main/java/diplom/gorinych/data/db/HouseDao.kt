@@ -62,7 +62,7 @@ interface HouseDao {
     ) : List<HistoryEntity>
 
     @Delete
-    fun deleteReserve(historyEntity: HistoryEntity)
+    suspend fun deleteReserve(historyEntity: HistoryEntity)
 
     //
 
