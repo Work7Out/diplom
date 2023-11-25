@@ -46,6 +46,10 @@ interface HouseDao {
         houseId:Int
     ) : List<FeedBackEntity>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFeedback(feedBackEntity: FeedBackEntity)
+
+
 
     //HISTORY
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -53,5 +57,7 @@ interface HouseDao {
 
     @Delete
     fun deleteReserve(historyEntity: HistoryEntity)
+
+    //
 
 }

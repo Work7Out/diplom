@@ -27,6 +27,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import diplom.gorinych.R
@@ -50,6 +51,16 @@ fun HouseDetailScreen(
         initialSelectionMode = SelectionMode.Period,
         initialSelection = listOf()
     )
+    val isShowDialog = remember {
+        mutableStateOf(false)
+    }
+    if (isShowDialog.value) {
+        Dialog(onDismissRequest = { isShowDialog.value = false }) {
+            FeedbackDialog(
+
+            )
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -133,6 +144,18 @@ fun HouseDetailScreen(
             Text(
                 modifier = modifier.fillMaxWidth(),
                 text = "Забронировать",
+            )
+        }
+        Button(
+            modifier = modifier
+                .fillMaxWidth(),
+            enabled = calendarState.selectionState.selection.isNotEmpty(),
+            onClick = {
+                isShowDialog.value = true
+            }) {
+            Text(
+                modifier = modifier.fillMaxWidth(),
+                text = "Оставить отзыв",
             )
         }
     }

@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -55,19 +54,19 @@ fun LoginScreen(
                 value = state.value.password,
                 onValueChange = {
                     onEvent(LoginEvent.SetPassword(it))
-                    scope.launch {
-                        delay(1000)
-                        if (state.value.idUser!=-1) {
-                            if (state.value.role=="admin") {
-
-                            } else {
-                                navController.navigate("listHousesUserScreen/${state.value.idUser}")
-                            }
-                        }
-                    }
                 })
             Button(onClick = {
                 onEvent(LoginEvent.OnLogin)
+                scope.launch {
+                    delay(1000)
+                    if (state.value.idUser!=-1) {
+                        if (state.value.role=="admin") {
+
+                        } else {
+                            navController.navigate("listHousesUserScreen/${state.value.idUser}")
+                        }
+                    }
+                }
             }) {
                 Text(text = "login")
             }

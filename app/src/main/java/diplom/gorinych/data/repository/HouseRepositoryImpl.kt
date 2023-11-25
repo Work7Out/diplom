@@ -2,12 +2,14 @@ package diplom.gorinych.data.repository
 
 import diplom.gorinych.data.db.HistoryEntity
 import diplom.gorinych.data.db.HouseBotDatabase
+import diplom.gorinych.data.mapper.mapToFeedBackEntity
 import diplom.gorinych.data.mapper.mapToFeedback
 import diplom.gorinych.data.mapper.mapToHistoryEntity
 import diplom.gorinych.data.mapper.mapToHouseDetail
 import diplom.gorinych.data.mapper.mapToHouses
 import diplom.gorinych.data.mapper.mapToUser
 import diplom.gorinych.data.mapper.mapToUserEntity
+import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
 import diplom.gorinych.domain.model.Reserve
@@ -100,5 +102,8 @@ class HouseRepositoryImpl @Inject constructor(
         dao.deleteReserve(reserve.mapToHistoryEntity())
     }
 
+    override suspend fun insertFeedback(feedback: Feedback) {
+        dao.insertFeedback(feedback.mapToFeedBackEntity())
+    }
 
 }

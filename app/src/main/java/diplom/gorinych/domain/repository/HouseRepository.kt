@@ -1,5 +1,6 @@
 package diplom.gorinych.domain.repository
 
+import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
 import diplom.gorinych.domain.model.Reserve
@@ -22,4 +23,6 @@ interface HouseRepository {
         amount: Double,
         dateCreate: String
     )
+
+    suspend fun insertFeedback(feedback: Feedback)
 }
