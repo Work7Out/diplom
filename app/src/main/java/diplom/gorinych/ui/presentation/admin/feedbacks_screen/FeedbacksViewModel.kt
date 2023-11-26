@@ -1,4 +1,4 @@
-package diplom.gorinych.ui.presentation.admin.users
+package diplom.gorinych.ui.presentation.admin.feedbacks_screen
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -6,8 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.Resource
-import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeRoleUser
-import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeStatusBlock
+import diplom.gorinych.ui.presentation.admin.feedbacks_screen.FeedbackScreenEvent.OnChangeStatusBlockFeedback
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,12 +14,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class UsersViewModel @Inject constructor(
+class FeedbacksViewModel @Inject constructor(
     private val repository: HouseRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _state = MutableStateFlow(UsersScreenState())
+    private val _state = MutableStateFlow(FeedbacksScreenState())
     val state = _state.asStateFlow()
+
 
     init {
         viewModelScope.launch {
@@ -33,24 +33,13 @@ class UsersViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(usersScreenEvent: UsersScreenEvent) {
-        when (usersScreenEvent) {
-            is OnChangeRoleUser -> {
+    fun onEvent(feedbackScreenEvent: FeedbackScreenEvent) {
+        when (feedbackScreenEvent) {
+            is OnChangeStatusBlockFeedback -> {
                 viewModelScope.launch {
-                    repository.updateUser(
-                        usersScreenEvent.user.copy(
-                            role = usersScreenEvent.role
-                        )
-                    )
-                    loadData()
-                }
-            }
-
-            is OnChangeStatusBlock -> {
-                viewModelScope.launch {
-                    repository.updateUser(
-                        usersScreenEvent.user.copy(
-                            isBlocked = !usersScreenEvent.user.isBlocked
+                    repository.updateFeedback(
+                        feedbackScreenEvent.feedback.copy(
+                            isBlocked = !feedbackScreenEvent.feedback.isBlocked
                         )
                     )
                     loadData()
@@ -60,25 +49,24 @@ class UsersViewModel @Inject constructor(
     }
 
     private suspend fun loadData() {
-        when (val resultUser = repository.getAllUsers()) {
+        when (val result = repository.getAllFeedbacks()) {
             is Resource.Error -> {
                 _state.value.copy(
-                    message = resultUser.message
+                    message = result.message
                 )
                     .updateStateUI()
             }
 
             is Resource.Success -> {
                 _state.value.copy(
-                    users = resultUser.data ?: emptyList()
+                    feedbacks = result.data ?: emptyList()
                 )
                     .updateStateUI()
             }
         }
     }
 
-
-    private fun UsersScreenState.updateStateUI() {
+    private fun FeedbacksScreenState.updateStateUI() {
         _state.update {
             this
         }

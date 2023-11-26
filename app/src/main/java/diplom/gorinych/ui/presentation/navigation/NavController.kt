@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import diplom.gorinych.ui.presentation.admin.feedbacks_screen.FeedbacksScreen
 import diplom.gorinych.ui.presentation.admin.users.UsersScreen
 import diplom.gorinych.ui.presentation.login_screen.LoginScreen
 import diplom.gorinych.ui.presentation.user.history_user.HistoryUserScreen
@@ -43,6 +44,12 @@ fun NavController(
                 type = NavType.IntType
             })
         ) { UsersScreen(navController) }
+        composable(
+            NavigationDestination.ListFeedbacksDestination.destination,
+            arguments = listOf(navArgument("idUser") {
+                type = NavType.IntType
+            })
+        ) { FeedbacksScreen(navController) }
         composable(
             NavigationDestination.HouseDetailDestination.destination,
             arguments = listOf(

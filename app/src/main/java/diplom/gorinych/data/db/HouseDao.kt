@@ -50,9 +50,14 @@ interface HouseDao {
         houseId:Int
     ) : List<FeedBackEntity>
 
+    @Query("SELECT * FROM $FEEDBACK")
+    suspend fun getAllFeedBacks() : List<FeedBackEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFeedback(feedBackEntity: FeedBackEntity)
 
+    @Update
+    suspend fun updateFeedback(feedBackEntity: FeedBackEntity)
 
 
     //HISTORY

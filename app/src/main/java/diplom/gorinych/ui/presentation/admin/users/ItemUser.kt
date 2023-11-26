@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import diplom.gorinych.domain.model.User
-import diplom.gorinych.ui.presentation.user.house_detail.UsersScreenEvent
 import diplom.gorinych.ui.theme.PurpleGrey80
 
 @Composable

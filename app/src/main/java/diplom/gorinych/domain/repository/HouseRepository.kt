@@ -1,5 +1,6 @@
 package diplom.gorinych.domain.repository
 
+import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
 import diplom.gorinych.domain.model.Reserve
@@ -34,4 +35,6 @@ interface HouseRepository {
 
     suspend fun getReserveByUser(idUser: Int): Resource<List<Reserve>>
     suspend fun getAllUsers(): Resource<List<User>>
+    suspend fun updateFeedback(feedback: Feedback)
+    suspend fun getAllFeedbacks(): Resource<List<Feedback>>
 }
