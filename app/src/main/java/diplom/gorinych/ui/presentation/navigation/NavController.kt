@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import diplom.gorinych.ui.presentation.admin.feedbacks_screen.FeedbacksScreen
 import diplom.gorinych.ui.presentation.admin.history_screen.HistoryAdminScreen
+import diplom.gorinych.ui.presentation.admin.statistics.StatisticsAdminScreen
 import diplom.gorinych.ui.presentation.admin.users.UsersScreen
 import diplom.gorinych.ui.presentation.login_screen.LoginScreen
 import diplom.gorinych.ui.presentation.user.history_user.HistoryUserScreen
@@ -57,6 +58,12 @@ fun NavController(
                 type = NavType.IntType
             })
         ) { HistoryAdminScreen(navController) }
+        composable(
+            NavigationDestination.StatisticsAdminDestination.destination,
+            arguments = listOf(navArgument("idUser") {
+                type = NavType.IntType
+            })
+        ) { StatisticsAdminScreen(navController) }
         composable(
             NavigationDestination.HouseDetailDestination.destination,
             arguments = listOf(

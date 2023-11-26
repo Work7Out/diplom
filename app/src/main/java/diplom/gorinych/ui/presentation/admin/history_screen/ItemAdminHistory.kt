@@ -14,6 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import diplom.gorinych.domain.model.Reserve
+import diplom.gorinych.domain.utils.ACTIVE
+import diplom.gorinych.domain.utils.INACTIVE
+import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.ui.theme.PurpleGrey80
 
 @Composable
@@ -23,7 +26,7 @@ fun ItemAdminHistory(
     onEvent: (HistoryScreenEvent) -> Unit
 ) {
 
-    val statuses = listOf("неактивно", "ожидание подтверждения", "активно")
+    val statuses = listOf(INACTIVE, WAITING_CONFIRM, ACTIVE)
     Column(
         modifier = modifier
             .fillMaxWidth()

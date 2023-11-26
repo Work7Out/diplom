@@ -53,7 +53,7 @@ fun BottomBarAdmin(
             )
         }
         IconButton(onClick = {
-            //navController.navigate("listHousesUserScreen/${state.value.idUser}")
+            navController.navigate("statisticsAdminScreen/$idUser")
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = drawable.baseline_analytics_24),
