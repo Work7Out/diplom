@@ -160,4 +160,19 @@ class HouseRepositoryImpl @Inject constructor(
             Resource.Error(error.localizedMessage ?: "Unknown error")
         }
     }
+
+    override suspend fun updateHistory(reserve: Reserve) {
+        dao.updateHistory(reserve.mapToHistoryEntity())
+    }
+
+    override suspend fun getAllHistory(): Resource<List<Reserve>> {
+        return try {
+            val result = dao.getAllHistory()
+            Resource.Success(result.map {
+                it.mapToReserve()
+            })
+        } catch (error: Exception) {
+            Resource.Error(error.localizedMessage ?: "Unknown error")
+        }
+    }
 }

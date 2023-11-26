@@ -64,10 +64,16 @@ interface HouseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReserve(historyEntity: HistoryEntity)
 
+    @Update
+    suspend fun updateHistory(historyEntity: HistoryEntity)
+
     @Query("SELECT * FROM $HISTORY WHERE ID_USER = :userId")
     suspend fun getHistoryByUser(
         userId:Int
     ) : List<HistoryEntity>
+
+    @Query("SELECT * FROM $HISTORY")
+    suspend fun getAllHistory() : List<HistoryEntity>
 
     @Delete
     suspend fun deleteReserve(historyEntity: HistoryEntity)

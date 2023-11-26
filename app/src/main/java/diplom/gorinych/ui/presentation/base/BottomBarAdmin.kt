@@ -45,7 +45,7 @@ fun BottomBarAdmin(
             )
         }
         IconButton(onClick = {
-            //navController.navigate("historyUserScreen/${state.value.idUser}")
+            navController.navigate("historyAdminScreen/$idUser")
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = drawable.baseline_history_24),

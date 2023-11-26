@@ -37,4 +37,6 @@ interface HouseRepository {
     suspend fun getAllUsers(): Resource<List<User>>
     suspend fun updateFeedback(feedback: Feedback)
     suspend fun getAllFeedbacks(): Resource<List<Feedback>>
+    suspend fun updateHistory(reserve: Reserve)
+    suspend fun getAllHistory(): Resource<List<Reserve>>
 }
