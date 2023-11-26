@@ -92,7 +92,7 @@ fun HouseDetailScreen(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "Цена ${state.value.house?.price} Р",
+            text = "Цена ${state.value.house?.price} BYN",
             textAlign = TextAlign.Center,
             fontSize = 25.sp
         )

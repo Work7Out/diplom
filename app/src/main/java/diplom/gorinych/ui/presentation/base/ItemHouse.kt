@@ -48,7 +48,7 @@ fun ItemHouse(
             )
             Spacer(modifier = modifier.height(10.dp))
             Text(
-                text = "Цена ${house.price} Р"
+                text = "Цена ${house.price} BYN"
             )
         }
     }
