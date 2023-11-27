@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="registration">Регистрация</string>
+    <string name="already_login">Уже зарегистированы?</string>
+    <string name="enter_login">Введите логин</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="enter_phone">Введите телефон</string>
+    <string name="enter_email">Введите e-mail</string>
+    <string name="do_registration">Зарегистрироваться</string>
 </resources>
