@@ -40,8 +40,11 @@ const val ADDONS = "tb_addons"
 const val FORMAT_YYYY_MM_DD ="yyyy-MM-dd"
 const val LOCAL_RU ="Ru"
 const val ROLE_ADMIN = "admin"
-
+const val ROLE_USER = "user"
 
 const val WAITING_CONFIRM = "ожидание подтверждения"
 const val INACTIVE = "неактивно"
 const val ACTIVE = "активно"
+
+
+const val ALREADY_EXIST = "пользователь с таким именем уже существует"

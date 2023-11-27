@@ -32,6 +32,9 @@ interface HouseDao {
     @Update
     suspend fun updateUserEntity(userEntity: UserEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUser(userEntity: UserEntity)
+
     //HouseEntity
     @Query("SELECT * FROM $HOUSE")
     suspend fun getAllHouses() : List<HouseEntity>

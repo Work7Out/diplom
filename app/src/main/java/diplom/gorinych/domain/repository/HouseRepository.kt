@@ -39,4 +39,12 @@ interface HouseRepository {
     suspend fun getAllFeedbacks(): Resource<List<Feedback>>
     suspend fun updateHistory(reserve: Reserve)
     suspend fun getAllHistory(): Resource<List<Reserve>>
+    suspend fun insertUser(
+        name: String,
+        password: String,
+        phone: String,
+        email: String,
+        role: String,
+        isBlocked: Boolean
+    )
 }
