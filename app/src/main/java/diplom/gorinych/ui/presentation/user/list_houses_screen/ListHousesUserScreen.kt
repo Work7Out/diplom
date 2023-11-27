@@ -58,6 +58,18 @@ fun ListHousesUserScreen(
                         contentDescription = ""
                     )
                 }
+                IconButton(onClick = {
+                    navController.navigate("loginScreen") {
+                        this.popUpTo("loginScreen") {
+                            inclusive = true
+                        }
+                    }
+                }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.baseline_logout_24),
+                        contentDescription = ""
+                    )
+                }
             }
         }
     ) { padding ->
