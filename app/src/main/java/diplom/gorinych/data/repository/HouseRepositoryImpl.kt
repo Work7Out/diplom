@@ -3,6 +3,7 @@ package diplom.gorinych.data.repository
 import diplom.gorinych.data.db.FeedBackEntity
 import diplom.gorinych.data.db.HistoryEntity
 import diplom.gorinych.data.db.HouseBotDatabase
+import diplom.gorinych.data.db.UserEntity
 import diplom.gorinych.data.mapper.mapToFeedBackEntity
 import diplom.gorinych.data.mapper.mapToFeedback
 import diplom.gorinych.data.mapper.mapToHistoryEntity
@@ -89,15 +90,17 @@ class HouseRepositoryImpl @Inject constructor(
         amount: Double,
         dateCreate: String
     ) {
-        dao.insertReserve(HistoryEntity(
-            idHouse = idHouse,
-            idUser = idUser,
-            amount = amount,
-            confirmReservation = confirmReservation,
-            dateBegin = dateBegin,
-            dateEnd = dateEnd,
-            dateCreate = dateCreate
-        ))
+        dao.insertReserve(
+            HistoryEntity(
+                idHouse = idHouse,
+                idUser = idUser,
+                amount = amount,
+                confirmReservation = confirmReservation,
+                dateBegin = dateBegin,
+                dateEnd = dateEnd,
+                dateCreate = dateCreate
+            )
+        )
     }
 
     override suspend fun deleteReserve(reserve: Reserve) {
@@ -108,9 +111,9 @@ class HouseRepositoryImpl @Inject constructor(
         idUser: Int,
         idHouse: Int,
         dateCreate: String,
-        content:String,
-        isBlocked:Boolean,
-        rang:Int
+        content: String,
+        isBlocked: Boolean,
+        rang: Int
     ) {
         dao.insertFeedback(
             FeedBackEntity(
@@ -124,7 +127,7 @@ class HouseRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getReserveByUser(idUser:Int): Resource<List<Reserve>> {
+    override suspend fun getReserveByUser(idUser: Int): Resource<List<Reserve>> {
         return try {
             val result = dao.getHistoryByUser(userId = idUser)
             Resource.Success(result.map {
@@ -174,5 +177,25 @@ class HouseRepositoryImpl @Inject constructor(
         } catch (error: Exception) {
             Resource.Error(error.localizedMessage ?: "Unknown error")
         }
+    }
+
+    override suspend fun insertUser(
+        name: String,
+        password: String,
+        phone: String,
+        email: String,
+        role: String,
+        isBlocked: Boolean
+    ) {
+        dao.insertUser(
+            UserEntity(
+                name = name,
+                password = password,
+                phone = phone,
+                isBlocked = isBlocked,
+                role = role,
+                email = email
+            )
+        )
     }
 }

@@ -45,11 +45,22 @@ fun List<HouseEntity>.mapToHouses(): List<House> {
             name = houseEntity.name,
             description = houseEntity.description,
             price = houseEntity.price,
-            image = R.drawable.image
+            image = images.random()
         )
     }
 }
 
+val images = listOf(
+    R.drawable.classic180_thumb,
+    R.drawable.cruise115_thumb,
+    R.drawable.cruise140_thumb,
+    R.drawable.cruise165_thumb,
+    R.drawable.evo_thumb,
+    R.drawable.fisher90_thumb,
+    R.drawable.futura180_thumb,
+    R.drawable.cruise80_4,
+    R.drawable.evo_40,
+    R.drawable.freedom50_4)
 
 fun FeedBackEntity.mapToFeedback(): Feedback {
     return Feedback(
@@ -84,7 +95,7 @@ fun mapToHouseDetail(
         name = houseEntity.name,
         description = houseEntity.description,
         price = houseEntity.price,
-        image = R.drawable.image,
+        image = images.random(),
         feedbacks = feedbacks
     )
 }

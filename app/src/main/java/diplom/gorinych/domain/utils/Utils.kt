@@ -36,3 +36,15 @@ fun calculateSeasonSum(reserves: List<Reserve>): Double {
         .filter { convertStringToDate(it.dateCreate) >= LocalDate.now().minusYears(1) }
         .sumOf { it.amount }
 }
+
+fun isEmailValid(email: String): Boolean {
+    val emailPattern =
+        "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                "\\@" +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                "(" +
+                "\\." +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                ")+"
+    return email.matches(emailPattern.toRegex())
+}

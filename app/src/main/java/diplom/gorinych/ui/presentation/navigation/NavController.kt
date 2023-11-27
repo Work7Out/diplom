@@ -11,6 +11,7 @@ import diplom.gorinych.ui.presentation.admin.history_screen.HistoryAdminScreen
 import diplom.gorinych.ui.presentation.admin.statistics.StatisticsAdminScreen
 import diplom.gorinych.ui.presentation.admin.users.UsersScreen
 import diplom.gorinych.ui.presentation.login_screen.LoginScreen
+import diplom.gorinych.ui.presentation.registration_screen.RegistrationScreen
 import diplom.gorinych.ui.presentation.user.history_user.HistoryUserScreen
 import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailScreen
 import diplom.gorinych.ui.presentation.user.list_houses_screen.ListHousesUserScreen
@@ -24,6 +25,11 @@ fun NavController(
     NavHost(navController = navController, startDestination = startDestination) {
         composable(NavigationDestination.LoginScreenDestination.destination) {
             LoginScreen(
+                navController
+            )
+        }
+        composable(NavigationDestination.RegistrationScreenDestination.destination) {
+            RegistrationScreen(
                 navController
             )
         }

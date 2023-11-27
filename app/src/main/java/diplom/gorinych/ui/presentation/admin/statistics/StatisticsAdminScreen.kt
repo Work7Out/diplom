@@ -47,11 +47,11 @@ fun StatisticsAdminScreen(
             Spacer(modifier = modifier.height(5.dp))
             Text(text = "Из них подтвержденных - ${state.value.countConfirmOrders}")
             Spacer(modifier = modifier.height(5.dp))
-            Text(text = "Всего заработано - ${state.value.amountAll} Р")
+            Text(text = "Всего заработано - ${state.value.amountAll} BYN")
             Spacer(modifier = modifier.height(5.dp))
-            Text(text = "За последний месяц - ${state.value.amountLastMonth} Р")
+            Text(text = "За последний месяц - ${state.value.amountLastMonth} BYN")
             Spacer(modifier = modifier.height(5.dp))
-            Text(text = "За год - ${state.value.amountLastSeason} Р")
+            Text(text = "За год - ${state.value.amountLastSeason} BYN")
         }
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import diplom.gorinych.R
 import diplom.gorinych.R.drawable
 
 @Composable
@@ -57,6 +58,18 @@ fun BottomBarAdmin(
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = drawable.baseline_analytics_24),
+                contentDescription = ""
+            )
+        }
+        IconButton(onClick = {
+            navController.navigate("loginScreen") {
+                this.popUpTo("loginScreen") {
+                    inclusive = true
+                }
+            }
+        }) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_logout_24),
                 contentDescription = ""
             )
         }
