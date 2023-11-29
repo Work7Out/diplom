@@ -85,6 +85,9 @@ dependencies {
     implementation ("io.github.boguszpawlowski.composecalendar:composecalendar:1.1.1")
 
     implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // Icons
+    implementation ("androidx.compose.material:material-icons-extended:1.5.4")
 }
 
 kapt{
