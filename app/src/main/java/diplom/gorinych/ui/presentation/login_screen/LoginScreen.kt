@@ -3,9 +3,12 @@ package diplom.gorinych.ui.presentation.login_screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -16,6 +19,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,10 +50,20 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .align(alignment = Alignment.Center)
         ) {
+            Text(
+                modifier = modifier
+                    .fillMaxWidth(),
+                text = stringResource(id = R.string.authorization),
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = modifier.height(20.dp))
             TextField(
                 modifier = modifier
                     .fillMaxWidth(),
                 value = state.value.login,
+                placeholder = {
+                    Text(text = stringResource(id = R.string.login))
+                },
                 onValueChange = {
                     onEvent(LoginEvent.SetLogin(it))
                 })
@@ -56,23 +71,32 @@ fun LoginScreen(
                 modifier = modifier
                     .fillMaxWidth(),
                 value = state.value.password,
+                placeholder = {
+                    Text(text = stringResource(id = R.string.password))
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                visualTransformation = PasswordVisualTransformation(),
                 onValueChange = {
                     onEvent(LoginEvent.SetPassword(it))
                 })
-            Button(onClick = {
-                onEvent(LoginEvent.OnLogin)
-                scope.launch {
-                    delay(1000)
-                    if (state.value.idUser!=-1) {
-                        if (state.value.role=="admin") {
-                            navController.navigate("usersScreen/${state.value.idUser}")
-                        } else {
-                            navController.navigate("listHousesUserScreen/${state.value.idUser}")
+            Button(
+                modifier = modifier
+                    .padding(horizontal = 20.dp)
+                    .align(alignment = Alignment.CenterHorizontally),
+                onClick = {
+                    onEvent(LoginEvent.OnLogin)
+                    scope.launch {
+                        delay(1000)
+                        if (state.value.idUser != -1) {
+                            if (state.value.role == "admin") {
+                                navController.navigate("usersScreen/${state.value.idUser}")
+                            } else {
+                                navController.navigate("listHousesUserScreen/${state.value.idUser}")
+                            }
                         }
                     }
-                }
-            }) {
-                Text(text = "login")
+                }) {
+                Text(text = stringResource(id = R.string.enter))
             }
             if (state.value.message != null) {
                 Text(text = state.value.message!!)

@@ -7,4 +7,10 @@
     <string name="enter_phone">Введите телефон</string>
     <string name="enter_email">Введите e-mail</string>
     <string name="do_registration">Зарегистрироваться</string>
+
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="enter">Вход</string>
+    <string name="authorization">АВТОРИЗАЦИЯ</string>
+    <string name="registration_upper">РЕГИСТРАЦИЯ</string>
 </resources>

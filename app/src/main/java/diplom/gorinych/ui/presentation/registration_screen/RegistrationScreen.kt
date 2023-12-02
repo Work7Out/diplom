@@ -3,8 +3,10 @@ package diplom.gorinych.ui.presentation.registration_screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -20,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -54,6 +57,13 @@ fun RegistrationScreen(
                 .fillMaxWidth()
                 .align(alignment = Alignment.Center)
         ) {
+            Text(
+                modifier = modifier
+                    .fillMaxWidth(),
+                text = stringResource(id = R.string.registration_upper),
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = modifier.height(20.dp))
             TextField(
                 modifier = modifier
                     .fillMaxWidth(),
@@ -69,6 +79,8 @@ fun RegistrationScreen(
                 modifier = modifier
                     .fillMaxWidth(),
                 value = password.value,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                visualTransformation = PasswordVisualTransformation(),
                 placeholder = {
                     Text(text = stringResource(id = R.string.enter_password))
                 },
@@ -105,6 +117,8 @@ fun RegistrationScreen(
                 )
             )
             Button(
+                modifier = modifier
+                    .align(alignment = Alignment.CenterHorizontally),
                 onClick = {
                     onEvent(
                         RegistrationEvent.OnRegistrationUser(
