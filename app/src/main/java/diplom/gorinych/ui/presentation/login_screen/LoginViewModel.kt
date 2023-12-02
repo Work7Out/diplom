@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -18,6 +19,15 @@ class LoginViewModel @Inject constructor(
     private val _state = MutableStateFlow(LoginScreenState())
     val state = _state.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            delay(2000)
+            _state.value.copy(
+                loginScreenWindowState = LoginScreenWindowState.BaseScreen
+            )
+                .updateStateUI()
+        }
+    }
 
     fun onEvent(loginEvent: LoginEvent) {
         when (loginEvent) {

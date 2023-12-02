@@ -5,5 +5,6 @@ data class LoginScreenState(
     val login: String = "",
     val password: String = "",
     val idUser: Int = -1,
-    val role: String = ""
+    val role: String = "",
+    val loginScreenWindowState: LoginScreenWindowState = LoginScreenWindowState.SplashScreen
 )
