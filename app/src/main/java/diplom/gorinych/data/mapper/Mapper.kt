@@ -45,7 +45,7 @@ fun List<HouseEntity>.mapToHouses(): List<House> {
             name = houseEntity.name,
             description = houseEntity.description,
             price = houseEntity.price,
-            image = images.random()
+            image = images[houseEntity.id-1]
         )
     }
 }
@@ -95,7 +95,7 @@ fun mapToHouseDetail(
         name = houseEntity.name,
         description = houseEntity.description,
         price = houseEntity.price,
-        image = images.random(),
+        image = images[houseEntity.id-1],
         feedbacks = feedbacks
     )
 }
