@@ -41,6 +41,7 @@ import diplom.gorinych.R.font
 import diplom.gorinych.R.string
 import diplom.gorinych.domain.utils.ALREADY_EXIST
 import diplom.gorinych.domain.utils.PhoneNumberTransformation
+import diplom.gorinych.domain.utils.SUCCESS_REGISTRATION
 import diplom.gorinych.domain.utils.isEmailValid
 import diplom.gorinych.domain.utils.sendMail
 import diplom.gorinych.ui.theme.baseText
@@ -198,8 +199,8 @@ fun RegistrationScreen(
                         sendMail(
                             login = "edurda77@gmail.com",
                             password = "Khayarov1977!",
-                            email = "edurd@rambler.ru",
-                            theme = "success registration",
+                            email = email.value,
+                            theme = SUCCESS_REGISTRATION,
                             content = "${name.value}\n${password.value}\n${phone.value}\n${email.value}"
                         )
                     }
