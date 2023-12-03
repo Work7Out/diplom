@@ -41,7 +41,8 @@ class HouseDetailViewModel @Inject constructor(
                         dateCreate = LocalDate.now().formatLocalDateRu(),
                         dateBegin = houseDetailEvent.dateBegin.formatLocalDateRu(),
                         dateEnd = houseDetailEvent.dateEnd.formatLocalDateRu(),
-                        amount = houseDetailEvent.valueDays*price
+                        amount = houseDetailEvent.valueDays*price,
+                        addtions = ""//TODO
                     )
                 }
             }

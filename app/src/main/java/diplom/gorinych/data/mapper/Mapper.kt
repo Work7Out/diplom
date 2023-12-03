@@ -109,6 +109,7 @@ fun HistoryEntity.mapToReserve(): Reserve {
         dateEnd = this.dateEnd,
         dateCreate = this.dateCreate,
         amount = this.amount,
+        additions = this.additions,
         confirmReservation = this.confirmReservation
     )
 }
@@ -122,6 +123,7 @@ fun Reserve.mapToHistoryEntity(): HistoryEntity {
         dateEnd = this.dateEnd,
         dateCreate = this.dateCreate,
         amount = this.amount,
+        additions = this.additions,
         confirmReservation = this.confirmReservation
     )
 }

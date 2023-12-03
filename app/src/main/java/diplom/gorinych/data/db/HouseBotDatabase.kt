@@ -13,6 +13,7 @@ import androidx.room.RoomDatabase
         HouseEntity::class,
         NoteEntity::class,
         UserEntity::class,
+        PromoEntity::class
     ],
     version = 1
 )

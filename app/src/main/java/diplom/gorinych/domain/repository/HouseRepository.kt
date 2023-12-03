@@ -21,6 +21,7 @@ interface HouseRepository {
         dateEnd: String,
         confirmReservation: String,
         amount: Double,
+        addtions: String,
         dateCreate: String
     )
 

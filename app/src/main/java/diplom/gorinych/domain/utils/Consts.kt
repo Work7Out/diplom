@@ -22,6 +22,7 @@ const val ID_HOUSE ="id_house"
 const val DATA_BEGIN ="data_begin"
 const val DATA_END ="data_end"
 const val AMOUNT ="amount"
+const val ADDITIONS = "additions"
 const val CONFIRM_RESERVATION ="confirm_reservation"
 
 const val FEEDBACK ="tb_feedback"
@@ -35,6 +36,10 @@ const val NEWS = "tb_news"
 const val TITLE = "title"
 
 const val ADDONS = "tb_addons"
+
+const val PROMOS = "tb_promo"
+const val VALUE_DISCOUNT = "value_discount"
+const val IS_ACTIVE = "is_active"
 
 
 const val FORMAT_YYYY_MM_DD ="yyyy-MM-dd"

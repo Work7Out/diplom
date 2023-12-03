@@ -3,6 +3,7 @@ package diplom.gorinych.data.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import diplom.gorinych.domain.utils.ADDITIONS
 import diplom.gorinych.domain.utils.AMOUNT
 import diplom.gorinych.domain.utils.CONFIRM_RESERVATION
 import diplom.gorinych.domain.utils.DATA_BEGIN
@@ -32,6 +33,8 @@ data class HistoryEntity(
     val confirmReservation: String,
     @ColumnInfo(name = AMOUNT)
     val amount: Double,
+    @ColumnInfo(name = ADDITIONS)
+    val additions: String,
     @ColumnInfo(name = DATE_CREATE)
     val dateCreate: String = LocalDate.now().formatLocalDateRu(),
 )

@@ -88,7 +88,8 @@ class HouseRepositoryImpl @Inject constructor(
         dateEnd: String,
         confirmReservation: String,
         amount: Double,
-        dateCreate: String
+        addtions: String,
+        dateCreate: String,
     ) {
         dao.insertReserve(
             HistoryEntity(
@@ -98,7 +99,8 @@ class HouseRepositoryImpl @Inject constructor(
                 confirmReservation = confirmReservation,
                 dateBegin = dateBegin,
                 dateEnd = dateEnd,
-                dateCreate = dateCreate
+                dateCreate = dateCreate,
+                additions = addtions
             )
         )
     }
