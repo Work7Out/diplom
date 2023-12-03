@@ -52,4 +52,5 @@ const val INACTIVE = "неактивно"
 const val ACTIVE = "активно"
 
 
-const val ALREADY_EXIST = "пользователь с таким именем уже существует"
+const val ALREADY_EXIST = "Пользователь с таким именем уже существует"
+const val SUCCESS_REGISTRATION = "Успешная регистрация"

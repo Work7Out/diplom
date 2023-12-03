@@ -7,6 +7,7 @@ import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.ALREADY_EXIST
 import diplom.gorinych.domain.utils.ROLE_USER
 import diplom.gorinych.domain.utils.Resource
+import diplom.gorinych.domain.utils.SUCCESS_REGISTRATION
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -49,6 +50,10 @@ class RegistrationViewModel @Inject constructor(
                     )
                         .updateStateUI()
                 } else {
+                    _state.value.copy(
+                        message = SUCCESS_REGISTRATION
+                    )
+                        .updateStateUI()
                     viewModelScope.launch {
                         repository.insertUser(
                             name = registrationEvent.name,

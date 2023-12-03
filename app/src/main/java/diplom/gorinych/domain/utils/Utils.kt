@@ -4,6 +4,14 @@ import diplom.gorinych.domain.model.Reserve
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import java.util.Properties
+import javax.mail.Message
+import javax.mail.MessagingException
+import javax.mail.PasswordAuthentication
+import javax.mail.Session
+import javax.mail.Transport
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
 
 
 fun LocalDate.formatLocalDateRu(): String {
@@ -47,4 +55,41 @@ fun isEmailValid(email: String): Boolean {
                 "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
                 ")+"
     return email.matches(emailPattern.toRegex())
+}
+
+fun sendMail(
+    login: String,
+    password: String,
+    email:String,
+    theme: String,
+    content: String
+) {
+    val props = Properties()
+    props["mail.smtp.host"] = "smtp.gmail.com"
+    props["mail.smtp.socketFactory.port"] = "465"
+    props["mail.smtp.socketFactory.class"] = "javax.net.ssl.SSLSocketFactory"
+    props["mail.smtp.auth"] = "true"
+    props["mail.smtp.port"] = "465"
+
+    val session = Session.getInstance(props, object : javax.mail.Authenticator() {
+        override fun getPasswordAuthentication(): PasswordAuthentication {
+            return PasswordAuthentication(login, password)
+        }
+    })
+
+    try {
+        val message: Message = MimeMessage(session).apply {
+            setFrom(InternetAddress(login))
+            setRecipients(
+                Message.RecipientType.TO,
+                InternetAddress.parse(email)
+            )
+            subject = theme
+            setText(content)
+        }
+
+        Transport.send(message)
+    } catch (e: MessagingException) {
+        e.printStackTrace()
+    }
 }
