@@ -191,11 +191,11 @@ fun RegistrationScreen(
                             name = name.value,
                             password = password.value,
                             phone = phone.value,
-                            email = email.value
-                        )
+                            email = email.value,
 
+                        )
                     )
-                    scope.launch (Dispatchers.IO) {
+                    /*scope.launch (Dispatchers.IO) {
                         sendMail(
                             login = "edurda77@gmail.com",
                             password = "Khayarov1977!",
@@ -203,7 +203,7 @@ fun RegistrationScreen(
                             theme = SUCCESS_REGISTRATION,
                             content = "${name.value}\n${password.value}\n${phone.value}\n${email.value}"
                         )
-                    }
+                    }*/
                     scope.launch {
                         delay(1000)
                         if (state.value.message != ALREADY_EXIST) {

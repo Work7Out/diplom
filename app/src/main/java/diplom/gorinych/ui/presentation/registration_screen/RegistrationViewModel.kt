@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.MailRepository
 import diplom.gorinych.domain.utils.ALREADY_EXIST
 import diplom.gorinych.domain.utils.ROLE_USER
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.SUCCESS_REGISTRATION
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
-    private val repository: HouseRepository
+    private val repository: HouseRepository,
+    private val mailRepository: MailRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(RegistrationScreenState())
     val state = _state.asStateFlow()
@@ -63,7 +66,15 @@ class RegistrationViewModel @Inject constructor(
                             role = ROLE_USER,
                             isBlocked = false
                         )
-
+                    }
+                    viewModelScope.launch (Dispatchers.IO){
+                        mailRepository.sendEmail(
+                            login = "edurda77@gmail.com",
+                            password = "Khayarov1977!",
+                            email = registrationEvent.email,
+                            theme = SUCCESS_REGISTRATION,
+                            content = "${registrationEvent.name}\n${registrationEvent.password}\n${registrationEvent.phone}\n${registrationEvent.email}"
+                        )
                     }
                 }
             }

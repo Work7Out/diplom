@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import diplom.gorinych.data.db.HouseBotDatabase
 import diplom.gorinych.domain.utils.DB
+import java.util.Properties
 import javax.inject.Singleton
 
 @Module
@@ -23,5 +24,17 @@ object AppModule {
         )
             .createFromAsset("database.db")
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMail(): Properties {
+        val props = Properties()
+        props["mail.smtp.host"] = "smtp.gmail.com"
+        props["mail.smtp.socketFactory.port"] = "465"
+        props["mail.smtp.socketFactory.class"] = "javax.net.ssl.SSLSocketFactory"
+        props["mail.smtp.auth"] = "true"
+        props["mail.smtp.port"] = "465"
+        return props
     }
 }
