@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.user.history_user
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import diplom.gorinych.R
 import diplom.gorinych.ui.presentation.base.ItemHistory
+import diplom.gorinych.ui.theme.grey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,13 +79,16 @@ fun HistoryUserScreen(
             modifier = modifier
                 .padding(padding)
                 .fillMaxWidth()
+                .background(color = grey)
                 .padding(horizontal = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(state.value.reserves) { reserve ->
                 ItemHistory(
                     reserve = reserve,
-                    onEvent = onEvent)
+                    onClick = {
+                        onEvent(HistoryUserEvent.OnDeleteReserve(reserve))
+                    })
             }
         }
     }
