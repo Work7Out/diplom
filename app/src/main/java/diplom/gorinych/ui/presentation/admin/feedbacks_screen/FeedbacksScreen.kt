@@ -30,13 +30,13 @@ fun FeedbacksScreen (
         modifier = modifier.fillMaxSize(),
         topBar = {
             AppBarAdmin(
-                navController = navController,
-                count = state.value.countNewReserves)
+                navController = navController,)
         },
         bottomBar = {
             BottomBarAdmin(
                 navController = navController,
-                idUser = state.value.idUser
+                idUser = state.value.idUser,
+                count = state.value.countNewReserves
             )
         }
     ) { padding ->

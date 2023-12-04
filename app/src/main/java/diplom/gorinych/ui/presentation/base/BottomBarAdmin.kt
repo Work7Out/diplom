@@ -4,8 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,12 +19,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import diplom.gorinych.R
 import diplom.gorinych.R.drawable
+import diplom.gorinych.ui.theme.blue
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomBarAdmin(
     navController: NavController,
     modifier: Modifier = Modifier,
-    idUser:Int
+    idUser:Int,
+    count: Int,
 ) {
     Row(
         modifier = modifier
@@ -48,10 +55,18 @@ fun BottomBarAdmin(
         IconButton(onClick = {
             navController.navigate("historyAdminScreen/$idUser")
         }) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = drawable.baseline_history_24),
-                contentDescription = ""
-            )
+            BadgedBox(badge = {
+                if (count>0) {
+                    Badge {
+                        Text(text = count.toString())
+                    }
+                }
+            }) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = drawable.baseline_history_24),
+                    contentDescription = ""
+                )
+            }
         }
         IconButton(onClick = {
             navController.navigate("statisticsAdminScreen/$idUser")

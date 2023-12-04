@@ -21,12 +21,10 @@ import diplom.gorinych.R
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBarAdmin(
     navController: NavController,
     modifier: Modifier = Modifier,
-    count: Int
 ) {
     Row(
         modifier = modifier
@@ -35,23 +33,6 @@ fun AppBarAdmin(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {
-        IconButton(onClick = {
-        //    navController.navigate("usersScreen/$idUser")
-        }) {
-            BadgedBox(badge = {
-                if (count>0) {
-                    Badge {
-                        Text(text = count.toString())
-                    }
-                }
-            }) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.baseline_campaign_24),
-                    contentDescription = "",
-                    tint = blue
-                )
-            }
-        }
         IconButton(onClick = {
             navController.navigate("loginScreen") {
                 this.popUpTo("loginScreen") {
