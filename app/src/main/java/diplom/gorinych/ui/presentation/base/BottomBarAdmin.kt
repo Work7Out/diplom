@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import diplom.gorinych.R
 import diplom.gorinych.R.drawable
+import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +42,8 @@ fun BottomBarAdmin(
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = drawable.baseline_people_alt_24),
-                contentDescription = ""
+                contentDescription = "",
+                tint = baseText
             )
         }
         IconButton(onClick = {
@@ -56,16 +58,27 @@ fun BottomBarAdmin(
             }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = drawable.baseline_history_24),
-                    contentDescription = ""
+                    contentDescription = "",
+                    tint = baseText
                 )
             }
+        }
+        IconButton(onClick = {
+            navController.navigate("addonScreen")
+        }) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = drawable.baseline_add_home_work_24),
+                contentDescription = "",
+                tint = baseText
+            )
         }
         IconButton(onClick = {
             navController.navigate("statisticsAdminScreen/$idUser")
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = drawable.baseline_analytics_24),
-                contentDescription = ""
+                contentDescription = "",
+                tint = baseText
             )
         }
     }

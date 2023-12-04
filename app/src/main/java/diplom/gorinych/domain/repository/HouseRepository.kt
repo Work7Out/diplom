@@ -1,8 +1,10 @@
 package diplom.gorinych.domain.repository
 
+import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
+import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.utils.Resource
@@ -51,4 +53,8 @@ interface HouseRepository {
     )
 
     suspend fun getHistoryNoConfirmStatus(): Flow<Resource<List<Reserve>>>
+    suspend fun addAddon(title: String, price: Double)
+    suspend fun getAddons(): Flow<Resource<List<Addon>>>
+    suspend fun addPromo(valueDiscount: Int, description: String, isActive: Boolean)
+    suspend fun getPromos(): Flow<Resource<List<Promo>>>
 }

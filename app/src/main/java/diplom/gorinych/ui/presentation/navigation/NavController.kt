@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import diplom.gorinych.ui.presentation.admin.addons.AddonsScreen
 import diplom.gorinych.ui.presentation.admin.history_screen.HistoryAdminScreen
 import diplom.gorinych.ui.presentation.admin.statistics.StatisticsAdminScreen
 import diplom.gorinych.ui.presentation.admin.users.UsersScreen
@@ -73,5 +74,10 @@ fun NavController(
                     type = NavType.IntType
                 })
         ) { HouseDetailScreen(navController) }
+        composable(NavigationDestination.AddonScreenDestination.destination) {
+            AddonsScreen(
+                navController
+            )
+        }
     }
 }

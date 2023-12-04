@@ -1,4 +1,4 @@
-package diplom.gorinych.ui.presentation.admin.history_screen
+package diplom.gorinych.ui.presentation.admin.addons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +30,10 @@ import diplom.gorinych.R
 import diplom.gorinych.domain.utils.ACTIVE
 import diplom.gorinych.domain.utils.INACTIVE
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
+import diplom.gorinych.ui.presentation.admin.history_screen.HistoryScreenEvent
+import diplom.gorinych.ui.presentation.admin.history_screen.HistoryState
+import diplom.gorinych.ui.presentation.admin.history_screen.ItemAdminHistory
+import diplom.gorinych.ui.presentation.admin.history_screen.ItemFeedbackScreen
 import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
 import diplom.gorinych.ui.theme.baseText
@@ -38,13 +42,14 @@ import diplom.gorinych.ui.theme.grey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryAdminScreen(
+fun AddonsScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    viewModel: HistoryViewModel = hiltViewModel()
+    viewModel: AddonScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
     val onEvent = viewModel::onEvent
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -74,60 +79,53 @@ fun HistoryAdminScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextButton(onClick = {
-                    onEvent(HistoryScreenEvent.OnChangeHistoryState(HistoryState.ReserveState))
+                    onEvent(AddonScreenEvent.ChangeState(AddonState.AdditionState))
                 }) {
                     Text(
-                        text = stringResource(id = R.string.history_reserve),
+                        text = stringResource(id = R.string.addons_add),
                         style = TextStyle(
                             fontSize = 16.sp,
                             fontFamily = FontFamily(Font(R.font.gilroy)),
                             fontWeight = FontWeight(600),
-                            color = if (state.value.historyState is HistoryState.ReserveState) blue else baseText,
+                            color = if (state.value.addonState is AddonState.AdditionState) blue else baseText,
                         )
                     )
                 }
                 TextButton(onClick = {
-                    onEvent(HistoryScreenEvent.OnChangeHistoryState(HistoryState.FeedbackState))
+                    onEvent(AddonScreenEvent.ChangeState(AddonState.PromoState))
                 }) {
                     Text(
-                        text = stringResource(id = R.string.history_feedback),
+                        text = stringResource(id = R.string.addons_promo),
                         style = TextStyle(
                             fontSize = 16.sp,
                             fontFamily = FontFamily(Font(R.font.gilroy)),
                             fontWeight = FontWeight(600),
-                            color = if (state.value.historyState is HistoryState.FeedbackState) blue else baseText,
+                            color = if (state.value.addonState is AddonState.PromoState) blue else baseText,
                         )
                     )
                 }
             }
-            when (state.value.historyState) {
-                HistoryState.FeedbackState -> {
+            when (state.value.addonState) {
+                AddonState.AdditionState -> {
                     LazyColumn(
                         modifier = modifier
                             .fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        items(state.value.feedbacks) { feedback ->
-                            ItemFeedbackScreen(
-                                feedback = feedback,
-                                onEvent = onEvent
-                            )
+                        items(state.value.addons) { addon ->
+
                         }
                     }
                 }
-                HistoryState.ReserveState -> {
+
+                AddonState.PromoState -> {
                     LazyColumn(
                         modifier = modifier
                             .fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        items(state.value.reserves) { reserve ->
-                            val statuses = listOf(INACTIVE, WAITING_CONFIRM, ACTIVE)
-                            ItemAdminHistory(
-                                reserve = reserve,
-                                statuses = statuses,
-                                onEvent = onEvent
-                            )
+                        items(state.value.promos) { promo ->
+
                         }
                     }
                 }

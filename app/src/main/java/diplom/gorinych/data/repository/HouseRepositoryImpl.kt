@@ -1,20 +1,26 @@
 package diplom.gorinych.data.repository
 
+import diplom.gorinych.data.db.AddonEntity
 import diplom.gorinych.data.db.FeedBackEntity
 import diplom.gorinych.data.db.HistoryEntity
 import diplom.gorinych.data.db.HouseBotDatabase
+import diplom.gorinych.data.db.PromoEntity
 import diplom.gorinych.data.db.UserEntity
+import diplom.gorinych.data.mapper.mapToAddon
 import diplom.gorinych.data.mapper.mapToFeedBackEntity
 import diplom.gorinych.data.mapper.mapToFeedback
 import diplom.gorinych.data.mapper.mapToHistoryEntity
 import diplom.gorinych.data.mapper.mapToHouseDetail
 import diplom.gorinych.data.mapper.mapToHouses
+import diplom.gorinych.data.mapper.mapToPromo
 import diplom.gorinych.data.mapper.mapToReserve
 import diplom.gorinych.data.mapper.mapToUser
 import diplom.gorinych.data.mapper.mapToUserEntity
+import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
+import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.repository.HouseRepository
@@ -219,6 +225,62 @@ class HouseRepositoryImpl @Inject constructor(
                 result.collect {
                     emit(Resource.Success(it.map { historyEntity ->
                         historyEntity.mapToReserve()
+                    }))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
+        }
+    }
+
+    override suspend fun addAddon(
+        title: String,
+        price: Double
+    ) {
+        dao.insertAddon(
+            AddonEntity(
+                title = title,
+                price = price
+            )
+        )
+    }
+
+    override suspend fun getAddons(): Flow<Resource<List<Addon>>> {
+        return flow {
+            try {
+                val result = dao.getAllAddons()
+                result.collect {
+                    emit(Resource.Success(it.map { entity ->
+                        entity.mapToAddon()
+                    }))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
+        }
+    }
+
+    override suspend fun addPromo(
+        valueDiscount: Int,
+        description: String,
+        isActive: Boolean
+    ) {
+        dao.insertPromo(
+            PromoEntity(
+                valueDiscount = valueDiscount,
+                description = description,
+                isActive = isActive
+            )
+        )
+    }
+
+    override suspend fun getPromos(): Flow<Resource<List<Promo>>> {
+        return flow {
+            try {
+                val result = dao.getAllPromos()
+                result.collect {
+                    emit(Resource.Success(it.map { entity ->
+                        entity.mapToPromo()
                     }))
                 }
             } catch (error: Exception) {

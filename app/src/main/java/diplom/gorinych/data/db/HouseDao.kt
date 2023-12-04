@@ -6,9 +6,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import diplom.gorinych.domain.utils.ADDONS
 import diplom.gorinych.domain.utils.FEEDBACK
 import diplom.gorinych.domain.utils.HISTORY
 import diplom.gorinych.domain.utils.HOUSE
+import diplom.gorinych.domain.utils.PROMOS
 import diplom.gorinych.domain.utils.USERS
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import kotlinx.coroutines.flow.Flow
@@ -86,6 +88,18 @@ interface HouseDao {
     @Delete
     suspend fun deleteReserve(historyEntity: HistoryEntity)
 
-    //
+    //Addons
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAddon(addonEntity: AddonEntity)
+
+    @Query("SELECT * FROM $ADDONS")
+    fun getAllAddons() : Flow<List<AddonEntity>>
+
+    //Promos
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPromo(promoEntity: PromoEntity)
+
+    @Query("SELECT * FROM $PROMOS")
+    fun getAllPromos() : Flow<List<PromoEntity>>
 
 }
