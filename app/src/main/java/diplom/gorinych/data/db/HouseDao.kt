@@ -56,7 +56,7 @@ interface HouseDao {
     ) : List<FeedBackEntity>
 
     @Query("SELECT * FROM $FEEDBACK")
-    suspend fun getAllFeedBacks() : List<FeedBackEntity>
+    fun getAllFeedBacks() : Flow<List<FeedBackEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFeedback(feedBackEntity: FeedBackEntity)
@@ -78,7 +78,7 @@ interface HouseDao {
     ) : List<HistoryEntity>
 
     @Query("SELECT * FROM $HISTORY")
-    suspend fun getAllHistory() : List<HistoryEntity>
+    fun getAllHistory() : Flow<List<HistoryEntity>>
 
     @Query("SELECT * FROM $HISTORY WHERE CONFIRM_RESERVATION = :status")
     fun getHistoryNoConfirmStatus(status: String = WAITING_CONFIRM) : Flow<List<HistoryEntity>>

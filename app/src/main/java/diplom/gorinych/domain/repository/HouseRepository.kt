@@ -38,9 +38,9 @@ interface HouseRepository {
     suspend fun getReserveByUser(idUser: Int): Resource<List<Reserve>>
     suspend fun getAllUsers(): Resource<List<User>>
     suspend fun updateFeedback(feedback: Feedback)
-    suspend fun getAllFeedbacks(): Resource<List<Feedback>>
+    suspend fun getAllFeedbacks(): Flow<Resource<List<Feedback>>>
     suspend fun updateHistory(reserve: Reserve)
-    suspend fun getAllHistory(): Resource<List<Reserve>>
+    suspend fun getAllHistory(): Flow<Resource<List<Reserve>>>
     suspend fun insertUser(
         name: String,
         password: String,

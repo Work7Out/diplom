@@ -54,3 +54,7 @@ const val ACTIVE = "активно"
 
 const val ALREADY_EXIST = "Пользователь с таким именем уже существует"
 const val SUCCESS_REGISTRATION = "Успешная регистрация"
+const val USER_BLOCKED = "Пользователь заблокирован"
+const val USER = "Пользователь:"
+const val BLOCKED = "заблокирован"
+const val UNBLOCKED = "разблокирован"

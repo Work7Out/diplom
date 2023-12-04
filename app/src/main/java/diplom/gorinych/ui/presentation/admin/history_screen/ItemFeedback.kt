@@ -2,40 +2,39 @@ package diplom.gorinych.ui.presentation.admin.history_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import diplom.gorinych.R
-import diplom.gorinych.domain.model.Reserve
-import diplom.gorinych.ui.presentation.user.history_user.HistoryUserEvent
+import diplom.gorinych.domain.model.Feedback
+import diplom.gorinych.domain.utils.BLOCKED
+import diplom.gorinych.domain.utils.UNBLOCKED
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.white
 
 @Composable
-fun ItemAdminHistory(
+fun ItemFeedbackScreen(
     modifier: Modifier = Modifier,
-    reserve: Reserve,
-    onEvent: (HistoryScreenEvent) -> Unit,
-    statuses: List<String>
+    feedback: Feedback,
+    onEvent: (HistoryScreenEvent) -> Unit
 ) {
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -44,7 +43,7 @@ fun ItemAdminHistory(
             .padding(10.dp)
     ) {
         Text(
-            text = "логин - ${reserve.idUser}",
+            text = "пользователь - ${feedback.idUser}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -54,91 +53,74 @@ fun ItemAdminHistory(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "дом - ${reserve.idHouse}",
+            text = "квартира - ${feedback.idHouse}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
                 fontWeight = FontWeight(600),
                 color = baseText,
-
-                )
-        )
-        Spacer(modifier = modifier.height(5.dp))
-        Text(
-            text = "начало - ${reserve.dateBegin}",
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontFamily = FontFamily(Font(R.font.gilroy)),
-                fontWeight = FontWeight(600),
-                color = baseText,
-
-                )
-        )
-        Spacer(modifier = modifier.height(5.dp))
-        Text(
-            text = "конец - ${reserve.dateEnd}",
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontFamily = FontFamily(Font(R.font.gilroy)),
-                fontWeight = FontWeight(600),
-                color = baseText,
-
-                )
-        )
-        Spacer(modifier = modifier.height(5.dp))
-        Text(
-            text = "сумма - ${reserve.amount}",
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontFamily = FontFamily(Font(R.font.gilroy)),
-                fontWeight = FontWeight(600),
-                color = baseText,
-
-                )
-        )
-        Spacer(modifier = modifier.height(5.dp))
-        Text(
-            text = "статус регистрации - ${reserve.confirmReservation}",
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontFamily = FontFamily(Font(R.font.gilroy)),
-                fontWeight = FontWeight(600),
-                color = baseText,
-
-                )
-        )
-        Spacer(modifier = modifier.height(5.dp))
-        statuses.forEach { status ->
-            Row(
-                modifier = modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
             )
-            {
-                RadioButton(
-                    selected = (status == reserve.confirmReservation),
-                    colors = RadioButtonDefaults.colors(
-                        selectedColor = blue,
-                        unselectedColor = blue
-                    ),
-                    onClick = {
-                        onEvent(
-                            HistoryScreenEvent.OnConfirmReserve(
-                                reserve = reserve,
-                                status = status
-                            )
-                        )
-                    }
-                )
-                Text(
-                    text = status,
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.gilroy)),
-                        fontWeight = FontWeight(600),
-                        color = baseText
+        )
+        Spacer(modifier = modifier.height(5.dp))
+        Text(
+            text = feedback.content,
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.gilroy)),
+                fontWeight = FontWeight(600),
+                color = baseText,
+            )
+        )
+        Spacer(modifier = modifier.height(5.dp))
+        Text(
+            text = if (feedback.isBlocked) stringResource(id = R.string.blocked) else stringResource(
+                id = R.string.not_blocked
+            ),
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.gilroy)),
+                fontWeight = FontWeight(600),
+                color = baseText,
+            )
+        )
+        Spacer(modifier = modifier.height(5.dp))
+        Text(
+            text = "оценка - ${feedback.rang}",
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.gilroy)),
+                fontWeight = FontWeight(600),
+                color = baseText,
+            )
+        )
+        Spacer(modifier = modifier.height(10.dp))
+        Button(
+            modifier = modifier
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = blue
+            ),
+            onClick = {
+                onEvent(
+                    HistoryScreenEvent.OnChangeStatusBlockFeedback(
+                        feedback = feedback,
+                        message = if (feedback.isBlocked) UNBLOCKED else BLOCKED
                     )
                 )
-            }
+            }) {
+            Text(
+                modifier = modifier.fillMaxWidth(),
+                text = if (feedback.isBlocked) stringResource(id = R.string.make_unblocked) else stringResource(
+                    id = R.string.make_blocked
+                ),
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.gilroy)),
+                    fontWeight = FontWeight(600),
+                    color = white,
+                ),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

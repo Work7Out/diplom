@@ -13,4 +13,10 @@
     <string name="enter">Вход</string>
     <string name="authorization">АВТОРИЗАЦИЯ</string>
     <string name="registration_upper">РЕГИСТРАЦИЯ</string>
+    <string name="history_reserve">Бронирования</string>
+    <string name="history_feedback">Отзывы</string>
+    <string name="blocked">Заблокирован</string>
+    <string name="not_blocked">Не заблокирован</string>
+    <string name="make_unblocked">Разблокировать</string>
+    <string name="make_blocked">Заблокировать</string>
 </resources>

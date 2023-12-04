@@ -5,9 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.MailRepository
+import diplom.gorinych.domain.utils.BLOCKED
 import diplom.gorinych.domain.utils.Resource
+import diplom.gorinych.domain.utils.SUCCESS_REGISTRATION
+import diplom.gorinych.domain.utils.USER
+import diplom.gorinych.domain.utils.USER_BLOCKED
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeRoleUser
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeStatusBlock
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +23,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class UsersViewModel @Inject constructor(
     private val repository: HouseRepository,
+    private val mailRepository: MailRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(UsersScreenState())
@@ -55,6 +62,15 @@ class UsersViewModel @Inject constructor(
                         )
                     )
                     loadData()
+                }
+                viewModelScope.launch (Dispatchers.IO) {
+                    mailRepository.sendEmail(
+                        login = "edurda77@gmail.com",
+                        password = "Khayarov1977!",
+                        email = usersScreenEvent.user.email,
+                        theme = USER_BLOCKED,
+                        content = "$USER ${usersScreenEvent.user.name} $BLOCKED"
+                    )
                 }
             }
         }

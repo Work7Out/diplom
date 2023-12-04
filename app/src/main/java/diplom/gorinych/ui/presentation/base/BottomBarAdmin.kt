@@ -45,14 +45,6 @@ fun BottomBarAdmin(
             )
         }
         IconButton(onClick = {
-            navController.navigate("feedbacksScreen/$idUser")
-        }) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = drawable.baseline_feedback_24),
-                contentDescription = ""
-            )
-        }
-        IconButton(onClick = {
             navController.navigate("historyAdminScreen/$idUser")
         }) {
             BadgedBox(badge = {

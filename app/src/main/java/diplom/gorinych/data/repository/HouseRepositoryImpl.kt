@@ -158,14 +158,18 @@ class HouseRepositoryImpl @Inject constructor(
         dao.updateFeedback(feedback.mapToFeedBackEntity())
     }
 
-    override suspend fun getAllFeedbacks(): Resource<List<Feedback>> {
-        return try {
-            val result = dao.getAllFeedBacks()
-            Resource.Success(result.map {
-                it.mapToFeedback()
-            })
-        } catch (error: Exception) {
-            Resource.Error(error.localizedMessage ?: "Unknown error")
+    override suspend fun getAllFeedbacks(): Flow<Resource<List<Feedback>>> {
+        return flow {
+            try {
+                val result = dao.getAllFeedBacks()
+                result.collect {
+                    emit(Resource.Success(it.map { feedBackEntity ->
+                        feedBackEntity.mapToFeedback()
+                    }))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
         }
     }
 
@@ -173,14 +177,18 @@ class HouseRepositoryImpl @Inject constructor(
         dao.updateHistory(reserve.mapToHistoryEntity())
     }
 
-    override suspend fun getAllHistory(): Resource<List<Reserve>> {
-        return try {
-            val result = dao.getAllHistory()
-            Resource.Success(result.map {
-                it.mapToReserve()
-            })
-        } catch (error: Exception) {
-            Resource.Error(error.localizedMessage ?: "Unknown error")
+    override suspend fun getAllHistory(): Flow<Resource<List<Reserve>>> {
+        return flow {
+            try {
+                val result = dao.getAllHistory()
+                result.collect { histories ->
+                    emit(Resource.Success(histories.map {
+                        it.mapToReserve()
+                    }))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
         }
     }
 
