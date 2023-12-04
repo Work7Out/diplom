@@ -29,9 +29,11 @@ class FeedbacksViewModel @Inject constructor(
                 idUser = userId
             )
                 .updateStateUI()
+            loadNewReserves()
             loadData()
         }
     }
+
 
     fun onEvent(feedbackScreenEvent: FeedbackScreenEvent) {
         when (feedbackScreenEvent) {
@@ -43,6 +45,27 @@ class FeedbacksViewModel @Inject constructor(
                         )
                     )
                     loadData()
+                }
+            }
+        }
+    }
+
+    private suspend fun loadNewReserves() {
+        val result = repository.getHistoryNoConfirmStatus()
+        result.collect {
+            when (it) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = it.message
+                    )
+                        .updateStateUI()
+                }
+
+                is Resource.Success -> {
+                    _state.value.copy(
+                        countNewReserves = it.data?.size ?: 0
+                    )
+                        .updateStateUI()
                 }
             }
         }

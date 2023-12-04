@@ -6,6 +6,7 @@ import diplom.gorinych.domain.model.HouseDetail
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.utils.Resource
+import kotlinx.coroutines.flow.Flow
 
 interface HouseRepository {
     suspend fun login(login: String, password: String): Resource<User?>
@@ -48,4 +49,6 @@ interface HouseRepository {
         role: String,
         isBlocked: Boolean
     )
+
+    suspend fun getHistoryNoConfirmStatus(): Flow<Resource<List<Reserve>>>
 }

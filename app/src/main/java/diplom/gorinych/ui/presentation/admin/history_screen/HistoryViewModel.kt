@@ -29,6 +29,7 @@ class HistoryViewModel @Inject constructor(
             )
                 .updateStateUI()
             loadData()
+            loadNewReserves()
         }
     }
 
@@ -42,6 +43,27 @@ class HistoryViewModel @Inject constructor(
                         )
                     )
                     loadData()
+                }
+            }
+        }
+    }
+
+    private suspend fun loadNewReserves() {
+        val result = repository.getHistoryNoConfirmStatus()
+        result.collect {
+            when (it) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = it.message
+                    )
+                        .updateStateUI()
+                }
+
+                is Resource.Success -> {
+                    _state.value.copy(
+                        countNewReserves = it.data?.size ?: 0
+                    )
+                        .updateStateUI()
                 }
             }
         }

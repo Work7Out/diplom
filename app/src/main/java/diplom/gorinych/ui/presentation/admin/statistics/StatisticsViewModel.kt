@@ -32,6 +32,7 @@ class StatisticsViewModel @Inject constructor(
             )
                 .updateStateUI()
             loadData()
+            loadNewReserves()
         }
     }
 
@@ -57,6 +58,27 @@ class StatisticsViewModel @Inject constructor(
                     amountLastSeason = calculateSeasonSum(_state.value.reserves)
                 )
                     .updateStateUI()
+            }
+        }
+    }
+
+    private suspend fun loadNewReserves() {
+        val result = repository.getHistoryNoConfirmStatus()
+        result.collect {
+            when (it) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = it.message
+                    )
+                        .updateStateUI()
+                }
+
+                is Resource.Success -> {
+                    _state.value.copy(
+                        countNewReserves = it.data?.size ?: 0
+                    )
+                        .updateStateUI()
+                }
             }
         }
     }

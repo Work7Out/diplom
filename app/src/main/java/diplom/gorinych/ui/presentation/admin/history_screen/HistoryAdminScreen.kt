@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,6 +28,11 @@ fun HistoryAdminScreen(
     val onEvent = viewModel::onEvent
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        topBar = {
+            AppBarAdmin(
+                navController = navController,
+                count = state.value.countNewReserves)
+        },
         bottomBar = {
             BottomBarAdmin(
                 navController = navController,

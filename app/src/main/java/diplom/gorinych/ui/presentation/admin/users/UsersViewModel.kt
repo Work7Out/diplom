@@ -30,6 +30,7 @@ class UsersViewModel @Inject constructor(
             )
                 .updateStateUI()
             loadData()
+            loadNewReserves()
         }
     }
 
@@ -54,6 +55,27 @@ class UsersViewModel @Inject constructor(
                         )
                     )
                     loadData()
+                }
+            }
+        }
+    }
+
+    private suspend fun loadNewReserves() {
+        val result = repository.getHistoryNoConfirmStatus()
+        result.collect {
+            when (it) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = it.message
+                    )
+                        .updateStateUI()
+                }
+
+                is Resource.Success -> {
+                    _state.value.copy(
+                        countNewReserves = it.data?.size ?: 0
+                    )
+                        .updateStateUI()
                 }
             }
         }

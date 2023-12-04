@@ -10,6 +10,8 @@ import diplom.gorinych.domain.utils.FEEDBACK
 import diplom.gorinych.domain.utils.HISTORY
 import diplom.gorinych.domain.utils.HOUSE
 import diplom.gorinych.domain.utils.USERS
+import diplom.gorinych.domain.utils.WAITING_CONFIRM
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HouseDao {
@@ -77,6 +79,9 @@ interface HouseDao {
 
     @Query("SELECT * FROM $HISTORY")
     suspend fun getAllHistory() : List<HistoryEntity>
+
+    @Query("SELECT * FROM $HISTORY WHERE CONFIRM_RESERVATION = :status")
+    fun getHistoryNoConfirmStatus(status: String = WAITING_CONFIRM) : Flow<List<HistoryEntity>>
 
     @Delete
     suspend fun deleteReserve(historyEntity: HistoryEntity)

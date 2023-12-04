@@ -19,6 +19,9 @@ import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class HouseRepositoryImpl @Inject constructor(
@@ -199,5 +202,20 @@ class HouseRepositoryImpl @Inject constructor(
                 email = email
             )
         )
+    }
+
+    override suspend fun getHistoryNoConfirmStatus(): Flow<Resource<List<Reserve>>> {
+        return flow {
+            try {
+                val result = dao.getHistoryNoConfirmStatus()
+                result.collect {
+                    emit(Resource.Success(it.map { historyEntity ->
+                        historyEntity.mapToReserve()
+                    }))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
+        }
     }
 }

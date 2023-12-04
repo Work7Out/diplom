@@ -11,4 +11,5 @@ data class StatisticsScreenState(
     val amountAll: Double = 0.0,
     val amountLastMonth: Double = 0.0,
     val amountLastSeason: Double = 0.0,
+    val countNewReserves: Int = 0
 )
