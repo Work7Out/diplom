@@ -21,4 +21,15 @@
     <string name="not_blocked">Не заблокирован</string>
     <string name="make_unblocked">Разблокировать</string>
     <string name="make_blocked">Заблокировать</string>
+    <string name="price">Цена</string>
+    <string name="code_discount">Код</string>
+    <string name="percent_discount">Процент скидки</string>
+    <string name="expired_discount">Использован</string>
+    <string name="not_expired_discount">Не использован</string>
+    <string name="enter_description_promo">Введите код промо</string>
+    <string name="enter_value_promo">введите величину скидки в %</string>
+    <string name="add_promo">Добавить промокод</string>
+    <string name="enter_name_addon">Введите название допа</string>
+    <string name="enter_price_addon">Введите цену допа</string>
+    <string name="add_addon">Добавить доп</string>
 </resources>

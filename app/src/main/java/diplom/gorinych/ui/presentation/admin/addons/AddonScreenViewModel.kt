@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.admin.addons
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +22,8 @@ class AddonScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            async { loadPromos() }.await()
-            async { loadAddons() }.await()
+            async { loadPromos() }.onAwait
+            async { loadAddons() }.onAwait
             async { loadNewReserves() }.onAwait
         }
     }
@@ -90,6 +91,7 @@ class AddonScreenViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
+                    Log.d("TAG result addons","result addons ${it.data}")
                     _state.value.copy(
                         addons = it.data ?: emptyList()
                     )
