@@ -73,6 +73,15 @@ fun BottomBarAdmin(
             )
         }
         IconButton(onClick = {
+            navController.navigate("newsScreen")
+        }) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = drawable.baseline_article_24),
+                contentDescription = "",
+                tint = baseText
+            )
+        }
+        IconButton(onClick = {
             navController.navigate("statisticsAdminScreen/$idUser")
         }) {
             Icon(

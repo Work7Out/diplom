@@ -4,6 +4,7 @@ import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
+import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
@@ -57,4 +58,8 @@ interface HouseRepository {
     suspend fun getAddons(): Flow<Resource<List<Addon>>>
     suspend fun addPromo(valueDiscount: Int, description: String, isActive: Boolean)
     suspend fun getPromos(): Flow<Resource<List<Promo>>>
+    suspend fun addNote(title: String, content: String, dateCreate: String)
+    suspend fun getNews(): Flow<Resource<List<Note>>>
+    suspend fun updateNote(note: Note)
+    suspend fun deleteNote(note: Note)
 }

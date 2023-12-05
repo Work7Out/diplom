@@ -32,4 +32,9 @@
     <string name="enter_name_addon">Введите название допа</string>
     <string name="enter_price_addon">Введите цену допа</string>
     <string name="add_addon">Добавить доп</string>
+
+    <string name="enter_title_news">Введите заголовок</string>
+    <string name="enter_content_news">Введите текст</string>
+    <string name="add_note">Добавить новость</string>
+    <string name="update_note">Исправить новость</string>
 </resources>

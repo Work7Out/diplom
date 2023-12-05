@@ -4,6 +4,7 @@ import diplom.gorinych.data.db.AddonEntity
 import diplom.gorinych.data.db.FeedBackEntity
 import diplom.gorinych.data.db.HistoryEntity
 import diplom.gorinych.data.db.HouseBotDatabase
+import diplom.gorinych.data.db.NoteEntity
 import diplom.gorinych.data.db.PromoEntity
 import diplom.gorinych.data.db.UserEntity
 import diplom.gorinych.data.mapper.mapToAddon
@@ -12,6 +13,8 @@ import diplom.gorinych.data.mapper.mapToFeedback
 import diplom.gorinych.data.mapper.mapToHistoryEntity
 import diplom.gorinych.data.mapper.mapToHouseDetail
 import diplom.gorinych.data.mapper.mapToHouses
+import diplom.gorinych.data.mapper.mapToNote
+import diplom.gorinych.data.mapper.mapToNoteEntity
 import diplom.gorinych.data.mapper.mapToPromo
 import diplom.gorinych.data.mapper.mapToReserve
 import diplom.gorinych.data.mapper.mapToUser
@@ -20,6 +23,7 @@ import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
+import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
@@ -287,5 +291,42 @@ class HouseRepositoryImpl @Inject constructor(
                 emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
             }
         }
+    }
+
+    override suspend fun addNote(
+        title: String,
+        content: String,
+        dateCreate: String
+    ) {
+        dao.insertNews(
+            NoteEntity(
+                title = title,
+                content = content,
+                dateCreate = dateCreate
+            )
+        )
+    }
+
+    override suspend fun getNews(): Flow<Resource<List<Note>>> {
+        return flow {
+            try {
+                val result = dao.getAllNews()
+                result.collect {
+                    emit(Resource.Success(it.map { entity ->
+                        entity.mapToNote()
+                    }))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
+        }
+    }
+
+    override suspend fun updateNote(note: Note) {
+        dao.updateNote(note.mapToNoteEntity())
+    }
+
+    override suspend fun deleteNote(note: Note) {
+        dao.deleteNote(note.mapToNoteEntity())
     }
 }

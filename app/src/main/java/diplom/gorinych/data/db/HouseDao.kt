@@ -10,6 +10,7 @@ import diplom.gorinych.domain.utils.ADDONS
 import diplom.gorinych.domain.utils.FEEDBACK
 import diplom.gorinych.domain.utils.HISTORY
 import diplom.gorinych.domain.utils.HOUSE
+import diplom.gorinych.domain.utils.NEWS
 import diplom.gorinych.domain.utils.PROMOS
 import diplom.gorinych.domain.utils.USERS
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
@@ -101,5 +102,18 @@ interface HouseDao {
 
     @Query("SELECT * FROM $PROMOS")
     fun getAllPromos() : Flow<List<PromoEntity>>
+
+    //News
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertNews(note: NoteEntity)
+
+    @Query("SELECT * FROM $NEWS")
+    fun getAllNews() : Flow<List<NoteEntity>>
+
+    @Update
+    suspend fun updateNote(note: NoteEntity)
+
+    @Delete
+    suspend fun deleteNote(note: NoteEntity)
 
 }

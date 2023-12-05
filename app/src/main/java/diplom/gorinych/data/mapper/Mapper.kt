@@ -5,12 +5,14 @@ import diplom.gorinych.data.db.AddonEntity
 import diplom.gorinych.data.db.FeedBackEntity
 import diplom.gorinych.data.db.HistoryEntity
 import diplom.gorinych.data.db.HouseEntity
+import diplom.gorinych.data.db.NoteEntity
 import diplom.gorinych.data.db.PromoEntity
 import diplom.gorinych.data.db.UserEntity
 import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
+import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
@@ -147,5 +149,23 @@ fun PromoEntity.mapToPromo(): Promo {
         description = description,
         valueDiscount = valueDiscount,
         isActive = isActive
+    )
+}
+
+fun NoteEntity.mapToNote(): Note {
+    return Note(
+        id = id,
+        title = title,
+        content = content,
+        dateCreate = dateCreate
+    )
+}
+
+fun Note.mapToNoteEntity(): NoteEntity {
+    return NoteEntity(
+        id = id,
+        title = title,
+        content = content,
+        dateCreate = dateCreate
     )
 }

@@ -10,4 +10,5 @@ sealed class NavigationDestination (val destination: String){
     object StatisticsAdminDestination:NavigationDestination("statisticsAdminScreen/{idUser}")
     object HouseDetailDestination:NavigationDestination("houseDetailScreen/{idUser}/{idHouse}")
     object AddonScreenDestination:NavigationDestination("addonScreen")
+    object NewsScreenDestination:NavigationDestination("newsScreen")
 }
