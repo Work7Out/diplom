@@ -48,7 +48,7 @@ fun UsersScreen(
                 .padding(padding)
                 .fillMaxWidth()
                 .background(color = grey)
-                .padding(horizontal = 10.dp),
+                .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(state.value.users) { user ->
