@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.user.house_detail
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -47,6 +49,7 @@ fun HouseDetailScreen(
 ) {
     val state = viewModel.state.collectAsState()
     val onEvent = viewModel::onEvent
+    val context = LocalContext.current
     val calendarState: CalendarState<DynamicSelectionState> = rememberSelectableCalendarState(
         initialSelectionMode = SelectionMode.Period,
         initialSelection = listOf()
@@ -61,6 +64,13 @@ fun HouseDetailScreen(
                 onEvent = onEvent
             )
         }
+    }
+    if (!state.value.message.isNullOrBlank()) {
+        Toast.makeText(
+            context,
+            state.value.message,
+            Toast.LENGTH_LONG
+        ).show()
     }
     Column(
         modifier = modifier
@@ -108,7 +118,7 @@ fun HouseDetailScreen(
                 .padding(horizontal = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(state.value.house?.feedbacks ?: emptyList()) {
+            items(state.value.feedbacks) {
                 ItemFeedback(
                     feedback = it,
                     name = state.value.nameUser
@@ -136,7 +146,8 @@ fun HouseDetailScreen(
                     HouseDetailEvent.AddReserve(
                         dateBegin = calendarState.selectionState.selection.first(),
                         dateEnd = calendarState.selectionState.selection.last(),
-                        calendarState.selectionState.selection.size
+                        valueDays = calendarState.selectionState.selection.size,
+                        addons = emptyList() //TODO
                     )
                 )
                 calendarState.selectionState.selection = emptyList()

@@ -16,7 +16,7 @@ interface HouseRepository {
     suspend fun login(login: String, password: String): Resource<User?>
     suspend fun getUserById(userId: Int): Resource<User>
     suspend fun updateUser(user: User)
-    suspend fun getAllHouses(): Resource<List<House>>
+    suspend fun getAllHouses(): Flow<Resource<List<House>>>
     suspend fun getDetailHouse(idHouse: Int): Resource<HouseDetail>
     suspend fun deleteReserve(reserve: Reserve)
     suspend fun addReserve(
@@ -65,4 +65,6 @@ interface HouseRepository {
     suspend fun deleteNote(note: Note)
     suspend fun addCall(name: String, phone: String)
     suspend fun getAllCalls(): Flow<Resource<List<Call>>>
+    suspend fun getHistoryByIdHouse(idHouse: Int): Flow<Resource<List<Reserve>>>
+    suspend fun getFeedbackByHouse(idHouse: Int): Flow<Resource<List<Feedback>>>
 }

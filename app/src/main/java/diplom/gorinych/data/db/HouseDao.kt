@@ -33,7 +33,7 @@ interface HouseDao {
     suspend fun getUserById(userId: Int): UserEntity
 
     @Query("SELECT * FROM $USERS")
-    fun getAllUsers(): Flow <List<UserEntity>>
+    fun getAllUsers(): Flow<List<UserEntity>>
 
     @Update
     suspend fun updateUserEntity(userEntity: UserEntity)
@@ -43,24 +43,22 @@ interface HouseDao {
 
     //HouseEntity
     @Query("SELECT * FROM $HOUSE")
-    suspend fun getAllHouses() : List<HouseEntity>
+    fun getAllHouses(): Flow<List<HouseEntity>>
 
     @Query("SELECT * FROM $HOUSE WHERE id = :houseId")
     suspend fun getHouseById(
-        houseId:Int
-    ) : HouseEntity
-
-
+        houseId: Int
+    ): HouseEntity
 
 
     //FeedBackEntity
     @Query("SELECT * FROM $FEEDBACK WHERE ID_HOUSE = :houseId")
-    suspend fun getFeedBackByHouse(
-        houseId:Int
-    ) : List<FeedBackEntity>
+    fun getFeedBackByHouse(
+        houseId: Int
+    ): Flow<List<FeedBackEntity>>
 
     @Query("SELECT * FROM $FEEDBACK")
-    fun getAllFeedBacks() : Flow<List<FeedBackEntity>>
+    fun getAllFeedBacks(): Flow<List<FeedBackEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFeedback(feedBackEntity: FeedBackEntity)
@@ -78,14 +76,17 @@ interface HouseDao {
 
     @Query("SELECT * FROM $HISTORY WHERE ID_USER = :userId")
     suspend fun getHistoryByUser(
-        userId:Int
-    ) : List<HistoryEntity>
+        userId: Int
+    ): List<HistoryEntity>
 
     @Query("SELECT * FROM $HISTORY")
-    fun getAllHistory() : Flow<List<HistoryEntity>>
+    fun getAllHistory(): Flow<List<HistoryEntity>>
+
+    @Query("SELECT * FROM $HISTORY WHERE ID_HOUSE = :idHouse")
+    fun getHistoryByIdHouse(idHouse: Int): Flow<List<HistoryEntity>>
 
     @Query("SELECT * FROM $HISTORY WHERE CONFIRM_RESERVATION = :status")
-    fun getHistoryNoConfirmStatus(status: String = WAITING_CONFIRM) : Flow<List<HistoryEntity>>
+    fun getHistoryNoConfirmStatus(status: String = WAITING_CONFIRM): Flow<List<HistoryEntity>>
 
     @Delete
     suspend fun deleteReserve(historyEntity: HistoryEntity)
@@ -95,21 +96,21 @@ interface HouseDao {
     suspend fun insertAddon(addonEntity: AddonEntity)
 
     @Query("SELECT * FROM $ADDONS")
-    fun getAllAddons() : Flow<List<AddonEntity>>
+    fun getAllAddons(): Flow<List<AddonEntity>>
 
     //Promos
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPromo(promoEntity: PromoEntity)
 
     @Query("SELECT * FROM $PROMOS")
-    fun getAllPromos() : Flow<List<PromoEntity>>
+    fun getAllPromos(): Flow<List<PromoEntity>>
 
     //News
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNews(note: NoteEntity)
 
     @Query("SELECT * FROM $NEWS")
-    fun getAllNews() : Flow<List<NoteEntity>>
+    fun getAllNews(): Flow<List<NoteEntity>>
 
     @Update
     suspend fun updateNote(note: NoteEntity)
@@ -122,5 +123,5 @@ interface HouseDao {
     suspend fun insertCall(callHistory: CallHistory)
 
     @Query("SELECT * FROM $CALL_HISTORY")
-    fun getAllCalls() : Flow<List<CallHistory>>
+    fun getAllCalls(): Flow<List<CallHistory>>
 }

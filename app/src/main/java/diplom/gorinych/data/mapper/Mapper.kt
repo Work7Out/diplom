@@ -95,17 +95,13 @@ fun Feedback.mapToFeedBackEntity(): FeedBackEntity {
     )
 }
 
-fun mapToHouseDetail(
-    houseEntity: HouseEntity,
-    feedbacks: List<Feedback>
-): HouseDetail {
+fun HouseEntity.mapToHouseDetail(): HouseDetail {
     return HouseDetail(
-        id = houseEntity.id,
-        name = houseEntity.name,
-        description = houseEntity.description,
-        price = houseEntity.price,
-        image = images[houseEntity.id - 1],
-        feedbacks = feedbacks
+        id = id,
+        name = name,
+        description = description,
+        price = price,
+        image = images[id - 1],
     )
 }
 

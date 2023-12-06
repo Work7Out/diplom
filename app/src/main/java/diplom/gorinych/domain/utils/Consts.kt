@@ -65,3 +65,6 @@ const val PASSWORD_IS_CHANGED = "Пароль изменен"
 
 const val EMAIL_LOGIN = "work77Out@gmail.com"
 const val EMAIL_PASSWORD = "Work77Outted!"
+
+const val DATA_LESS_TODAY = "одна из дат меньше сегодняшнего дня"
+const val SOME_DATES_UNAVAIBLE = "некоторые из даты недоступны для брони"

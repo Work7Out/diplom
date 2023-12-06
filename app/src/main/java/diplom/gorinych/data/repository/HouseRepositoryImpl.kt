@@ -72,12 +72,16 @@ class HouseRepositoryImpl @Inject constructor(
         dao.updateUserEntity(user.mapToUserEntity())
     }
 
-    override suspend fun getAllHouses(): Resource<List<House>> {
-        return try {
-            val result = dao.getAllHouses()
-            Resource.Success(result.mapToHouses())
-        } catch (error: Exception) {
-            Resource.Error(error.localizedMessage ?: "Unknown error")
+    override suspend fun getAllHouses(): Flow<Resource<List<House>>> {
+        return flow {
+            try {
+                val result = dao.getAllHouses()
+                result.collect { houses->
+                    emit(Resource.Success(houses.mapToHouses()))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
         }
     }
 
@@ -86,15 +90,27 @@ class HouseRepositoryImpl @Inject constructor(
     ): Resource<HouseDetail> {
         return try {
             val resultHouse = dao.getHouseById(idHouse)
-            val resultFeedbacks = dao.getFeedBackByHouse(idHouse)
-            Resource.Success(mapToHouseDetail(
-                houseEntity = resultHouse,
-                feedbacks = resultFeedbacks.map { it.mapToFeedback() }
-            ))
+            Resource.Success(resultHouse.mapToHouseDetail())
         } catch (error: Exception) {
             Resource.Error(error.localizedMessage ?: "Unknown error")
         }
     }
+
+    override suspend fun getFeedbackByHouse(idHouse: Int): Flow<Resource<List<Feedback>>> {
+        return flow {
+            try {
+                val resultFeedbacks = dao.getFeedBackByHouse(idHouse)
+                resultFeedbacks.collect { feedbacks->
+                    emit(Resource.Success(feedbacks.map {
+                        it.mapToFeedback()
+                    }))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
+        }
+    }
+
 
     override suspend fun addReserve(
         idUser: Int,
@@ -355,6 +371,21 @@ class HouseRepositoryImpl @Inject constructor(
                 result.collect {
                     emit(Resource.Success(it.map { entity ->
                         entity.mapToCall()
+                    }))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
+        }
+    }
+
+    override suspend fun getHistoryByIdHouse(idHouse: Int): Flow<Resource<List<Reserve>>> {
+        return flow {
+            try {
+                val result = dao.getHistoryByIdHouse(idHouse)
+                result.collect {
+                    emit(Resource.Success(it.map { entity ->
+                        entity.mapToReserve()
                     }))
                 }
             } catch (error: Exception) {
