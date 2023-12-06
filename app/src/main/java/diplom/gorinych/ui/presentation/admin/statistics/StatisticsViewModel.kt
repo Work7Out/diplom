@@ -34,6 +34,7 @@ class StatisticsViewModel @Inject constructor(
                 .updateStateUI()
             async { loadData() }.onAwait
             async { loadNewReserves() }.onAwait
+            async { loadCalls() }.onAwait
         }
     }
 

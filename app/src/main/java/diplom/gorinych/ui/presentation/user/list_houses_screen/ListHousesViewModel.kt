@@ -24,6 +24,19 @@ class ListHousesViewModel @Inject constructor(
         loadData()
     }
 
+    fun onEvent(event: ListHousesEvent) {
+        when (event) {
+            ListHousesEvent.onSendCall -> {
+                viewModelScope.launch {
+                    repository.addCall(
+                        name = _state.value.user?.name ?: "",
+                        phone = _state.value.user?.phone ?: ""
+                    )
+                }
+            }
+        }
+    }
+
     private fun loadData() {
         viewModelScope.launch {
             val userId = savedStateHandle.get<Int>("idUser") ?: return@launch
