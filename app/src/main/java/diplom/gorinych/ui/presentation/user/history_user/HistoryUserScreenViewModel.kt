@@ -9,11 +9,12 @@ import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.Resource.Error
 import diplom.gorinych.domain.utils.Resource.Success
 import diplom.gorinych.ui.presentation.user.history_user.HistoryUserEvent.OnDeleteReserve
-import javax.inject.Inject
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class HistoryUserScreenViewModel @Inject constructor(
@@ -36,6 +37,15 @@ class HistoryUserScreenViewModel @Inject constructor(
                     getHistory(_state.value.idUser)
                 }
             }
+
+            HistoryUserEvent.OnSendCall -> {
+                viewModelScope.launch {
+                    repository.addCall(
+                        name = _state.value.user?.name ?: "",
+                        phone = _state.value.user?.phone ?: ""
+                    )
+                }
+            }
         }
     }
 
@@ -46,7 +56,26 @@ class HistoryUserScreenViewModel @Inject constructor(
                 idUser = userId,
             )
                 .updateStateUI()
-            getHistory(_state.value.idUser)
+            async { getHistory(_state.value.idUser) }.onAwait
+            async { loadUserData() }.onAwait
+        }
+    }
+
+    private suspend fun loadUserData() {
+        when (val result = repository.getUserById(_state.value.idUser)) {
+            is Error -> {
+                _state.value.copy(
+                    message = result.message
+                )
+                    .updateStateUI()
+            }
+
+            is Success -> {
+                _state.value.copy(
+                    user = result.data
+                )
+                    .updateStateUI()
+            }
         }
     }
 

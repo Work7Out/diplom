@@ -8,8 +8,6 @@ import diplom.gorinych.domain.utils.DATE_CREATE
 import diplom.gorinych.domain.utils.ID
 import diplom.gorinych.domain.utils.NEWS
 import diplom.gorinych.domain.utils.TITLE
-import diplom.gorinych.domain.utils.formatLocalDateRu
-import java.time.LocalDate
 
 @Entity(tableName = NEWS)
 data class NoteEntity(
@@ -21,5 +19,5 @@ data class NoteEntity(
     @ColumnInfo(name = CONTENT)
     val content: String,
     @ColumnInfo(name = DATE_CREATE)
-    val dateFeedback: String = LocalDate.now().formatLocalDateRu(),
+    val dateCreate: String //LocalDate.now().formatLocalDateRu(),
 )

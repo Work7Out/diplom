@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.admin.users
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
+import diplom.gorinych.ui.theme.grey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,10 +30,16 @@ fun UsersScreen(
     val onEvent = viewModel::onEvent
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        topBar = {
+            AppBarAdmin(
+                navController = navController
+            )
+        },
         bottomBar = {
             BottomBarAdmin(
                 navController = navController,
-                idUser = state.value.idUser
+                idUser = state.value.idUser,
+                count = state.value.countNewReserves
             )
         }
     ) { padding ->
@@ -38,7 +47,8 @@ fun UsersScreen(
             modifier = modifier
                 .padding(padding)
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp),
+                .background(color = grey)
+                .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(state.value.users) { user ->

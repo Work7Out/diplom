@@ -54,3 +54,17 @@ const val ACTIVE = "активно"
 
 const val ALREADY_EXIST = "Пользователь с таким именем уже существует"
 const val SUCCESS_REGISTRATION = "Успешная регистрация"
+const val USER_BLOCKED = "Пользователь заблокирован"
+const val USER = "Пользователь:"
+const val BLOCKED = "заблокирован"
+const val UNBLOCKED = "разблокирован"
+
+const val OLD_PASSWORD_INCORRECT = "Предыдущий пароль неверен"
+const val PASSWORD_DONT_MATCH = "Пароли не совпадают"
+const val PASSWORD_IS_CHANGED = "Пароль изменен"
+
+const val EMAIL_LOGIN = "work77Out@gmail.com"
+const val EMAIL_PASSWORD = "Work77Outted!"
+
+const val DATA_LESS_TODAY = "одна из дат меньше сегодняшнего дня"
+const val SOME_DATES_UNAVAIBLE = "некоторые из даты недоступны для брони"

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.Resource
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,39 +21,60 @@ class ListHousesViewModel @Inject constructor(
     private val _state = MutableStateFlow(ListHousesScreenState())
     val state = _state.asStateFlow()
 
-    init {
-        loadData()
-    }
 
-    private fun loadData() {
+    init {
         viewModelScope.launch {
             val userId = savedStateHandle.get<Int>("idUser") ?: return@launch
-            when (val resultUser = repository.getUserById(userId)) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = resultUser.message
-                    )
-                        .updateStateUI()
-                }
+            async{ loadUserData(userId) } .onAwait
+            async{ loadHousesData() } .onAwait
+        }
+    }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        user = resultUser.data
+    fun onEvent(event: ListHousesEvent) {
+        when (event) {
+            ListHousesEvent.OnSendCall -> {
+                viewModelScope.launch {
+                    repository.addCall(
+                        name = _state.value.user?.name ?: "",
+                        phone = _state.value.user?.phone ?: ""
                     )
-                        .updateStateUI()
                 }
             }
-            when (val resultHouses = repository.getAllHouses()) {
+        }
+    }
+
+    private suspend fun loadUserData(userId: Int) {
+        when (val resultUser = repository.getUserById(userId)) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    message = resultUser.message
+                )
+                    .updateStateUI()
+            }
+
+            is Resource.Success -> {
+                _state.value.copy(
+                    user = resultUser.data
+                )
+                    .updateStateUI()
+            }
+        }
+    }
+
+    private suspend fun loadHousesData() {
+        val resultHouses = repository.getAllHouses()
+        resultHouses.collect {houses->
+            when (houses) {
                 is Resource.Error -> {
                     _state.value.copy(
-                        message = resultHouses.message
+                        message = houses.message
                     )
                         .updateStateUI()
                 }
 
                 is Resource.Success -> {
                     _state.value.copy(
-                        houses = resultHouses.data ?: emptyList()
+                        houses = houses.data ?: emptyList()
                     )
                         .updateStateUI()
                 }

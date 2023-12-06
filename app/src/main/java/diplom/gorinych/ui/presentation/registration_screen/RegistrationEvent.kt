@@ -5,6 +5,6 @@ sealed class RegistrationEvent {
         val name: String,
         val password: String,
         val phone: String,
-        val email: String
+        val email: String,
     ) : RegistrationEvent()
 }

@@ -10,6 +10,7 @@ import diplom.gorinych.domain.utils.calculateAllSum
 import diplom.gorinych.domain.utils.calculateComfirmOrders
 import diplom.gorinych.domain.utils.calculateMonthSum
 import diplom.gorinych.domain.utils.calculateSeasonSum
+import kotlinx.coroutines.async
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,32 +32,79 @@ class StatisticsViewModel @Inject constructor(
                 idUser = userId
             )
                 .updateStateUI()
-            loadData()
+            async { loadData() }.onAwait
+            async { loadNewReserves() }.onAwait
+            async { loadCalls() }.onAwait
         }
     }
 
     private suspend fun loadData() {
-        when (val result = repository.getAllHistory()) {
-            is Resource.Error -> {
-                _state.value.copy(
-                    message = result.message
-                )
-                    .updateStateUI()
-            }
+        val result = repository.getAllHistory()
+        result.collect { reserves ->
+            when (reserves) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = reserves.message
+                    )
+                        .updateStateUI()
+                }
 
-            is Resource.Success -> {
-                _state.value.copy(
-                    reserves = result.data ?: emptyList(),
-                )
-                    .updateStateUI()
-                _state.value.copy(
-                    countOrders = _state.value.reserves.size,
-                    countConfirmOrders = calculateComfirmOrders(_state.value.reserves),
-                    amountAll = calculateAllSum(_state.value.reserves),
-                    amountLastMonth = calculateMonthSum(_state.value.reserves),
-                    amountLastSeason = calculateSeasonSum(_state.value.reserves)
-                )
-                    .updateStateUI()
+                is Resource.Success -> {
+                    _state.value.copy(
+                        reserves = reserves.data ?: emptyList(),
+                    )
+                        .updateStateUI()
+                    _state.value.copy(
+                        countOrders = _state.value.reserves.size,
+                        countConfirmOrders = calculateComfirmOrders(_state.value.reserves),
+                        amountAll = calculateAllSum(_state.value.reserves),
+                        amountLastMonth = calculateMonthSum(_state.value.reserves),
+                        amountLastSeason = calculateSeasonSum(_state.value.reserves)
+                    )
+                        .updateStateUI()
+                }
+            }
+        }
+    }
+
+    private suspend fun loadNewReserves() {
+        val result = repository.getHistoryNoConfirmStatus()
+        result.collect {
+            when (it) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = it.message
+                    )
+                        .updateStateUI()
+                }
+
+                is Resource.Success -> {
+                    _state.value.copy(
+                        countNewReserves = it.data?.size ?: 0
+                    )
+                        .updateStateUI()
+                }
+            }
+        }
+    }
+
+    private suspend fun loadCalls() {
+        val result = repository.getAllCalls()
+        result.collect {
+            when (it) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = it.message
+                    )
+                        .updateStateUI()
+                }
+
+                is Resource.Success -> {
+                    _state.value.copy(
+                        calls = it.data ?: emptyList()
+                    )
+                        .updateStateUI()
+                }
             }
         }
     }

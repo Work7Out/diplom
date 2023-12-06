@@ -70,9 +70,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     //Dagger
-    implementation ("com.google.dagger:hilt-android:2.48")
-    annotationProcessor ("com.google.dagger:hilt-compiler:2.48")
-    kapt ("com.google.dagger:hilt-compiler:2.48")
+    implementation ("com.google.dagger:hilt-android:2.48.1")
+    annotationProcessor ("com.google.dagger:hilt-compiler:2.48.1")
+    kapt ("com.google.dagger:hilt-compiler:2.48.1")
     implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     //Room

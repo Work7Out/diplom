@@ -1,13 +1,21 @@
 package diplom.gorinych.data.mapper
 
 import diplom.gorinych.R
+import diplom.gorinych.data.db.AddonEntity
+import diplom.gorinych.data.db.CallHistory
 import diplom.gorinych.data.db.FeedBackEntity
 import diplom.gorinych.data.db.HistoryEntity
 import diplom.gorinych.data.db.HouseEntity
+import diplom.gorinych.data.db.NoteEntity
+import diplom.gorinych.data.db.PromoEntity
 import diplom.gorinych.data.db.UserEntity
+import diplom.gorinych.domain.model.Addon
+import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
+import diplom.gorinych.domain.model.Note
+import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 
@@ -45,7 +53,7 @@ fun List<HouseEntity>.mapToHouses(): List<House> {
             name = houseEntity.name,
             description = houseEntity.description,
             price = houseEntity.price,
-            image = images[houseEntity.id-1]
+            image = images[houseEntity.id - 1]
         )
     }
 }
@@ -60,7 +68,8 @@ val images = listOf(
     R.drawable.futura180_thumb,
     R.drawable.cruise80_4,
     R.drawable.evo_40,
-    R.drawable.freedom50_4)
+    R.drawable.freedom50_4
+)
 
 fun FeedBackEntity.mapToFeedback(): Feedback {
     return Feedback(
@@ -86,17 +95,13 @@ fun Feedback.mapToFeedBackEntity(): FeedBackEntity {
     )
 }
 
-fun mapToHouseDetail(
-    houseEntity: HouseEntity,
-    feedbacks: List<Feedback>
-): HouseDetail {
+fun HouseEntity.mapToHouseDetail(): HouseDetail {
     return HouseDetail(
-        id = houseEntity.id,
-        name = houseEntity.name,
-        description = houseEntity.description,
-        price = houseEntity.price,
-        image = images[houseEntity.id-1],
-        feedbacks = feedbacks
+        id = id,
+        name = name,
+        description = description,
+        price = price,
+        image = images[id - 1],
     )
 }
 
@@ -125,5 +130,48 @@ fun Reserve.mapToHistoryEntity(): HistoryEntity {
         amount = this.amount,
         additions = this.additions,
         confirmReservation = this.confirmReservation
+    )
+}
+
+fun AddonEntity.mapToAddon(): Addon {
+    return Addon(
+        id = id,
+        title = title,
+        price = price
+    )
+}
+
+fun PromoEntity.mapToPromo(): Promo {
+    return Promo(
+        id = id,
+        description = description,
+        valueDiscount = valueDiscount,
+        isActive = isActive
+    )
+}
+
+fun NoteEntity.mapToNote(): Note {
+    return Note(
+        id = id,
+        title = title,
+        content = content,
+        dateCreate = dateCreate
+    )
+}
+
+fun Note.mapToNoteEntity(): NoteEntity {
+    return NoteEntity(
+        id = id,
+        title = title,
+        content = content,
+        dateCreate = dateCreate
+    )
+}
+
+fun CallHistory.mapToCall(): Call {
+    return Call(
+        id = id,
+        name = name,
+        phone = phone
     )
 }

@@ -5,18 +5,28 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.MailRepository
+import diplom.gorinych.domain.utils.BLOCKED
+import diplom.gorinych.domain.utils.EMAIL_LOGIN
+import diplom.gorinych.domain.utils.EMAIL_PASSWORD
 import diplom.gorinych.domain.utils.Resource
+import diplom.gorinych.domain.utils.USER
+import diplom.gorinych.domain.utils.USER_BLOCKED
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeRoleUser
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeStatusBlock
-import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(
     private val repository: HouseRepository,
+    private val mailRepository: MailRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(UsersScreenState())
@@ -29,7 +39,8 @@ class UsersViewModel @Inject constructor(
                 idUser = userId
             )
                 .updateStateUI()
-            loadData()
+            async { loadData() }.onAwait
+            async { loadNewReserves() }.onAwait
         }
     }
 
@@ -42,7 +53,6 @@ class UsersViewModel @Inject constructor(
                             role = usersScreenEvent.role
                         )
                     )
-                    loadData()
                 }
             }
 
@@ -53,26 +63,58 @@ class UsersViewModel @Inject constructor(
                             isBlocked = !usersScreenEvent.user.isBlocked
                         )
                     )
-                    loadData()
+                }
+                viewModelScope.launch(Dispatchers.IO) {
+                    mailRepository.sendEmail(
+                        login = EMAIL_LOGIN,
+                        password = EMAIL_PASSWORD,
+                        email = usersScreenEvent.user.email,
+                        theme = USER_BLOCKED,
+                        content = "$USER ${usersScreenEvent.user.name} $BLOCKED"
+                    )
+                }
+            }
+        }
+    }
+
+    private suspend fun loadNewReserves() {
+        val result = repository.getHistoryNoConfirmStatus()
+        result.collect {
+            when (it) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = it.message
+                    )
+                        .updateStateUI()
+                }
+
+                is Resource.Success -> {
+                    _state.value.copy(
+                        countNewReserves = it.data?.size ?: 0
+                    )
+                        .updateStateUI()
                 }
             }
         }
     }
 
     private suspend fun loadData() {
-        when (val resultUser = repository.getAllUsers()) {
-            is Resource.Error -> {
-                _state.value.copy(
-                    message = resultUser.message
-                )
-                    .updateStateUI()
-            }
+        val resultUser = repository.getAllUsers()
+        resultUser.collect {
+            when (it) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = it.message
+                    )
+                        .updateStateUI()
+                }
 
-            is Resource.Success -> {
-                _state.value.copy(
-                    users = resultUser.data ?: emptyList()
-                )
-                    .updateStateUI()
+                is Resource.Success -> {
+                    _state.value.copy(
+                        users = it.data ?: emptyList()
+                    )
+                        .updateStateUI()
+                }
             }
         }
     }

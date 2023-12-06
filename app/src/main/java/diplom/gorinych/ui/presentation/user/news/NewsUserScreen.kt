@@ -1,8 +1,8 @@
-package diplom.gorinych.ui.presentation.admin.feedbacks_screen
+package diplom.gorinych.ui.presentation.user.news
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,39 +14,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import diplom.gorinych.ui.presentation.base.BottomBarAdmin
+import diplom.gorinych.ui.presentation.base.AppBarUser
+import diplom.gorinych.ui.presentation.base.BottomBarUser
+import diplom.gorinych.ui.theme.grey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FeedbacksScreen (
+fun NewsUserScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    viewModel: FeedbacksViewModel = hiltViewModel()
+    viewModel: NewsUserScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
     val onEvent = viewModel::onEvent
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        bottomBar = {
-            BottomBarAdmin(
+        topBar = {
+            AppBarUser(
                 navController = navController,
-                idUser = state.value.idUser
+                onSendCall = {
+                    onEvent(NewsUserScreenEvent.OnSendCall)
+                })
+        },
+        bottomBar = {
+            BottomBarUser(
+                navController = navController,
+                idUser = state.value.user?.id ?: -1
             )
         }
     ) { padding ->
         LazyColumn(
             modifier = modifier
                 .padding(padding)
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp),
+                .fillMaxSize()
+                .background(color = grey)
+                .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(state.value.feedbacks) { feedback ->
-                ItemFeedbackScreen(
-                    feedback = feedback,
-                    idUser = state.value.idUser,
-                    onEvent = onEvent
-                )
+            items(state.value.news) { note ->
+                ItemUserNote(note = note)
             }
         }
     }

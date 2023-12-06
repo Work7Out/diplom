@@ -7,6 +7,7 @@ sealed class HouseDetailEvent {
         val dateBegin: LocalDate,
         val dateEnd: LocalDate,
         val valueDays: Int,
+        val addons: List<String>,
       //  val additions: String
     ): HouseDetailEvent()
 

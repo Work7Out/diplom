@@ -18,6 +18,6 @@ val secondText = Color(0xFFAAAAAA)
 val thirdText = Color(0xFF333333)
 
 val lightGrey = Color(0xFFF5F5F5)
-val grey = Color(0xFFF8F8F8)
+val grey = Color(0xFFC4BEBE)
 val blue = Color(0xFF2A5F73)
 

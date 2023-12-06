@@ -5,7 +5,9 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import diplom.gorinych.data.repository.HouseRepositoryImpl
+import diplom.gorinych.data.repository.MailRepositoryImpl
 import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.MailRepository
 import javax.inject.Singleton
 
 @Module
@@ -17,5 +19,10 @@ abstract class RepositoryModule {
         repository: HouseRepositoryImpl
     ): HouseRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindMailRepository(
+        repository: MailRepositoryImpl
+    ): MailRepository
 
 }

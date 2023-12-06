@@ -13,4 +13,46 @@
     <string name="enter">Вход</string>
     <string name="authorization">АВТОРИЗАЦИЯ</string>
     <string name="registration_upper">РЕГИСТРАЦИЯ</string>
+    <string name="history_reserve">Бронирования</string>
+    <string name="history_feedback">Отзывы</string>
+    <string name="addons_add">Дополнительно</string>
+    <string name="addons_promo">Промо</string>
+    <string name="blocked">Заблокирован</string>
+    <string name="not_blocked">Не заблокирован</string>
+    <string name="make_unblocked">Разблокировать</string>
+    <string name="make_blocked">Заблокировать</string>
+    <string name="price">Цена</string>
+    <string name="code_discount">Код</string>
+    <string name="percent_discount">Процент скидки</string>
+    <string name="expired_discount">Использован</string>
+    <string name="not_expired_discount">Не использован</string>
+    <string name="enter_description_promo">Введите код промо</string>
+    <string name="enter_value_promo">введите величину скидки в %</string>
+    <string name="add_promo">Добавить промокод</string>
+    <string name="enter_name_addon">Введите название допа</string>
+    <string name="enter_price_addon">Введите цену допа</string>
+    <string name="add_addon">Добавить доп</string>
+
+    <string name="enter_title_news">Введите заголовок</string>
+    <string name="enter_content_news">Введите текст</string>
+    <string name="add_note">Добавить новость</string>
+    <string name="update_note">Исправить новость</string>
+
+    <string name="all_orders">Всего заказов -</string>
+    <string name="confirm_orders">Из них подтвержденных -</string>
+    <string name="amount">Всего заработано -</string>
+    <string name="amount_last_month">За последний месяц -</string>
+    <string name="amount_last_year">За год -</string>
+    <string name="byn">BYN</string>
+    <string name="history_calls">Заказанные звонки</string>
+    <string name="phone">телефон -</string>
+    <string name="name">пользователь - </string>
+    <string name="status">статус:</string>
+    <string name="delete_reserve">Удалить бронь</string>
+    <string name="additional">доп. услуги -</string>
+    <string name="change_password">Сменить пароль</string>
+    <string name="old_password">Введите старый пароль</string>
+    <string name="new_password">Введите новый пароль</string>
+    <string name="repeat_password">Повторите пароль</string>
+
 </resources>
