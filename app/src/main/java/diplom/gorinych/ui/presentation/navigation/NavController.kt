@@ -16,6 +16,7 @@ import diplom.gorinych.ui.presentation.registration_screen.RegistrationScreen
 import diplom.gorinych.ui.presentation.user.history_user.HistoryUserScreen
 import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailScreen
 import diplom.gorinych.ui.presentation.user.list_houses_screen.ListHousesUserScreen
+import diplom.gorinych.ui.presentation.user.news.NewsUserScreen
 
 @Composable
 fun NavController(
@@ -78,7 +79,8 @@ fun NavController(
         composable(NavigationDestination.AddonScreenDestination.destination,
             arguments = listOf(navArgument("idUser") {
                 type = NavType.IntType
-            })) {
+            })
+        ) {
             AddonsScreen(
                 navController
             )
@@ -86,8 +88,18 @@ fun NavController(
         composable(NavigationDestination.NewsScreenDestination.destination,
             arguments = listOf(navArgument("idUser") {
                 type = NavType.IntType
-            })) {
+            })
+        ) {
             NewsScreen(
+                navController
+            )
+        }
+        composable(NavigationDestination.NewsUserScreenDestination.destination,
+            arguments = listOf(navArgument("idUser") {
+                type = NavType.IntType
+            })
+        ) {
+            NewsUserScreen(
                 navController
             )
         }

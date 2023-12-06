@@ -12,4 +12,5 @@ sealed class NavigationDestination (val destination: String){
     object AddonScreenDestination:NavigationDestination("addonScreen/{idUser}")
     object NewsScreenDestination:NavigationDestination("newsScreen/{idUser}")
     object SettingsScreenDestination:NavigationDestination("settingsScreen/{idUser}")
+    object NewsUserScreenDestination:NavigationDestination("newsUserScreen/{idUser}")
 }

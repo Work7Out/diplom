@@ -1,4 +1,4 @@
-package diplom.gorinych.ui.presentation.user.list_houses_screen
+package diplom.gorinych.ui.presentation.user.news
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,25 +17,25 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import diplom.gorinych.ui.presentation.base.AppBarUser
 import diplom.gorinych.ui.presentation.base.BottomBarUser
-import diplom.gorinych.ui.presentation.base.ItemHouse
 import diplom.gorinych.ui.theme.grey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListHousesUserScreen(
+fun NewsUserScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    viewModel: ListHousesViewModel = hiltViewModel()
+    viewModel: NewsUserScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
     val onEvent = viewModel::onEvent
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             AppBarUser(
                 navController = navController,
                 onSendCall = {
-                    onEvent(ListHousesEvent.OnSendCall)
+                    onEvent(NewsUserScreenEvent.OnSendCall)
                 })
         },
         bottomBar = {
@@ -48,18 +48,13 @@ fun ListHousesUserScreen(
         LazyColumn(
             modifier = modifier
                 .padding(padding)
-                .fillMaxWidth()
+                .fillMaxSize()
                 .background(color = grey)
                 .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(state.value.houses) { house ->
-                ItemHouse(
-                    onClick = {
-                        navController.navigate("houseDetailScreen/${state.value.user?.id}/${house.id}")
-                    },
-                    house = house,
-                )
+            items(state.value.news) { note ->
+                ItemUserNote(note = note)
             }
         }
     }

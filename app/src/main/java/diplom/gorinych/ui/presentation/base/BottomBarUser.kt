@@ -42,6 +42,15 @@ fun BottomBarUser (
             )
         }
         IconButton(onClick = {
+            navController.navigate("newsUserScreen/$idUser")
+        }) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_article_24),
+                contentDescription = "",
+                tint = if (currentRoute == NavigationDestination.NewsUserScreenDestination.destination) blue else baseText
+            )
+        }
+        IconButton(onClick = {
             navController.navigate("historyUserScreen/${idUser}")
         }) {
             Icon(
@@ -59,17 +68,5 @@ fun BottomBarUser (
                 tint = if (currentRoute == NavigationDestination.SettingsScreenDestination.destination) blue else baseText
             )
         }
-        /*IconButton(onClick = {
-            navController.navigate("loginScreen") {
-                this.popUpTo("loginScreen") {
-                    inclusive = true
-                }
-            }
-        }) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_logout_24),
-                contentDescription = ""
-            )
-        }*/
     }
 }
