@@ -47,4 +47,8 @@
     <string name="history_calls">Заказанные звонки</string>
     <string name="phone">телефон -</string>
     <string name="name">пользователь - </string>
+    <string name="status">статус:</string>
+    <string name="delete_reserve">Удалить бронь</string>
+    <string name="additional">доп. услуги -</string>
+
 </resources>
