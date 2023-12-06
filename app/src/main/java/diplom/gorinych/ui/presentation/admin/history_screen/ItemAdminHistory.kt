@@ -108,6 +108,17 @@ fun ItemAdminHistory(
                 )
         )
         Spacer(modifier = modifier.height(5.dp))
+        Text(
+            text = "доп. услуги - ${reserve.additions}",
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.gilroy)),
+                fontWeight = FontWeight(600),
+                color = baseText,
+
+                )
+        )
+        Spacer(modifier = modifier.height(5.dp))
         statuses.forEach { status ->
             Row(
                 modifier = modifier.fillMaxWidth(),
