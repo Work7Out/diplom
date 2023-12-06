@@ -63,5 +63,5 @@ const val OLD_PASSWORD_INCORRECT = "Предыдущий пароль невер
 const val PASSWORD_DONT_MATCH = "Пароли не совпадают"
 const val PASSWORD_IS_CHANGED = "Пароль изменен"
 
-const val EMAIL_LOGIN = "edurda77@gmail.com"
-const val EMAIL_PASSWORD = "Khayarov1977!"
+const val EMAIL_LOGIN = "work77Out@gmail.com"
+const val EMAIL_PASSWORD = "Work77Outted!"

@@ -12,8 +12,6 @@ import diplom.gorinych.domain.utils.OLD_PASSWORD_INCORRECT
 import diplom.gorinych.domain.utils.PASSWORD_DONT_MATCH
 import diplom.gorinych.domain.utils.PASSWORD_IS_CHANGED
 import diplom.gorinych.domain.utils.Resource
-import diplom.gorinych.domain.utils.SUCCESS_REGISTRATION
-import diplom.gorinych.ui.presentation.user.news.NewsUserScreenEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -76,7 +74,7 @@ class SettingsScreenViewModel @Inject constructor(
                                     password = EMAIL_PASSWORD,
                                     email = _state.value.user?.email ?: "",
                                     theme = PASSWORD_IS_CHANGED,
-                                    content = PASSWORD_IS_CHANGED
+                                    content = event.password
                                 )
                             }
                             delay(2000)
