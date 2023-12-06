@@ -7,6 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.repository.MailRepository
 import diplom.gorinych.domain.utils.BLOCKED
+import diplom.gorinych.domain.utils.EMAIL_LOGIN
+import diplom.gorinych.domain.utils.EMAIL_PASSWORD
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.USER
 import diplom.gorinych.domain.utils.USER_BLOCKED
@@ -64,8 +66,8 @@ class UsersViewModel @Inject constructor(
                 }
                 viewModelScope.launch(Dispatchers.IO) {
                     mailRepository.sendEmail(
-                        login = "edurda77@gmail.com",
-                        password = "Khayarov1977!",
+                        login = EMAIL_LOGIN,
+                        password = EMAIL_PASSWORD,
                         email = usersScreenEvent.user.email,
                         theme = USER_BLOCKED,
                         content = "$USER ${usersScreenEvent.user.name} $BLOCKED"

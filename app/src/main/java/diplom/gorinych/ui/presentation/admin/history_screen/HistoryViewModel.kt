@@ -8,6 +8,8 @@ import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.repository.MailRepository
 import diplom.gorinych.domain.utils.BLOCKED
+import diplom.gorinych.domain.utils.EMAIL_LOGIN
+import diplom.gorinych.domain.utils.EMAIL_PASSWORD
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.USER
 import diplom.gorinych.domain.utils.USER_BLOCKED
@@ -80,8 +82,8 @@ class HistoryViewModel @Inject constructor(
                     delay(3000)
                     if (_user.value != null) {
                         mailRepository.sendEmail(
-                            login = "edurda77@gmail.com",
-                            password = "Khayarov1977!",
+                            login = EMAIL_LOGIN,
+                            password = EMAIL_PASSWORD,
                             email = _user.value!!.email,
                             theme = historyScreenEvent.message,
                             content = "$USER ${_user.value!!.name} $BLOCKED"

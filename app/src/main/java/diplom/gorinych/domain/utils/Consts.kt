@@ -58,3 +58,10 @@ const val USER_BLOCKED = "Пользователь заблокирован"
 const val USER = "Пользователь:"
 const val BLOCKED = "заблокирован"
 const val UNBLOCKED = "разблокирован"
+
+const val OLD_PASSWORD_INCORRECT = "Предыдущий пароль неверен"
+const val PASSWORD_DONT_MATCH = "Пароли не совпадают"
+const val PASSWORD_IS_CHANGED = "Пароль изменен"
+
+const val EMAIL_LOGIN = "edurda77@gmail.com"
+const val EMAIL_PASSWORD = "Khayarov1977!"

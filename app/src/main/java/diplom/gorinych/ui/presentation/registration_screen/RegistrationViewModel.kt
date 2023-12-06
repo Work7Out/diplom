@@ -6,6 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.repository.MailRepository
 import diplom.gorinych.domain.utils.ALREADY_EXIST
+import diplom.gorinych.domain.utils.EMAIL_LOGIN
+import diplom.gorinych.domain.utils.EMAIL_PASSWORD
 import diplom.gorinych.domain.utils.ROLE_USER
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.SUCCESS_REGISTRATION
@@ -72,8 +74,8 @@ class RegistrationViewModel @Inject constructor(
                     }
                     viewModelScope.launch (Dispatchers.IO){
                         mailRepository.sendEmail(
-                            login = "edurda77@gmail.com",
-                            password = "Khayarov1977!",
+                            login = EMAIL_LOGIN,
+                            password = EMAIL_PASSWORD,
                             email = registrationEvent.email,
                             theme = SUCCESS_REGISTRATION,
                             content = "${registrationEvent.name}\n${registrationEvent.password}\n${registrationEvent.phone}\n${registrationEvent.email}"

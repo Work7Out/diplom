@@ -17,6 +17,7 @@ import diplom.gorinych.ui.presentation.user.history_user.HistoryUserScreen
 import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailScreen
 import diplom.gorinych.ui.presentation.user.list_houses_screen.ListHousesUserScreen
 import diplom.gorinych.ui.presentation.user.news.NewsUserScreen
+import diplom.gorinych.ui.presentation.user.settings.SettingsScreen
 
 @Composable
 fun NavController(
@@ -76,7 +77,8 @@ fun NavController(
                     type = NavType.IntType
                 })
         ) { HouseDetailScreen(navController) }
-        composable(NavigationDestination.AddonScreenDestination.destination,
+        composable(
+            NavigationDestination.AddonScreenDestination.destination,
             arguments = listOf(navArgument("idUser") {
                 type = NavType.IntType
             })
@@ -85,7 +87,8 @@ fun NavController(
                 navController
             )
         }
-        composable(NavigationDestination.NewsScreenDestination.destination,
+        composable(
+            NavigationDestination.NewsScreenDestination.destination,
             arguments = listOf(navArgument("idUser") {
                 type = NavType.IntType
             })
@@ -94,12 +97,23 @@ fun NavController(
                 navController
             )
         }
-        composable(NavigationDestination.NewsUserScreenDestination.destination,
+        composable(
+            NavigationDestination.NewsUserScreenDestination.destination,
             arguments = listOf(navArgument("idUser") {
                 type = NavType.IntType
             })
         ) {
             NewsUserScreen(
+                navController
+            )
+        }
+        composable(
+            NavigationDestination.SettingsScreenDestination.destination,
+            arguments = listOf(navArgument("idUser") {
+                type = NavType.IntType
+            })
+        ) {
+            SettingsScreen(
                 navController
             )
         }
