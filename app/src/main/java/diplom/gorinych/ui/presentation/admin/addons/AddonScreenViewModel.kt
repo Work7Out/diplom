@@ -1,6 +1,7 @@
 package diplom.gorinych.ui.presentation.admin.addons
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,12 +17,18 @@ import javax.inject.Inject
 @HiltViewModel
 class AddonScreenViewModel @Inject constructor(
     private val repository: HouseRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(AddonScreenState())
     val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
+            val userId = savedStateHandle.get<Int>("idUser") ?: return@launch
+            _state.value.copy(
+                idUser = userId
+            )
+                .updateStateUI()
             async { loadPromos() }.onAwait
             async { loadAddons() }.onAwait
             async { loadNewReserves() }.onAwait

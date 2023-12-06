@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.admin.statistics
 
+import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Reserve
 
 data class StatisticsScreenState(
@@ -11,5 +12,6 @@ data class StatisticsScreenState(
     val amountAll: Double = 0.0,
     val amountLastMonth: Double = 0.0,
     val amountLastSeason: Double = 0.0,
-    val countNewReserves: Int = 0
+    val countNewReserves: Int = 0,
+    val calls: List<Call> = emptyList(),
 )

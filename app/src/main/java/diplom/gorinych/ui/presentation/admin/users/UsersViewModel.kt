@@ -8,17 +8,18 @@ import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.repository.MailRepository
 import diplom.gorinych.domain.utils.BLOCKED
 import diplom.gorinych.domain.utils.Resource
-import diplom.gorinych.domain.utils.SUCCESS_REGISTRATION
 import diplom.gorinych.domain.utils.USER
 import diplom.gorinych.domain.utils.USER_BLOCKED
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeRoleUser
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeStatusBlock
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(
@@ -36,8 +37,8 @@ class UsersViewModel @Inject constructor(
                 idUser = userId
             )
                 .updateStateUI()
-            loadData()
-            loadNewReserves()
+            async { loadData() }.onAwait
+            async { loadNewReserves() }.onAwait
         }
     }
 
@@ -50,7 +51,6 @@ class UsersViewModel @Inject constructor(
                             role = usersScreenEvent.role
                         )
                     )
-                    loadData()
                 }
             }
 
@@ -61,9 +61,8 @@ class UsersViewModel @Inject constructor(
                             isBlocked = !usersScreenEvent.user.isBlocked
                         )
                     )
-                    loadData()
                 }
-                viewModelScope.launch (Dispatchers.IO) {
+                viewModelScope.launch(Dispatchers.IO) {
                     mailRepository.sendEmail(
                         login = "edurda77@gmail.com",
                         password = "Khayarov1977!",
@@ -98,19 +97,22 @@ class UsersViewModel @Inject constructor(
     }
 
     private suspend fun loadData() {
-        when (val resultUser = repository.getAllUsers()) {
-            is Resource.Error -> {
-                _state.value.copy(
-                    message = resultUser.message
-                )
-                    .updateStateUI()
-            }
+        val resultUser = repository.getAllUsers()
+        resultUser.collect {
+            when (it) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = it.message
+                    )
+                        .updateStateUI()
+                }
 
-            is Resource.Success -> {
-                _state.value.copy(
-                    users = resultUser.data ?: emptyList()
-                )
-                    .updateStateUI()
+                is Resource.Success -> {
+                    _state.value.copy(
+                        users = it.data ?: emptyList()
+                    )
+                        .updateStateUI()
+                }
             }
         }
     }

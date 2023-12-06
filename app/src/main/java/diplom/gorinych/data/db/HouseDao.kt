@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import diplom.gorinych.domain.utils.ADDONS
+import diplom.gorinych.domain.utils.CALL_HISTORY
 import diplom.gorinych.domain.utils.FEEDBACK
 import diplom.gorinych.domain.utils.HISTORY
 import diplom.gorinych.domain.utils.HOUSE
@@ -32,7 +33,7 @@ interface HouseDao {
     suspend fun getUserById(userId: Int): UserEntity
 
     @Query("SELECT * FROM $USERS")
-    suspend fun getAllUsers(): List<UserEntity>
+    fun getAllUsers(): Flow <List<UserEntity>>
 
     @Update
     suspend fun updateUserEntity(userEntity: UserEntity)
@@ -116,4 +117,10 @@ interface HouseDao {
     @Delete
     suspend fun deleteNote(note: NoteEntity)
 
+    //Calls
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCall(callHistory: CallHistory)
+
+    @Query("SELECT * FROM $CALL_HISTORY")
+    fun getAllCalls() : Flow<List<CallHistory>>
 }

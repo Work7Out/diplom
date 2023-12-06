@@ -9,6 +9,6 @@ sealed class NavigationDestination (val destination: String){
     object ListHistoryAdminDestination:NavigationDestination("historyAdminScreen/{idUser}")
     object StatisticsAdminDestination:NavigationDestination("statisticsAdminScreen/{idUser}")
     object HouseDetailDestination:NavigationDestination("houseDetailScreen/{idUser}/{idHouse}")
-    object AddonScreenDestination:NavigationDestination("addonScreen")
-    object NewsScreenDestination:NavigationDestination("newsScreen")
+    object AddonScreenDestination:NavigationDestination("addonScreen/{idUser}")
+    object NewsScreenDestination:NavigationDestination("newsScreen/{idUser}")
 }

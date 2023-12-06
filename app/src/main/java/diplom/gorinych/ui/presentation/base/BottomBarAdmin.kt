@@ -66,7 +66,7 @@ fun BottomBarAdmin(
             }
         }
         IconButton(onClick = {
-            navController.navigate("addonScreen")
+            navController.navigate("addonScreen/$idUser")
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = drawable.baseline_add_home_work_24),
@@ -75,7 +75,7 @@ fun BottomBarAdmin(
             )
         }
         IconButton(onClick = {
-            navController.navigate("newsScreen")
+            navController.navigate("newsScreen/$idUser")
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = drawable.baseline_article_24),

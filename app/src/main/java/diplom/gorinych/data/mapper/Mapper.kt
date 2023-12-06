@@ -2,6 +2,7 @@ package diplom.gorinych.data.mapper
 
 import diplom.gorinych.R
 import diplom.gorinych.data.db.AddonEntity
+import diplom.gorinych.data.db.CallHistory
 import diplom.gorinych.data.db.FeedBackEntity
 import diplom.gorinych.data.db.HistoryEntity
 import diplom.gorinych.data.db.HouseEntity
@@ -9,6 +10,7 @@ import diplom.gorinych.data.db.NoteEntity
 import diplom.gorinych.data.db.PromoEntity
 import diplom.gorinych.data.db.UserEntity
 import diplom.gorinych.domain.model.Addon
+import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
@@ -167,5 +169,13 @@ fun Note.mapToNoteEntity(): NoteEntity {
         title = title,
         content = content,
         dateCreate = dateCreate
+    )
+}
+
+fun CallHistory.mapToCall(): Call {
+    return Call(
+        id = id,
+        name = name,
+        phone = phone
     )
 }

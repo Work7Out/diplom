@@ -1,6 +1,7 @@
 package diplom.gorinych.data.repository
 
 import diplom.gorinych.data.db.AddonEntity
+import diplom.gorinych.data.db.CallHistory
 import diplom.gorinych.data.db.FeedBackEntity
 import diplom.gorinych.data.db.HistoryEntity
 import diplom.gorinych.data.db.HouseBotDatabase
@@ -8,6 +9,7 @@ import diplom.gorinych.data.db.NoteEntity
 import diplom.gorinych.data.db.PromoEntity
 import diplom.gorinych.data.db.UserEntity
 import diplom.gorinych.data.mapper.mapToAddon
+import diplom.gorinych.data.mapper.mapToCall
 import diplom.gorinych.data.mapper.mapToFeedBackEntity
 import diplom.gorinych.data.mapper.mapToFeedback
 import diplom.gorinych.data.mapper.mapToHistoryEntity
@@ -20,6 +22,7 @@ import diplom.gorinych.data.mapper.mapToReserve
 import diplom.gorinych.data.mapper.mapToUser
 import diplom.gorinych.data.mapper.mapToUserEntity
 import diplom.gorinych.domain.model.Addon
+import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
@@ -30,7 +33,6 @@ import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -153,14 +155,18 @@ class HouseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllUsers(): Resource<List<User>> {
-        return try {
-            val result = dao.getAllUsers()
-            Resource.Success(result.map {
-                it.mapToUser()
-            })
-        } catch (error: Exception) {
-            Resource.Error(error.localizedMessage ?: "Unknown error")
+    override suspend fun getAllUsers(): Flow<Resource<List<User>>> {
+        return flow {
+            try {
+                val result = dao.getAllUsers()
+                result.collect { users->
+                    emit(Resource.Success(users.map {
+                        it.mapToUser()
+                    }))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
         }
     }
 
@@ -328,5 +334,32 @@ class HouseRepositoryImpl @Inject constructor(
 
     override suspend fun deleteNote(note: Note) {
         dao.deleteNote(note.mapToNoteEntity())
+    }
+
+    override suspend fun addCall(
+        name: String,
+        phone: String
+    ) {
+        dao.insertCall(
+            CallHistory(
+                name = name,
+                phone = phone
+            )
+        )
+    }
+
+    override suspend fun getAllCalls(): Flow<Resource<List<Call>>> {
+        return flow {
+            try {
+                val result = dao.getAllCalls()
+                result.collect {
+                    emit(Resource.Success(it.map { entity ->
+                        entity.mapToCall()
+                    }))
+                }
+            } catch (error: Exception) {
+                emit(Resource.Error(error.localizedMessage ?: "Unknown error"))
+            }
+        }
     }
 }

@@ -75,12 +75,18 @@ fun NavController(
                     type = NavType.IntType
                 })
         ) { HouseDetailScreen(navController) }
-        composable(NavigationDestination.AddonScreenDestination.destination) {
+        composable(NavigationDestination.AddonScreenDestination.destination,
+            arguments = listOf(navArgument("idUser") {
+                type = NavType.IntType
+            })) {
             AddonsScreen(
                 navController
             )
         }
-        composable(NavigationDestination.NewsScreenDestination.destination) {
+        composable(NavigationDestination.NewsScreenDestination.destination,
+            arguments = listOf(navArgument("idUser") {
+                type = NavType.IntType
+            })) {
             NewsScreen(
                 navController
             )

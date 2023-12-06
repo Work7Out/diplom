@@ -26,19 +26,22 @@ class RegistrationViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            when (val result = repository.getAllUsers()) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = result.message
-                    )
-                        .updateStateUI()
-                }
+            val result = repository.getAllUsers()
+            result.collect {
+                when (it) {
+                    is Resource.Error -> {
+                        _state.value.copy(
+                            message = it.message
+                        )
+                            .updateStateUI()
+                    }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        users = result.data ?: emptyList()
-                    )
-                        .updateStateUI()
+                    is Resource.Success -> {
+                        _state.value.copy(
+                            users = it.data ?: emptyList()
+                        )
+                            .updateStateUI()
+                    }
                 }
             }
         }

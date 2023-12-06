@@ -10,6 +10,7 @@ import diplom.gorinych.domain.utils.calculateAllSum
 import diplom.gorinych.domain.utils.calculateComfirmOrders
 import diplom.gorinych.domain.utils.calculateMonthSum
 import diplom.gorinych.domain.utils.calculateSeasonSum
+import kotlinx.coroutines.async
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,14 +32,14 @@ class StatisticsViewModel @Inject constructor(
                 idUser = userId
             )
                 .updateStateUI()
-            loadData()
-            loadNewReserves()
+            async { loadData() }.onAwait
+            async { loadNewReserves() }.onAwait
         }
     }
 
     private suspend fun loadData() {
         val result = repository.getAllHistory()
-        result.collect {reserves->
+        result.collect { reserves ->
             when (reserves) {
                 is Resource.Error -> {
                     _state.value.copy(
@@ -79,6 +80,27 @@ class StatisticsViewModel @Inject constructor(
                 is Resource.Success -> {
                     _state.value.copy(
                         countNewReserves = it.data?.size ?: 0
+                    )
+                        .updateStateUI()
+                }
+            }
+        }
+    }
+
+    private suspend fun loadCalls() {
+        val result = repository.getAllCalls()
+        result.collect {
+            when (it) {
+                is Resource.Error -> {
+                    _state.value.copy(
+                        message = it.message
+                    )
+                        .updateStateUI()
+                }
+
+                is Resource.Success -> {
+                    _state.value.copy(
+                        calls = it.data ?: emptyList()
                     )
                         .updateStateUI()
                 }

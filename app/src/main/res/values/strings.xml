@@ -37,4 +37,14 @@
     <string name="enter_content_news">Введите текст</string>
     <string name="add_note">Добавить новость</string>
     <string name="update_note">Исправить новость</string>
+
+    <string name="all_orders">Всего заказов -</string>
+    <string name="confirm_orders">Из них подтвержденных -</string>
+    <string name="amount">Всего заработано -</string>
+    <string name="amount_last_month">За последний месяц -</string>
+    <string name="amount_last_year">За год -</string>
+    <string name="byn">BYN</string>
+    <string name="history_calls">Заказанные звонки</string>
+    <string name="phone">телефон -</string>
+    <string name="name">пользователь - </string>
 </resources>

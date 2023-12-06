@@ -1,6 +1,7 @@
 package diplom.gorinych.domain.repository
 
 import diplom.gorinych.domain.model.Addon
+import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.HouseDetail
@@ -39,7 +40,7 @@ interface HouseRepository {
     )
 
     suspend fun getReserveByUser(idUser: Int): Resource<List<Reserve>>
-    suspend fun getAllUsers(): Resource<List<User>>
+    suspend fun getAllUsers(): Flow<Resource<List<User>>>
     suspend fun updateFeedback(feedback: Feedback)
     suspend fun getAllFeedbacks(): Flow<Resource<List<Feedback>>>
     suspend fun updateHistory(reserve: Reserve)
@@ -62,4 +63,6 @@ interface HouseRepository {
     suspend fun getNews(): Flow<Resource<List<Note>>>
     suspend fun updateNote(note: Note)
     suspend fun deleteNote(note: Note)
+    suspend fun addCall(name: String, phone: String)
+    suspend fun getAllCalls(): Flow<Resource<List<Call>>>
 }

@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.admin.news
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,13 +18,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsScreenViewModel @Inject constructor(
-    private val repository: HouseRepository
+    private val repository: HouseRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(NewsScreenState())
     val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
+            val userId = savedStateHandle.get<Int>("idUser") ?: return@launch
+            _state.value.copy(
+                idUser = userId
+            )
+                .updateStateUI()
             async { loadNewsData() }.onAwait
             async { loadNewReserves() }.onAwait
         }
