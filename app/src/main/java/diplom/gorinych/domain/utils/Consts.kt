@@ -68,3 +68,6 @@ const val EMAIL_PASSWORD = "Work77Outted!"
 
 const val DATA_LESS_TODAY = "одна из дат меньше сегодняшнего дня"
 const val SOME_DATES_UNAVAIBLE = "некоторые из даты недоступны для брони"
+const val UNCORRECT_PROMO = "Неверный промокод"
+const val EXPIRED_PROMO = "Промокод уже использован"
+const val SUCCESS_PROMO = "Промокод применен"

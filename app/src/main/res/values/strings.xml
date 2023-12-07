@@ -56,6 +56,7 @@
     <string name="repeat_password">Повторите пароль</string>
     <string name="choose_dates">Выберите даты для бронирования</string>
     <string name="choose_addons">Выберите доп. услуги</string>
+    <string name="choose_promo">Добавьте промокод</string>
     <string name="do_reserve">Забронировать</string>
     <string name="do_feedback">Оставить отзыв</string>
     <string name="enter_feedback">Введите отзыв</string>

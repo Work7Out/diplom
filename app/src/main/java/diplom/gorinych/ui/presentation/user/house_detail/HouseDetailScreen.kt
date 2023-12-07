@@ -38,6 +38,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -66,9 +67,11 @@ import androidx.navigation.NavController
 import diplom.gorinych.R
 import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.ui.presentation.base.ItemFeedback
+import diplom.gorinych.ui.presentation.login_screen.LoginEvent
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.grey
+import diplom.gorinych.ui.theme.secondText
 import diplom.gorinych.ui.theme.white
 import diplom.gorinych.ui.theme.yellow
 import io.github.boguszpawlowski.composecalendar.CalendarState
@@ -99,7 +102,9 @@ fun HouseDetailScreen(
     val isShowDialog = remember {
         mutableStateOf(false)
     }
-
+    val promo = remember {
+        mutableStateOf("")
+    }
     if (isShowDialog.value) {
         Dialog(onDismissRequest = { isShowDialog.value = false }) {
             FeedbackDialog(
@@ -247,11 +252,64 @@ fun HouseDetailScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                items(state.value.additions) {addon->
+                items(state.value.additions) { addon ->
                     ItemAddon(
                         addon = addon,
                         isSelected = state.value.additionsSelected.contains(addon),
                         onEvent = onEvent
+                    )
+                }
+            }
+            Spacer(modifier = modifier.height(5.dp))
+            Text(
+                modifier = modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.choose_promo),
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.gilroy)),
+                    fontWeight = FontWeight(600),
+                    color = baseText
+                ),
+                textAlign = TextAlign.Center
+            )
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextField(
+                    modifier = modifier.weight(8f),
+                    value = promo.value,
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.add_promo),
+                            style = TextStyle(
+                                fontSize = 13.sp,
+                                fontFamily = FontFamily(Font(R.font.gilroy)),
+                                fontWeight = FontWeight(500),
+                                color = secondText,
+                            )
+                        )
+                    },
+                    onValueChange = {
+                        promo.value = it
+                    })
+                Spacer(modifier = modifier.width(5.dp))
+                Button(
+                    modifier = modifier.weight(1f),
+                    onClick = {
+                        onEvent(HouseDetailEvent.CheckPromo(promo.value))
+                        promo.value = ""
+                    },
+                    shape = RoundedCornerShape(10.dp),
+                    contentPadding = PaddingValues(vertical = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = blue
+                    ),
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.baseline_arrow_forward_24),
+                        contentDescription = "",
+                        tint = white
                     )
                 }
             }

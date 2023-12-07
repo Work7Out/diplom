@@ -18,6 +18,7 @@ sealed class HouseDetailEvent {
     ):HouseDetailEvent()
 
     class AddAddon(val addon: Addon):HouseDetailEvent()
+    class CheckPromo(val query: String):HouseDetailEvent()
 
   /*  class DeleteReserve(
         val id: Int,
