@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.user.house_detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -66,7 +67,10 @@ class HouseDetailViewModel @Inject constructor(
                             .updateStateUI()
                     } else {
                         val price = _state.value.house?.price ?: 0.0
-
+                        _state.value.copy(
+                            additionsSelected = emptyList()
+                        )
+                            .updateStateUI()
                         repository.addReserve(
                             idUser = _state.value.idUser,
                             idHouse = _state.value.house?.id ?: -1,
@@ -75,7 +79,7 @@ class HouseDetailViewModel @Inject constructor(
                             dateBegin = houseDetailEvent.dateBegin.formatLocalDateRu(),
                             dateEnd = houseDetailEvent.dateEnd.formatLocalDateRu(),
                             amount = houseDetailEvent.valueDays * price,
-                            addtions = houseDetailEvent.addons.joinToString(separator = ", ")
+                            addtions = _state.value.additionsSelected.joinToString(separator = ", ") { it.title }
                         )
                     }
                     delay(500)
@@ -97,6 +101,24 @@ class HouseDetailViewModel @Inject constructor(
                         content = houseDetailEvent.content
                     )
                 }
+            }
+
+            is HouseDetailEvent.AddAddon -> {
+                val mutableSelectedAddons = _state.value.additionsSelected.toMutableList()
+                if (mutableSelectedAddons.contains(houseDetailEvent.addon)) {
+                    val updatedList = mutableSelectedAddons.filter { it!=houseDetailEvent.addon }
+                    _state.value.copy(
+                        additionsSelected = updatedList
+                    )
+                        .updateStateUI()
+                } else {
+                    mutableSelectedAddons.add(houseDetailEvent.addon)
+                    _state.value.copy(
+                        additionsSelected = mutableSelectedAddons
+                    )
+                        .updateStateUI()
+                }
+                Log.d ("addons list", "addons list ${_state.value.additionsSelected}")
             }
         }
     }

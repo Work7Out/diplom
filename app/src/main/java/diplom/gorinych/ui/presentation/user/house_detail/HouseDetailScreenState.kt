@@ -11,6 +11,7 @@ data class HouseDetailScreenState (
     val reserves: List<Reserve> = emptyList(),
     val feedbacks: List<Feedback> = emptyList(),
     val additions: List<Addon> = emptyList(),
+    val additionsSelected: List<Addon> = emptyList(),
     val idUser: Int = -1,
     val nameUser: String = "",
     val idHouse: Int = -1,

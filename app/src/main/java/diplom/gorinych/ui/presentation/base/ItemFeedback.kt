@@ -24,11 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import diplom.gorinych.R
 import diplom.gorinych.domain.model.Feedback
-import diplom.gorinych.ui.theme.PurpleGrey80
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.grey
-import diplom.gorinych.ui.theme.secondText
 import diplom.gorinych.ui.theme.thirdText
 
 @Composable

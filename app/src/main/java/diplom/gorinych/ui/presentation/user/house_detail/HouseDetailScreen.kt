@@ -18,6 +18,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -61,6 +64,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import diplom.gorinych.R
+import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.ui.presentation.base.ItemFeedback
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
@@ -70,7 +74,6 @@ import diplom.gorinych.ui.theme.yellow
 import io.github.boguszpawlowski.composecalendar.CalendarState
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
 import io.github.boguszpawlowski.composecalendar.day.DayState
-import io.github.boguszpawlowski.composecalendar.header.DefaultMonthHeader
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
@@ -96,6 +99,7 @@ fun HouseDetailScreen(
     val isShowDialog = remember {
         mutableStateOf(false)
     }
+
     if (isShowDialog.value) {
         Dialog(onDismissRequest = { isShowDialog.value = false }) {
             FeedbackDialog(
@@ -233,6 +237,24 @@ fun HouseDetailScreen(
                 ),
                 textAlign = TextAlign.Center
             )
+            Spacer(modifier = modifier.height(5.dp))
+            LazyVerticalGrid(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+                    .padding(10.dp),
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                items(state.value.additions) {addon->
+                    ItemAddon(
+                        addon = addon,
+                        isSelected = state.value.additionsSelected.contains(addon),
+                        onEvent = onEvent
+                    )
+                }
+            }
             Spacer(modifier = modifier.height(10.dp))
             Button(
                 modifier = modifier
@@ -383,9 +405,9 @@ fun <T : SelectionState> ItemDay(
         Box(
             modifier = modifier
                 .clickable {
-                onClick(date)
-                selectionState.onDateSelected(date)
-            }
+                    onClick(date)
+                    selectionState.onDateSelected(date)
+                }
                 .fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
