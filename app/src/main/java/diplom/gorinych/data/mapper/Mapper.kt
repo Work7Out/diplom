@@ -150,6 +150,15 @@ fun PromoEntity.mapToPromo(): Promo {
     )
 }
 
+fun Promo.mapToPromoEntity(): PromoEntity {
+    return PromoEntity(
+        id = id,
+        description = description,
+        valueDiscount = valueDiscount,
+        isActive = isActive
+    )
+}
+
 fun NoteEntity.mapToNote(): Note {
     return Note(
         id = id,

@@ -67,4 +67,6 @@ interface HouseRepository {
     suspend fun getAllCalls(): Flow<Resource<List<Call>>>
     suspend fun getHistoryByIdHouse(idHouse: Int): Flow<Resource<List<Reserve>>>
     suspend fun getFeedbackByHouse(idHouse: Int): Flow<Resource<List<Feedback>>>
+    suspend fun updatePromo(promo: Promo)
+    suspend fun getPromoByName(query: String): Resource<Promo>?
 }

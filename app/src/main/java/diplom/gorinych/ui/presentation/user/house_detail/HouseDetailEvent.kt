@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.user.house_detail
 
+import diplom.gorinych.domain.model.Addon
 import java.time.LocalDate
 
 sealed class HouseDetailEvent {
@@ -15,6 +16,9 @@ sealed class HouseDetailEvent {
         val rang:Int,
         val content:String
     ):HouseDetailEvent()
+
+    class AddAddon(val addon: Addon):HouseDetailEvent()
+    class CheckPromo(val query: String):HouseDetailEvent()
 
   /*  class DeleteReserve(
         val id: Int,

@@ -18,6 +18,7 @@ import diplom.gorinych.data.mapper.mapToHouses
 import diplom.gorinych.data.mapper.mapToNote
 import diplom.gorinych.data.mapper.mapToNoteEntity
 import diplom.gorinych.data.mapper.mapToPromo
+import diplom.gorinych.data.mapper.mapToPromoEntity
 import diplom.gorinych.data.mapper.mapToReserve
 import diplom.gorinych.data.mapper.mapToUser
 import diplom.gorinych.data.mapper.mapToUserEntity
@@ -76,7 +77,7 @@ class HouseRepositoryImpl @Inject constructor(
         return flow {
             try {
                 val result = dao.getAllHouses()
-                result.collect { houses->
+                result.collect { houses ->
                     emit(Resource.Success(houses.mapToHouses()))
                 }
             } catch (error: Exception) {
@@ -100,7 +101,7 @@ class HouseRepositoryImpl @Inject constructor(
         return flow {
             try {
                 val resultFeedbacks = dao.getFeedBackByHouse(idHouse)
-                resultFeedbacks.collect { feedbacks->
+                resultFeedbacks.collect { feedbacks ->
                     emit(Resource.Success(feedbacks.map {
                         it.mapToFeedback()
                     }))
@@ -175,7 +176,7 @@ class HouseRepositoryImpl @Inject constructor(
         return flow {
             try {
                 val result = dao.getAllUsers()
-                result.collect { users->
+                result.collect { users ->
                     emit(Resource.Success(users.map {
                         it.mapToUser()
                     }))
@@ -393,4 +394,17 @@ class HouseRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun updatePromo(promo: Promo) {
+        dao.updatePromo(promo.mapToPromoEntity())
+    }
+
+    override suspend fun getPromoByName(query: String): Resource<Promo>? {
+        return try {
+            Resource.Success(dao.getPromoByName(query)?.mapToPromo())
+        } catch (error: Exception) {
+            Resource.Error(error.localizedMessage ?: "Unknown error")
+        }
+    }
+
 }

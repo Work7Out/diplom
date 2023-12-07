@@ -1,13 +1,18 @@
 package diplom.gorinych.ui.presentation.user.house_detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.utils.DATA_LESS_TODAY
+import diplom.gorinych.domain.utils.EXPIRED_PROMO
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.SOME_DATES_UNAVAIBLE
+import diplom.gorinych.domain.utils.SUCCESS_PROMO
+import diplom.gorinych.domain.utils.UNCORRECT_PROMO
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.domain.utils.convertStringToDate
 import diplom.gorinych.domain.utils.formatLocalDateRu
@@ -52,25 +57,25 @@ class HouseDetailViewModel @Inject constructor(
             is AddReserve -> {
                 viewModelScope.launch {
                     if (houseDetailEvent.dateBegin < LocalDate.now() || houseDetailEvent.dateEnd < LocalDate.now()) {
-                        state.value.copy(
+                        _state.value.copy(
                             message = DATA_LESS_TODAY
                         )
                             .updateStateUI()
                     } else if (_state.value.reserves.any {
-                            (convertStringToDate(it.dateBegin) >= houseDetailEvent.dateBegin
-                                    && convertStringToDate(it.dateBegin) <= houseDetailEvent.dateEnd) ||
-                                    (convertStringToDate(it.dateEnd) <= houseDetailEvent.dateBegin
-                                            && convertStringToDate(it.dateEnd) >= houseDetailEvent.dateEnd) ||
-                                    (convertStringToDate(it.dateBegin) <= houseDetailEvent.dateBegin
-                                            && convertStringToDate(it.dateEnd) >= houseDetailEvent.dateEnd)
+                            (convertStringToDate(it.dateBegin) <= houseDetailEvent.dateEnd
+                                    && convertStringToDate(it.dateEnd) >= houseDetailEvent.dateBegin)
                         }) {
-                        state.value.copy(
+                        _state.value.copy(
                             message = SOME_DATES_UNAVAIBLE
                         )
                             .updateStateUI()
                     } else {
+                        val sumAddons = _state.value.additionsSelected.sumOf { it.price }
                         val price = _state.value.house?.price ?: 0.0
-
+                        _state.value.copy(
+                            additionsSelected = emptyList()
+                        )
+                            .updateStateUI()
                         repository.addReserve(
                             idUser = _state.value.idUser,
                             idHouse = _state.value.house?.id ?: -1,
@@ -78,12 +83,22 @@ class HouseDetailViewModel @Inject constructor(
                             dateCreate = LocalDate.now().formatLocalDateRu(),
                             dateBegin = houseDetailEvent.dateBegin.formatLocalDateRu(),
                             dateEnd = houseDetailEvent.dateEnd.formatLocalDateRu(),
-                            amount = houseDetailEvent.valueDays * price,
-                            addtions = houseDetailEvent.addons.joinToString(separator = ", ")
+                            amount = (houseDetailEvent.valueDays * price + sumAddons) * (1 - (_state.value.promo?.valueDiscount
+                                ?: 0).toDouble() / 100),
+                            addtions = _state.value.additionsSelected.joinToString(separator = ", ") { it.title }
                         )
                     }
+                    repository.updatePromo(
+                        Promo(
+                            id = _state.value.promo?.id ?: -1,
+                            description = _state.value.promo?.description ?: "",
+                            valueDiscount = _state.value.promo?.valueDiscount ?: 0,
+                            isActive = false
+                        )
+                    )
                     delay(500)
-                    state.value.copy(
+                    _state.value.copy(
+                        promo = null,
                         message = ""
                     )
                         .updateStateUI()
@@ -100,6 +115,70 @@ class HouseDetailViewModel @Inject constructor(
                         rang = houseDetailEvent.rang,
                         content = houseDetailEvent.content
                     )
+                }
+            }
+
+            is HouseDetailEvent.AddAddon -> {
+                val mutableSelectedAddons = _state.value.additionsSelected.toMutableList()
+                if (mutableSelectedAddons.contains(houseDetailEvent.addon)) {
+                    val updatedList = mutableSelectedAddons.filter { it != houseDetailEvent.addon }
+                    _state.value.copy(
+                        additionsSelected = updatedList
+                    )
+                        .updateStateUI()
+                } else {
+                    mutableSelectedAddons.add(houseDetailEvent.addon)
+                    _state.value.copy(
+                        additionsSelected = mutableSelectedAddons
+                    )
+                        .updateStateUI()
+                }
+            }
+
+            is HouseDetailEvent.CheckPromo -> {
+                viewModelScope.launch {
+                    when (val resultLoadPromo = repository.getPromoByName(houseDetailEvent.query)) {
+                        is Resource.Error -> {
+                            _state.value.copy(
+                                message = resultLoadPromo.message
+                            )
+                                .updateStateUI()
+                        }
+
+                        is Resource.Success -> {
+                            if (resultLoadPromo.data == null) {
+                                _state.value.copy(
+                                    message = UNCORRECT_PROMO
+                                )
+                                    .updateStateUI()
+                            } else {
+                                if (resultLoadPromo.data.isActive) {
+                                    _state.value.copy(
+                                        promo = resultLoadPromo.data,
+                                        message = "$SUCCESS_PROMO ${resultLoadPromo.data.valueDiscount} %"
+                                    )
+                                        .updateStateUI()
+                                } else {
+                                    _state.value.copy(
+                                        message = EXPIRED_PROMO
+                                    )
+                                        .updateStateUI()
+                                }
+                            }
+                        }
+
+                        null -> {
+                            _state.value.copy(
+                                message = UNCORRECT_PROMO
+                            )
+                                .updateStateUI()
+                        }
+                    }
+                    delay(500)
+                    _state.value.copy(
+                        message = ""
+                    )
+                        .updateStateUI()
                 }
             }
         }

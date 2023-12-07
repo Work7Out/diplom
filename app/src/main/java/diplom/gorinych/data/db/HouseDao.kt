@@ -105,6 +105,12 @@ interface HouseDao {
     @Query("SELECT * FROM $PROMOS")
     fun getAllPromos(): Flow<List<PromoEntity>>
 
+    @Query("SELECT * FROM $PROMOS WHERE DESCRIPTION = :query")
+    suspend fun getPromoByName(query:String): PromoEntity?
+
+    @Update
+    suspend fun updatePromo(promoEntity: PromoEntity)
+
     //News
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNews(note: NoteEntity)
