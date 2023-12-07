@@ -57,12 +57,8 @@ class HouseDetailViewModel @Inject constructor(
                         )
                             .updateStateUI()
                     } else if (_state.value.reserves.any {
-                            (convertStringToDate(it.dateBegin) >= houseDetailEvent.dateBegin
-                                    && convertStringToDate(it.dateBegin) <= houseDetailEvent.dateEnd) ||
-                                    (convertStringToDate(it.dateEnd) <= houseDetailEvent.dateBegin
-                                            && convertStringToDate(it.dateEnd) >= houseDetailEvent.dateEnd) ||
-                                    (convertStringToDate(it.dateBegin) <= houseDetailEvent.dateBegin
-                                            && convertStringToDate(it.dateEnd) >= houseDetailEvent.dateEnd)
+                            (convertStringToDate(it.dateBegin) <= houseDetailEvent.dateEnd
+                                    && convertStringToDate(it.dateEnd) >= houseDetailEvent.dateBegin)
                         }) {
                         state.value.copy(
                             message = SOME_DATES_UNAVAIBLE
