@@ -7,7 +7,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import diplom.gorinych.data.db.HouseBotDatabase
+import diplom.gorinych.data.remote.DyplomaApi
+import diplom.gorinych.domain.utils.BASE_URL
 import diplom.gorinych.domain.utils.DB
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Properties
 import javax.inject.Singleton
 
@@ -24,6 +28,16 @@ object AppModule {
         )
             .createFromAsset("database.db")
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiAnalytic(): DyplomaApi {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(DyplomaApi::class.java)
     }
 
     @Provides

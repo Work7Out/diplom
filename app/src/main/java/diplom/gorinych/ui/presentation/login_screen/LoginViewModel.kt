@@ -1,9 +1,11 @@
 package diplom.gorinych.ui.presentation.login_screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +16,8 @@ import kotlinx.coroutines.delay
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: HouseRepository
+    private val repository: HouseRepository,
+    private val remoteRepository: RemoteRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(LoginScreenState())
     val state = _state.asStateFlow()
@@ -33,35 +36,36 @@ class LoginViewModel @Inject constructor(
         when (loginEvent) {
             LoginEvent.OnLogin -> {
                 viewModelScope.launch {
-                    val result = repository.login(
+                    val remoteResult = remoteRepository.getLogin(
                         login = _state.value.login,
                         password = _state.value.password
                     )
-                    when (result) {
+                    when (remoteResult) {
                         is Resource.Error -> {
                             _state.value.copy(
-                                message = result.message
+                                message = remoteResult.message
                             )
                                 .updateStateUI()
                         }
 
                         is Resource.Success -> {
-                            if (result.data == null) {
+                            if (remoteResult.data == null) {
                                 _state.value.copy(
                                     message = "login or password invalid"
                                 )
                                     .updateStateUI()
                             } else {
-                                if (!result.data.isBlocked) {
+                                if (!remoteResult.data.isBlocked) {
                                     _state.value.copy(
                                         message = "success",
-                                        idUser = result.data.id,
-                                        role = result.data.role
+                                        idUser = remoteResult.data.id,
+                                        role = remoteResult.data.role
                                     )
                                         .updateStateUI()
                                 } else {
+                                    Log.d("TAG check login", "user ${remoteResult.data.name}")
                                     _state.value.copy(
-                                        message = "user ${result.data.name} is blocked"
+                                        message = "user ${remoteResult.data.name} is blocked"
                                     )
                                         .updateStateUI()
                                 }
