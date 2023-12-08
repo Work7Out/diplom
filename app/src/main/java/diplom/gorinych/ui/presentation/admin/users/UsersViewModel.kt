@@ -51,7 +51,7 @@ class UsersViewModel @Inject constructor(
             is OnChangeRoleUser -> {
                 viewModelScope.launch {
                     _state.value.copy(
-                        isLoading = false,
+                        isLoading = true,
                     )
                         .updateStateUI()
                     remoteRepository.updateUser(
@@ -67,7 +67,7 @@ class UsersViewModel @Inject constructor(
                 val newStatus = !usersScreenEvent.user.isBlocked
                 viewModelScope.launch {
                     _state.value.copy(
-                        isLoading = false,
+                        isLoading = true,
                     )
                         .updateStateUI()
                     remoteRepository.updateUser(

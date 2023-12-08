@@ -9,5 +9,6 @@ data class AddonScreenState(
     val message: String? = null,
     val idUser: Int = -1,
     val countNewReserves: Int = 0,
-    val addonState: AddonState = AddonState.AdditionState
+    val addonState: AddonState = AddonState.AdditionState,
+    val isLoading: Boolean = true,
 )

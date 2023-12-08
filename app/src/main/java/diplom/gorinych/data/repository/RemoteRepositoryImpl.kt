@@ -1,11 +1,17 @@
 package diplom.gorinych.data.repository
 
 import diplom.gorinych.data.mapper.mapDtoToUser
-import diplom.gorinych.data.mapper.mapToReserve
+import diplom.gorinych.data.mapper.mapFromDtoToAddon
+import diplom.gorinych.data.mapper.mapFromDtoToPromo
+import diplom.gorinych.data.mapper.mapFromDtoToReserve
 import diplom.gorinych.data.remote.HouseBoatApi
+import diplom.gorinych.data.remote.body_dto.AddAddonBody
+import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
 import diplom.gorinych.data.remote.body_dto.UpdateUserBody
+import diplom.gorinych.domain.model.Addon
+import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.repository.RemoteRepository
@@ -62,7 +68,7 @@ class RemoteRepositoryImpl @Inject constructor(
         return Resource.handleResponse {
             diplomaApi.getHistoryByStatus(
                 status = status
-            ).map { it.mapToReserve() }
+            ).map { it.mapFromDtoToReserve() }
         }
     }
 
@@ -83,4 +89,47 @@ class RemoteRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun addNewAddon(
+        title: String,
+        price: Double
+    ) {
+        Resource.handleResponse {
+            diplomaApi.addAddon(
+                AddAddonBody(
+                    title = title,
+                    price = price,
+                )
+            )
+        }
+    }
+
+    override suspend fun addNewPromo(
+        description: String,
+        valueDiscount: Int,
+        isActive: Boolean
+    ) {
+        Resource.handleResponse {
+            diplomaApi.addPromo(
+                AddPromoBody(
+                    description = description,
+                    valueDiscount = valueDiscount,
+                    isActive = isActive
+                )
+            )
+        }
+    }
+
+    override suspend fun getAllAddons(): Resource<List<Addon>> {
+        return Resource.handleResponse {
+            diplomaApi.getAllAddons().map { it.mapFromDtoToAddon() }
+        }
+    }
+
+    override suspend fun getAllPromos(): Resource<List<Promo>> {
+        return Resource.handleResponse {
+            diplomaApi.getAllPromos().map { it.mapFromDtoToPromo() }
+        }
+    }
 }
+

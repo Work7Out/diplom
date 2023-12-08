@@ -105,7 +105,7 @@ fun HouseEntity.mapToHouseDetail(): HouseDetail {
     )
 }
 
-fun HistoryEntity.mapToReserve(): Reserve {
+fun HistoryEntity.mapFromDtoToReserve(): Reserve {
     return Reserve(
         id = this.id,
         idUser = this.idUser,

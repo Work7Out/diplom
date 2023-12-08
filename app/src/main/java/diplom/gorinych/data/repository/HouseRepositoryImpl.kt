@@ -19,7 +19,7 @@ import diplom.gorinych.data.mapper.mapToNote
 import diplom.gorinych.data.mapper.mapToNoteEntity
 import diplom.gorinych.data.mapper.mapToPromo
 import diplom.gorinych.data.mapper.mapToPromoEntity
-import diplom.gorinych.data.mapper.mapToReserve
+import diplom.gorinych.data.mapper.mapFromDtoToReserve
 import diplom.gorinych.data.mapper.mapToUser
 import diplom.gorinych.data.mapper.mapToUserEntity
 import diplom.gorinych.domain.model.Addon
@@ -165,7 +165,7 @@ class HouseRepositoryImpl @Inject constructor(
         return try {
             val result = dao.getHistoryByUser(userId = idUser)
             Resource.Success(result.map {
-                it.mapToReserve()
+                it.mapFromDtoToReserve()
             })
         } catch (error: Exception) {
             Resource.Error(error.localizedMessage ?: "Unknown error")
@@ -216,7 +216,7 @@ class HouseRepositoryImpl @Inject constructor(
                 val result = dao.getAllHistory()
                 result.collect { histories ->
                     emit(Resource.Success(histories.map {
-                        it.mapToReserve()
+                        it.mapFromDtoToReserve()
                     }))
                 }
             } catch (error: Exception) {
@@ -251,7 +251,7 @@ class HouseRepositoryImpl @Inject constructor(
                 val result = dao.getHistoryNoConfirmStatus()
                 result.collect {
                     emit(Resource.Success(it.map { historyEntity ->
-                        historyEntity.mapToReserve()
+                        historyEntity.mapFromDtoToReserve()
                     }))
                 }
             } catch (error: Exception) {
@@ -386,7 +386,7 @@ class HouseRepositoryImpl @Inject constructor(
                 val result = dao.getHistoryByIdHouse(idHouse)
                 result.collect {
                     emit(Resource.Success(it.map { entity ->
-                        entity.mapToReserve()
+                        entity.mapFromDtoToReserve()
                     }))
                 }
             } catch (error: Exception) {

@@ -5,18 +5,19 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.Resource
+import diplom.gorinych.domain.utils.WAITING_CONFIRM
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class AddonScreenViewModel @Inject constructor(
-    private val repository: HouseRepository,
+    private val remoteRepository: RemoteRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(AddonScreenState())
@@ -38,21 +39,31 @@ class AddonScreenViewModel @Inject constructor(
     fun onEvent(event: AddonScreenEvent) {
         when (event) {
             is AddonScreenEvent.InsertAddon -> {
+                _state.value.copy(
+                    isLoading = true,
+                )
+                    .updateStateUI()
                 viewModelScope.launch {
-                    repository.addAddon(
+                    remoteRepository.addNewAddon(
                         title = event.title,
                         price = event.price
                     )
+                    loadAddons()
                 }
             }
 
             is AddonScreenEvent.InsertPromo -> {
+                _state.value.copy(
+                    isLoading = true,
+                )
+                    .updateStateUI()
                 viewModelScope.launch {
-                    repository.addPromo(
+                    remoteRepository.addNewPromo(
                         valueDiscount = event.value,
                         description = event.description,
                         isActive = true
                     )
+                    loadPromos()
                 }
             }
 
@@ -66,65 +77,60 @@ class AddonScreenViewModel @Inject constructor(
     }
 
     private suspend fun loadNewReserves() {
-        val result = repository.getHistoryNoConfirmStatus()
-        result.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        when (val result = remoteRepository.getHistoryByStatus(status = WAITING_CONFIRM)) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    message = result.message
+                )
+                    .updateStateUI()
+            }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        countNewReserves = it.data?.size ?: 0
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Success -> {
+                _state.value.copy(
+                    countNewReserves = result.data?.size ?: 0
+                )
+                    .updateStateUI()
             }
         }
     }
 
     private suspend fun loadAddons() {
-        val result = repository.getAddons()
-        result.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        when (val result = remoteRepository.getAllAddons()) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    isLoading = false,
+                    message = result.message
+                )
+                    .updateStateUI()
+            }
 
-                is Resource.Success -> {
-                    Log.d("TAG result addons","result addons ${it.data}")
-                    _state.value.copy(
-                        addons = it.data ?: emptyList()
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Success -> {
+                Log.d("TAG result addons", "result addons ${result.data}")
+                _state.value.copy(
+                    isLoading = false,
+                    addons = result.data ?: emptyList()
+                )
+                    .updateStateUI()
             }
         }
     }
 
     private suspend fun loadPromos() {
-        val result = repository.getPromos()
-        result.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        when (val result = remoteRepository.getAllPromos()) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    isLoading = false,
+                    message = result.message
+                )
+                    .updateStateUI()
+            }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        promos = it.data ?: emptyList()
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Success -> {
+                _state.value.copy(
+                    isLoading = false,
+                    promos = result.data ?: emptyList()
+                )
+                    .updateStateUI()
             }
         }
     }

@@ -1,7 +1,11 @@
 package diplom.gorinych.data.mapper
 
+import diplom.gorinych.data.remote.dto.AddonDto
 import diplom.gorinych.data.remote.dto.HistoryDto
+import diplom.gorinych.data.remote.dto.PromoDto
 import diplom.gorinych.data.remote.dto.UserDto
+import diplom.gorinych.domain.model.Addon
+import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 
@@ -30,7 +34,7 @@ fun User.mapDtoToUserDto(): UserDto {
     )
 }
 
-fun HistoryDto.mapToReserve(): Reserve {
+fun HistoryDto.mapFromDtoToReserve(): Reserve {
     return Reserve(
         id = this.id,
         idUser = this.idUser,
@@ -41,5 +45,22 @@ fun HistoryDto.mapToReserve(): Reserve {
         amount = this.amount,
         additions = this.additions,
         confirmReservation = this.confirmReservation
+    )
+}
+
+fun AddonDto.mapFromDtoToAddon(): Addon {
+    return Addon(
+        id = id,
+        title = title,
+        price = price
+    )
+}
+
+fun PromoDto.mapFromDtoToPromo(): Promo {
+    return Promo(
+        id = id,
+        description = description,
+        valueDiscount = valueDiscount,
+        isActive = isActive
     )
 }
