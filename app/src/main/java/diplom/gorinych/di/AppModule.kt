@@ -30,7 +30,7 @@ object AppModule {
     @Singleton
     fun provideMail(): Properties {
         val props = Properties()
-        props["mail.smtp.host"] = "smtp.gmail.com"
+        props["mail.smtp.host"] = "smtp.mail.ru"
         props["mail.smtp.socketFactory.port"] = "465"
         props["mail.smtp.socketFactory.class"] = "javax.net.ssl.SSLSocketFactory"
         props["mail.smtp.auth"] = "true"

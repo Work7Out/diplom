@@ -10,12 +10,15 @@ import diplom.gorinych.domain.utils.BLOCKED
 import diplom.gorinych.domain.utils.EMAIL_LOGIN
 import diplom.gorinych.domain.utils.EMAIL_PASSWORD
 import diplom.gorinych.domain.utils.Resource
+import diplom.gorinych.domain.utils.UNBLOCKED
 import diplom.gorinych.domain.utils.USER
 import diplom.gorinych.domain.utils.USER_BLOCKED
+import diplom.gorinych.domain.utils.USER_UNBLOCKED
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeRoleUser
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeStatusBlock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -57,10 +60,11 @@ class UsersViewModel @Inject constructor(
             }
 
             is OnChangeStatusBlock -> {
+                val newStatus = !usersScreenEvent.user.isBlocked
                 viewModelScope.launch {
                     repository.updateUser(
                         usersScreenEvent.user.copy(
-                            isBlocked = !usersScreenEvent.user.isBlocked
+                            isBlocked = newStatus
                         )
                     )
                 }
@@ -69,8 +73,8 @@ class UsersViewModel @Inject constructor(
                         login = EMAIL_LOGIN,
                         password = EMAIL_PASSWORD,
                         email = usersScreenEvent.user.email,
-                        theme = USER_BLOCKED,
-                        content = "$USER ${usersScreenEvent.user.name} $BLOCKED"
+                        theme = if (newStatus) USER_BLOCKED else USER_UNBLOCKED,
+                        content = if (newStatus) "$USER ${usersScreenEvent.user.name} $BLOCKED" else "$USER ${usersScreenEvent.user.name} $UNBLOCKED"
                     )
                 }
             }
