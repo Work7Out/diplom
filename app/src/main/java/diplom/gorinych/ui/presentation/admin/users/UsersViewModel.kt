@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.repository.MailRepository
+import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.BLOCKED
 import diplom.gorinych.domain.utils.EMAIL_LOGIN
 import diplom.gorinych.domain.utils.EMAIL_PASSWORD
@@ -14,21 +14,20 @@ import diplom.gorinych.domain.utils.UNBLOCKED
 import diplom.gorinych.domain.utils.USER
 import diplom.gorinych.domain.utils.USER_BLOCKED
 import diplom.gorinych.domain.utils.USER_UNBLOCKED
+import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeRoleUser
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeStatusBlock
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(
-    private val repository: HouseRepository,
+    private val remoteRepository: RemoteRepository,
     private val mailRepository: MailRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -51,22 +50,32 @@ class UsersViewModel @Inject constructor(
         when (usersScreenEvent) {
             is OnChangeRoleUser -> {
                 viewModelScope.launch {
-                    repository.updateUser(
+                    _state.value.copy(
+                        isLoading = false,
+                    )
+                        .updateStateUI()
+                    remoteRepository.updateUser(
                         usersScreenEvent.user.copy(
                             role = usersScreenEvent.role
                         )
                     )
+                    loadData()
                 }
             }
 
             is OnChangeStatusBlock -> {
                 val newStatus = !usersScreenEvent.user.isBlocked
                 viewModelScope.launch {
-                    repository.updateUser(
+                    _state.value.copy(
+                        isLoading = false,
+                    )
+                        .updateStateUI()
+                    remoteRepository.updateUser(
                         usersScreenEvent.user.copy(
                             isBlocked = newStatus
                         )
                     )
+                    loadData()
                 }
                 viewModelScope.launch(Dispatchers.IO) {
                     mailRepository.sendEmail(
@@ -82,43 +91,41 @@ class UsersViewModel @Inject constructor(
     }
 
     private suspend fun loadNewReserves() {
-        val result = repository.getHistoryNoConfirmStatus()
-        result.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        when (val result = remoteRepository.getHistoryByStatus(status = WAITING_CONFIRM)) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    message = result.message
+                )
+                    .updateStateUI()
+            }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        countNewReserves = it.data?.size ?: 0
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Success -> {
+                _state.value.copy(
+                    countNewReserves = result.data?.size ?: 0
+                )
+                    .updateStateUI()
             }
         }
+
     }
 
     private suspend fun loadData() {
-        val resultUser = repository.getAllUsers()
-        resultUser.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        when (val resultUser = remoteRepository.getAllUsers()) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    isLoading = false,
+                    message = resultUser.message
+                )
+                    .updateStateUI()
+            }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        users = it.data ?: emptyList()
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Success -> {
+                _state.value.copy(
+                    isLoading = false,
+                    message = null,
+                    users = resultUser.data ?: emptyList()
+                )
+                    .updateStateUI()
             }
         }
     }

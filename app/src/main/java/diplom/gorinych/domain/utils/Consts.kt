@@ -73,4 +73,4 @@ const val UNCORRECT_PROMO = "Неверный промокод"
 const val EXPIRED_PROMO = "Промокод уже использован"
 const val SUCCESS_PROMO = "Промокод применен"
 
-const val BASE_URL = "https://ef07-91-220-219-29.ngrok-free.app/"
+const val BASE_URL = "https://2420-109-198-122-196.ngrok-free.app/"
