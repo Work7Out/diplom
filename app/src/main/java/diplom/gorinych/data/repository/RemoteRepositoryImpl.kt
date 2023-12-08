@@ -1,7 +1,7 @@
 package diplom.gorinych.data.repository
 
 import diplom.gorinych.data.mapper.mapDtoToUser
-import diplom.gorinych.data.remote.DyplomaApi
+import diplom.gorinych.data.remote.HouseBoatApi
 import diplom.gorinych.data.remote.body_dto.LoginBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
 import diplom.gorinych.domain.model.User
@@ -10,7 +10,7 @@ import diplom.gorinych.domain.utils.Resource
 import javax.inject.Inject
 
 class RemoteRepositoryImpl @Inject constructor(
-    private val diplomaApi: DyplomaApi
+    private val diplomaApi: HouseBoatApi
 ) : RemoteRepository {
 
     override suspend fun getLogin(
@@ -29,7 +29,7 @@ class RemoteRepositoryImpl @Inject constructor(
 
     override suspend fun getAllUsers(): Resource<List<User>> {
         return Resource.handleResponse {
-            diplomaApi.getAllUsers()?.map { it.mapDtoToUser() } ?: emptyList()
+            diplomaApi.getAllUsers().map { it.mapDtoToUser() }
         }
     }
 
