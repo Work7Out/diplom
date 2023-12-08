@@ -7,7 +7,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import diplom.gorinych.data.db.HouseBotDatabase
+import diplom.gorinych.data.remote.HouseBoatApi
+import diplom.gorinych.domain.utils.BASE_URL
 import diplom.gorinych.domain.utils.DB
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Properties
 import javax.inject.Singleton
 
@@ -28,9 +32,19 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideApiAnalytic(): HouseBoatApi {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(HouseBoatApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideMail(): Properties {
         val props = Properties()
-        props["mail.smtp.host"] = "smtp.gmail.com"
+        props["mail.smtp.host"] = "smtp.mail.ru"
         props["mail.smtp.socketFactory.port"] = "465"
         props["mail.smtp.socketFactory.class"] = "javax.net.ssl.SSLSocketFactory"
         props["mail.smtp.auth"] = "true"

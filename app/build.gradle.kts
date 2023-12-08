@@ -88,9 +88,16 @@ dependencies {
 
     // Icons
     implementation ("androidx.compose.material:material-icons-extended:1.5.4")
-
+    //Mail
     implementation ("com.sun.mail:android-mail:1.6.2")
     implementation ("com.sun.mail:android-activation:1.6.2")
+
+    //Retrofit
+    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+
 }
 
 kapt{
