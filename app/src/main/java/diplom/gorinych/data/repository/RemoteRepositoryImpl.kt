@@ -3,6 +3,7 @@ package diplom.gorinych.data.repository
 import diplom.gorinych.data.mapper.mapDtoToUser
 import diplom.gorinych.data.remote.DyplomaApi
 import diplom.gorinych.data.remote.body_dto.LoginBody
+import diplom.gorinych.data.remote.body_dto.RegistrationBody
 import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.Resource
@@ -23,6 +24,34 @@ class RemoteRepositoryImpl @Inject constructor(
                     password = password
                 )
             )?.mapDtoToUser()
+        }
+    }
+
+    override suspend fun getAllUsers(): Resource<List<User>> {
+        return Resource.handleResponse {
+            diplomaApi.getAllUsers()?.map { it.mapDtoToUser() } ?: emptyList()
+        }
+    }
+
+    override suspend fun addNewUser(
+        name: String,
+        password: String,
+        phone: String,
+        email: String,
+        role: String,
+        isBlocked: Boolean
+    ) {
+        Resource.handleResponse {
+            diplomaApi.registration(
+                RegistrationBody(
+                    name = name,
+                    password = password,
+                    phone = phone,
+                    eMail = email,
+                    role = role,
+                    isBlocked = isBlocked
+                )
+            )
         }
     }
 }
