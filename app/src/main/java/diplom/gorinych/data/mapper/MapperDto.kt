@@ -3,10 +3,12 @@ package diplom.gorinych.data.mapper
 import diplom.gorinych.data.remote.dto.AddonDto
 import diplom.gorinych.data.remote.dto.FeedbackDto
 import diplom.gorinych.data.remote.dto.HistoryDto
+import diplom.gorinych.data.remote.dto.NewsDto
 import diplom.gorinych.data.remote.dto.PromoDto
 import diplom.gorinych.data.remote.dto.UserDto
 import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Feedback
+import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
@@ -76,5 +78,14 @@ fun FeedbackDto.mapFromDtoToFeedback(): Feedback {
         idHouse = this.idHouse,
         isBlocked = this.isBlocked,
         rang = this.rang
+    )
+}
+
+fun NewsDto.mapFromDtoToNote(): Note {
+    return  Note(
+        id = id,
+        title = title,
+        content = content,
+        dateCreate = dateCreate
     )
 }

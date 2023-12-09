@@ -2,18 +2,22 @@ package diplom.gorinych.data.remote
 
 import diplom.gorinych.data.remote.body_dto.AddAddonBody
 import diplom.gorinych.data.remote.body_dto.AddFeedbackBody
+import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
 import diplom.gorinych.data.remote.body_dto.UpdateHistoryBody
 import diplom.gorinych.data.remote.body_dto.UpdateFeedbackBody
+import diplom.gorinych.data.remote.body_dto.UpdateNewsBody
 import diplom.gorinych.data.remote.body_dto.UpdateUserBody
 import diplom.gorinych.data.remote.dto.AddonDto
 import diplom.gorinych.data.remote.dto.FeedbackDto
 import diplom.gorinych.data.remote.dto.HistoryDto
+import diplom.gorinych.data.remote.dto.NewsDto
 import diplom.gorinych.data.remote.dto.PromoDto
 import diplom.gorinych.data.remote.dto.UserDto
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -74,4 +78,17 @@ interface HouseBoatApi {
 
     @PATCH("feedback")
     suspend fun updateFeedback(@Body updateFeedbackBody: UpdateFeedbackBody)
+
+    //News
+    @POST("news")
+    suspend fun addNews(@Body addNewsBody: AddNewsBody)
+
+    @PATCH("news")
+    suspend fun updateNews(@Body updateNewsBody: UpdateNewsBody)
+
+    @DELETE("news/{newsId}")
+    suspend fun deleteNews(@Path("newsId") newsId: Int)
+
+    @GET("news")
+    suspend fun getAllNews(): List<NewsDto>
 }

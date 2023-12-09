@@ -3,18 +3,22 @@ package diplom.gorinych.data.repository
 import diplom.gorinych.data.mapper.mapDtoToUser
 import diplom.gorinych.data.mapper.mapFromDtoToAddon
 import diplom.gorinych.data.mapper.mapFromDtoToFeedback
+import diplom.gorinych.data.mapper.mapFromDtoToNote
 import diplom.gorinych.data.mapper.mapFromDtoToPromo
 import diplom.gorinych.data.mapper.mapFromDtoToReserve
 import diplom.gorinych.data.remote.HouseBoatApi
 import diplom.gorinych.data.remote.body_dto.AddAddonBody
+import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
 import diplom.gorinych.data.remote.body_dto.UpdateFeedbackBody
 import diplom.gorinych.data.remote.body_dto.UpdateHistoryBody
+import diplom.gorinych.data.remote.body_dto.UpdateNewsBody
 import diplom.gorinych.data.remote.body_dto.UpdateUserBody
 import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Feedback
+import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
@@ -189,6 +193,51 @@ class RemoteRepositoryImpl @Inject constructor(
                     rang = feedback.rang
                 )
             )
+        }
+    }
+
+    override suspend fun getAllNews(): Resource<List<Note>> {
+        return Resource.handleResponse {
+            diplomaApi.getAllNews().map { it.mapFromDtoToNote() }
+        }
+    }
+
+    override suspend fun addNewNews(
+        title: String,
+        content: String,
+        dateCreate: String
+    ) {
+        Resource.handleResponse {
+            diplomaApi.addNews(
+                AddNewsBody(
+                    title = title,
+                    content = content,
+                    dateCreate = dateCreate
+                )
+            )
+        }
+    }
+
+    override suspend fun updateNews(
+        note: Note
+    ) {
+        Resource.handleResponse {
+            diplomaApi.updateNews(
+                UpdateNewsBody(
+                    id = note.id,
+                    content = note.content,
+                    dateCreate = note.dateCreate,
+                    title = note.title
+                )
+            )
+        }
+    }
+
+    override suspend fun deleteNews(
+        newsId: Int
+    ) {
+        Resource.handleResponse {
+            diplomaApi.deleteNews(newsId)
         }
     }
 }

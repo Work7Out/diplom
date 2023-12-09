@@ -6,5 +6,6 @@ data class NewsScreenState(
     val message:String? = null,
     val idUser: Int = -1,
     val countNewReserves: Int = 0,
-    val news: List<Note> = emptyList()
+    val news: List<Note> = emptyList(),
+    val isLoading: Boolean = true,
 )

@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import diplom.gorinych.R
 import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
+import diplom.gorinych.ui.presentation.base.LoadingScreen
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.grey
 import diplom.gorinych.ui.theme.white
@@ -77,19 +78,25 @@ fun NewsScreen(
             }
         }
     ) { padding ->
-        LazyColumn(
-            modifier = modifier
-                .padding(padding)
-                .fillMaxSize()
-                .background(color = grey)
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(state.value.news) { note ->
-                ItemNote(
-                    note = note,
-                    onEvent = onEvent
-                )
+        if (state.value.isLoading) {
+            LoadingScreen(
+                paddingValues = padding
+            )
+        } else {
+            LazyColumn(
+                modifier = modifier
+                    .padding(padding)
+                    .fillMaxSize()
+                    .background(color = grey)
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(state.value.news) { note ->
+                    ItemNote(
+                        note = note,
+                        onEvent = onEvent
+                    )
+                }
             }
         }
     }

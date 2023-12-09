@@ -5,20 +5,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.model.Note
-import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.Resource
+import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.domain.utils.formatLocalDateRu
+import java.time.LocalDate
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import javax.inject.Inject
 
 @HiltViewModel
 class NewsScreenViewModel @Inject constructor(
-    private val repository: HouseRepository,
+    private val remoteRepository: RemoteRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(NewsScreenState())
@@ -39,26 +40,38 @@ class NewsScreenViewModel @Inject constructor(
     fun onEvent(event: NewsScreenEvent) {
         when (event) {
             is NewsScreenEvent.AddNote -> {
+                _state.value.copy(
+                    isLoading = true,
+                )
+                    .updateStateUI()
                 viewModelScope.launch {
-                    repository.addNote(
+                    remoteRepository.addNewNews(
                         title = event.title,
                         content = event.content,
                         dateCreate = LocalDate.now().formatLocalDateRu()
                     )
+                    loadNewsData()
                 }
             }
 
             is NewsScreenEvent.DeleteNote -> {
+                _state.value.copy(
+                    isLoading = true,
+                )
+                    .updateStateUI()
                 viewModelScope.launch {
-                    repository.deleteNote(
-                        event.note
-                    )
+                    remoteRepository.deleteNews(event.note.id)
+                    loadNewsData()
                 }
             }
 
             is NewsScreenEvent.UpdateNote -> {
+                _state.value.copy(
+                    isLoading = true,
+                )
+                    .updateStateUI()
                 viewModelScope.launch {
-                    repository.updateNote(
+                    remoteRepository.updateNews(
                         Note(
                             id = event.id,
                             title = event.title,
@@ -66,49 +79,46 @@ class NewsScreenViewModel @Inject constructor(
                             dateCreate = LocalDate.now().formatLocalDateRu()
                         )
                     )
+                    loadNewsData()
                 }
             }
         }
     }
 
     private suspend fun loadNewsData() {
-        val result = repository.getNews()
-        result.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        when (val result = remoteRepository.getAllNews()) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    isLoading = false,
+                    message = result.message
+                )
+                    .updateStateUI()
+            }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        news = it.data ?: emptyList()
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Success -> {
+                _state.value.copy(
+                    isLoading = false,
+                    news = result.data ?: emptyList()
+                )
+                    .updateStateUI()
             }
         }
     }
 
     private suspend fun loadNewReserves() {
-        val result = repository.getHistoryNoConfirmStatus()
-        result.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        when (val result = remoteRepository.getHistoryByStatus(status = WAITING_CONFIRM)) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    message = result.message
+                )
+                    .updateStateUI()
+            }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        countNewReserves = it.data?.size ?: 0
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Success -> {
+                _state.value.copy(
+                    countNewReserves = result.data?.size ?: 0
+                )
+                    .updateStateUI()
             }
         }
     }
