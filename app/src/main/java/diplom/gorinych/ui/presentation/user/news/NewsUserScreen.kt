@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import diplom.gorinych.ui.presentation.base.AppBarUser
 import diplom.gorinych.ui.presentation.base.BottomBarUser
+import diplom.gorinych.ui.presentation.base.LoadingScreen
 import diplom.gorinych.ui.theme.grey
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,16 +45,22 @@ fun NewsUserScreen(
             )
         }
     ) { padding ->
-        LazyColumn(
-            modifier = modifier
-                .padding(padding)
-                .fillMaxSize()
-                .background(color = grey)
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(state.value.news) { note ->
-                ItemUserNote(note = note)
+        if (state.value.isLoading) {
+            LoadingScreen(
+                paddingValues = padding
+            )
+        } else {
+            LazyColumn(
+                modifier = modifier
+                    .padding(padding)
+                    .fillMaxSize()
+                    .background(color = grey)
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(state.value.news) { note ->
+                    ItemUserNote(note = note)
+                }
             }
         }
     }

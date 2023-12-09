@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.Resource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsUserScreenViewModel @Inject constructor(
-    private val repository: HouseRepository,
+    private val remoteRepository: RemoteRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(NewsUserScreenState())
@@ -34,7 +35,7 @@ class NewsUserScreenViewModel @Inject constructor(
         when (event) {
             NewsUserScreenEvent.OnSendCall -> {
                 viewModelScope.launch {
-                    repository.addCall(
+                    remoteRepository.addNewCall(
                         name = _state.value.user?.name ?: "",
                         phone = _state.value.user?.phone ?: ""
                     )
@@ -44,17 +45,17 @@ class NewsUserScreenViewModel @Inject constructor(
     }
 
     private suspend fun loadUserData(userId: Int) {
-        when (val result = repository.getUserById(userId)) {
+        when (val resultUser = remoteRepository.getUserBiId(userId)) {
             is Resource.Error -> {
                 _state.value.copy(
-                    message = result.message
+                    message = resultUser.message
                 )
                     .updateStateUI()
             }
 
             is Resource.Success -> {
                 _state.value.copy(
-                    user = result.data
+                    user = resultUser.data
                 )
                     .updateStateUI()
             }
@@ -62,22 +63,21 @@ class NewsUserScreenViewModel @Inject constructor(
     }
 
     private suspend fun loadNewsData() {
-        val result = repository.getNews()
-        result.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        when (val result = remoteRepository.getAllNews()) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    isLoading = false,
+                    message = result.message
+                )
+                    .updateStateUI()
+            }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        news = it.data ?: emptyList()
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Success -> {
+                _state.value.copy(
+                    isLoading = false,
+                    news = result.data ?: emptyList()
+                )
+                    .updateStateUI()
             }
         }
     }

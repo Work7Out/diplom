@@ -6,5 +6,6 @@ import diplom.gorinych.domain.model.User
 data class NewsUserScreenState(
     val message:String? = null,
     val news: List<Note> = emptyList(),
-    val user: User? = null
+    val user: User? = null,
+    val isLoading: Boolean = true,
 )
