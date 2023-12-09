@@ -4,6 +4,7 @@ import diplom.gorinych.data.mapper.mapDtoToUser
 import diplom.gorinych.data.mapper.mapFromDtoToAddon
 import diplom.gorinych.data.mapper.mapFromDtoToCall
 import diplom.gorinych.data.mapper.mapFromDtoToFeedback
+import diplom.gorinych.data.mapper.mapFromDtoToHouse
 import diplom.gorinych.data.mapper.mapFromDtoToNote
 import diplom.gorinych.data.mapper.mapFromDtoToPromo
 import diplom.gorinych.data.mapper.mapFromDtoToReserve
@@ -21,6 +22,7 @@ import diplom.gorinych.data.remote.body_dto.UpdateUserBody
 import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
+import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
@@ -261,6 +263,12 @@ class RemoteRepositoryImpl @Inject constructor(
     override suspend fun getAllCalls(): Resource<List<Call>> {
         return Resource.handleResponse {
             diplomaApi.getAllCall().map { it.mapFromDtoToCall() }
+        }
+    }
+
+    override suspend fun getAllHouses(): Resource<List<House>> {
+        return Resource.handleResponse {
+            diplomaApi.getAllHouses().map { it.mapFromDtoToHouse() }
         }
     }
 

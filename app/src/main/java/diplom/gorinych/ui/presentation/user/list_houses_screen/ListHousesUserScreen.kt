@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import diplom.gorinych.ui.presentation.base.AppBarUser
 import diplom.gorinych.ui.presentation.base.BottomBarUser
 import diplom.gorinych.ui.presentation.base.ItemHouse
+import diplom.gorinych.ui.presentation.base.LoadingScreen
 import diplom.gorinych.ui.theme.grey
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,21 +46,27 @@ fun ListHousesUserScreen(
             )
         }
     ) { padding ->
-        LazyColumn(
-            modifier = modifier
-                .padding(padding)
-                .fillMaxWidth()
-                .background(color = grey)
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(state.value.houses) { house ->
-                ItemHouse(
-                    onClick = {
-                        navController.navigate("houseDetailScreen/${state.value.user?.id}/${house.id}")
-                    },
-                    house = house,
-                )
+        if (state.value.isLoading) {
+            LoadingScreen(
+                paddingValues = padding
+            )
+        } else {
+            LazyColumn(
+                modifier = modifier
+                    .padding(padding)
+                    .fillMaxWidth()
+                    .background(color = grey)
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(state.value.houses) { house ->
+                    ItemHouse(
+                        onClick = {
+                            navController.navigate("houseDetailScreen/${state.value.user?.id}/${house.id}")
+                        },
+                        house = house,
+                    )
+                }
             }
         }
     }

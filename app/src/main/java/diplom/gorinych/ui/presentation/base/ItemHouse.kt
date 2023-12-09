@@ -17,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.ContentScale.Companion
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -25,6 +27,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import diplom.gorinych.R
 import diplom.gorinych.domain.model.House
 import diplom.gorinych.ui.theme.baseText
@@ -46,10 +49,11 @@ fun ItemHouse(
             .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
+        AsyncImage(
             modifier = modifier.size(100.dp),
-            painter = painterResource(id = house.image),
-            contentDescription = ""
+            model = house.image,
+            contentDescription = "",
+            contentScale = ContentScale.FillWidth
         )
         Spacer(modifier = modifier.width(10.dp))
         Column(

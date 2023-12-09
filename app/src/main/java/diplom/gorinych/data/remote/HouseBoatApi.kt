@@ -15,6 +15,7 @@ import diplom.gorinych.data.remote.dto.AddonDto
 import diplom.gorinych.data.remote.dto.CallDto
 import diplom.gorinych.data.remote.dto.FeedbackDto
 import diplom.gorinych.data.remote.dto.HistoryDto
+import diplom.gorinych.data.remote.dto.HouseDto
 import diplom.gorinych.data.remote.dto.NewsDto
 import diplom.gorinych.data.remote.dto.PromoDto
 import diplom.gorinych.data.remote.dto.UserDto
@@ -100,4 +101,9 @@ interface HouseBoatApi {
 
     @GET("calls")
     suspend fun getAllCall(): List<CallDto>
+
+    //House bots
+
+    @GET("houses")
+    suspend fun getAllHouses(): List<HouseDto>
 }

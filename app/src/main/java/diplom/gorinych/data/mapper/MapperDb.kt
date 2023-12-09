@@ -53,7 +53,7 @@ fun List<HouseEntity>.mapToHouses(): List<House> {
             name = houseEntity.name,
             description = houseEntity.description,
             price = houseEntity.price,
-            image = images[houseEntity.id - 1]
+            image = "images[houseEntity.id - 1]"
         )
     }
 }

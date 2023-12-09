@@ -4,12 +4,14 @@ import diplom.gorinych.data.remote.dto.AddonDto
 import diplom.gorinych.data.remote.dto.CallDto
 import diplom.gorinych.data.remote.dto.FeedbackDto
 import diplom.gorinych.data.remote.dto.HistoryDto
+import diplom.gorinych.data.remote.dto.HouseDto
 import diplom.gorinych.data.remote.dto.NewsDto
 import diplom.gorinych.data.remote.dto.PromoDto
 import diplom.gorinych.data.remote.dto.UserDto
 import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
+import diplom.gorinych.domain.model.House
 import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
@@ -99,4 +101,15 @@ fun CallDto.mapFromDtoToCall(): Call {
         phone = phone
     )
 }
+
+fun HouseDto.mapFromDtoToHouse(): House {
+    return House(
+        id = id,
+        name = name,
+        description = description,
+        price = price,
+        image = pathImage
+    )
+}
+
 
