@@ -17,5 +17,5 @@ data class HouseDetailScreenState (
     val idUser: Int = -1,
     val nameUser: String = "",
     val idHouse: Int = -1,
-
+    val isLoading: Boolean = true,
 )

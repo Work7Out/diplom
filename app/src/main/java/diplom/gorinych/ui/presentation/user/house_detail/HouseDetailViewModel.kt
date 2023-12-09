@@ -5,8 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import diplom.gorinych.domain.model.Promo
-import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.DATA_LESS_TODAY
 import diplom.gorinych.domain.utils.EXPIRED_PROMO
 import diplom.gorinych.domain.utils.Resource
@@ -18,10 +17,10 @@ import diplom.gorinych.domain.utils.convertStringToDate
 import diplom.gorinych.domain.utils.formatLocalDateRu
 import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailEvent.AddFeedback
 import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailEvent.AddReserve
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import java.time.LocalDate
 import javax.inject.Inject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,7 +28,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HouseDetailViewModel @Inject constructor(
-    private val repository: HouseRepository,
+    private val remoteRepository: RemoteRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(HouseDetailScreenState())
@@ -73,28 +72,28 @@ class HouseDetailViewModel @Inject constructor(
                         val sumAddons = _state.value.additionsSelected.sumOf { it.price }
                         val price = _state.value.house?.price ?: 0.0
                         _state.value.copy(
-                            additionsSelected = emptyList()
+                            additionsSelected = emptyList(),
+                            message = ""
                         )
                             .updateStateUI()
-                        repository.addReserve(
+                        remoteRepository.addNewHistory(
                             idUser = _state.value.idUser,
                             idHouse = _state.value.house?.id ?: -1,
                             confirmReservation = WAITING_CONFIRM,
                             dateCreate = LocalDate.now().formatLocalDateRu(),
-                            dateBegin = houseDetailEvent.dateBegin.formatLocalDateRu(),
-                            dateEnd = houseDetailEvent.dateEnd.formatLocalDateRu(),
+                            dataBegin = houseDetailEvent.dateBegin.formatLocalDateRu(),
+                            dataEnd = houseDetailEvent.dateEnd.formatLocalDateRu(),
                             amount = (houseDetailEvent.valueDays * price + sumAddons) * (1 - (_state.value.promo?.valueDiscount
                                 ?: 0).toDouble() / 100),
-                            addtions = _state.value.additionsSelected.joinToString(separator = ", ") { it.title }
+                            additions = _state.value.additionsSelected.joinToString(separator = ", ") { it.title }
                         )
+                        loadReserves()
                     }
-                    repository.updatePromo(
-                        Promo(
-                            id = _state.value.promo?.id ?: -1,
-                            description = _state.value.promo?.description ?: "",
-                            valueDiscount = _state.value.promo?.valueDiscount ?: 0,
-                            isActive = false
-                        )
+                    remoteRepository.updatePromo(
+                        id = _state.value.promo?.id ?: -1,
+                        description = _state.value.promo?.description ?: "",
+                        valueDiscount = _state.value.promo?.valueDiscount ?: 0,
+                        isActive = false
                     )
                     delay(500)
                     _state.value.copy(
@@ -106,15 +105,20 @@ class HouseDetailViewModel @Inject constructor(
             }
 
             is AddFeedback -> {
+                _state.value.copy(
+                    isLoading = true
+                )
+                    .updateStateUI()
                 viewModelScope.launch {
-                    repository.insertFeedback(
+                    remoteRepository.addNewFeedback(
                         idUser = _state.value.idUser,
                         idHouse = _state.value.house?.id ?: -1,
-                        dateCreate = LocalDate.now().formatLocalDateRu(),
+                        dateFeedback = LocalDate.now().formatLocalDateRu(),
                         isBlocked = false,
                         rang = houseDetailEvent.rang,
                         content = houseDetailEvent.content
                     )
+                    loadFeedbacks()
                 }
             }
 
@@ -137,7 +141,8 @@ class HouseDetailViewModel @Inject constructor(
 
             is HouseDetailEvent.CheckPromo -> {
                 viewModelScope.launch {
-                    when (val resultLoadPromo = repository.getPromoByName(houseDetailEvent.query)) {
+                    when (val resultLoadPromo =
+                        remoteRepository.getPromoByDescription(houseDetailEvent.query)) {
                         is Resource.Error -> {
                             _state.value.copy(
                                 message = resultLoadPromo.message
@@ -166,13 +171,6 @@ class HouseDetailViewModel @Inject constructor(
                                 }
                             }
                         }
-
-                        null -> {
-                            _state.value.copy(
-                                message = UNCORRECT_PROMO
-                            )
-                                .updateStateUI()
-                        }
                     }
                     delay(500)
                     _state.value.copy(
@@ -185,7 +183,7 @@ class HouseDetailViewModel @Inject constructor(
     }
 
     private suspend fun loadUserData() {
-        when (val resultUser = repository.getUserById(_state.value.idUser)) {
+        when (val resultUser = remoteRepository.getUserBiId(_state.value.idUser)) {
             is Resource.Error -> {
                 _state.value.copy(
                     message = resultUser.message
@@ -205,9 +203,10 @@ class HouseDetailViewModel @Inject constructor(
     }
 
     private suspend fun loadHouseData() {
-        when (val resultHouses = repository.getDetailHouse(_state.value.idHouse)) {
+        when (val resultHouses = remoteRepository.getHouseById(_state.value.idHouse)) {
             is Resource.Error -> {
                 _state.value.copy(
+                    isLoading = false,
                     message = resultHouses.message
                 )
                     .updateStateUI()
@@ -215,6 +214,7 @@ class HouseDetailViewModel @Inject constructor(
 
             is Resource.Success -> {
                 _state.value.copy(
+                    isLoading = false,
                     message = "",
                     house = resultHouses.data
                 )
@@ -224,66 +224,63 @@ class HouseDetailViewModel @Inject constructor(
     }
 
     private suspend fun loadReserves() {
-        val resultReserves = repository.getHistoryByIdHouse(_state.value.idHouse)
-        resultReserves.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        when (val resultReserves = remoteRepository.getHistoryByHouse(_state.value.idHouse)) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    message = resultReserves.message
+                )
+                    .updateStateUI()
+            }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        message = "",
-                        reserves = it.data ?: emptyList()
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Success -> {
+                _state.value.copy(
+                    message = "",
+                    reserves = resultReserves.data ?: emptyList()
+                )
+                    .updateStateUI()
             }
         }
     }
 
     private suspend fun loadFeedbacks() {
-        val resultFeedbacks = repository.getFeedbackByHouse(_state.value.idHouse)
-        resultFeedbacks.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        Log.d("TAG feedbacks", "idhouse ${_state.value.idHouse}")
+        when (val resultFeedbacks = remoteRepository.getFeedbacksByHouse(_state.value.idHouse)) {
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        message = "",
-                        feedbacks = it.data ?: emptyList()
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Error -> {
+                Log.d("TAG feedbacks", "error ${resultFeedbacks.message}")
+                _state.value.copy(
+                    isLoading = false,
+                    message = resultFeedbacks.message
+                )
+                    .updateStateUI()
+            }
+
+            is Resource.Success -> {
+                Log.d("TAG feedbacks", "feedbacks ${resultFeedbacks.data}")
+                _state.value.copy(
+                    isLoading = false,
+                    message = "",
+                    feedbacks = resultFeedbacks.data ?: emptyList()
+                )
+                    .updateStateUI()
             }
         }
     }
 
     private suspend fun loadAdditions() {
-        val resultFeedbacks = repository.getAddons()
-        resultFeedbacks.collect {
-            when (it) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = it.message
-                    )
-                        .updateStateUI()
-                }
+        when (val resultFeedbacks = remoteRepository.getAllAddons()) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    message = resultFeedbacks.message
+                )
+                    .updateStateUI()
+            }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        additions = it.data ?: emptyList()
-                    )
-                        .updateStateUI()
-                }
+            is Resource.Success -> {
+                _state.value.copy(
+                    additions = resultFeedbacks.data ?: emptyList()
+                )
+                    .updateStateUI()
             }
         }
     }

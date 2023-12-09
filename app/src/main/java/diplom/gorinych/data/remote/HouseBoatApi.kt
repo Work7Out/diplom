@@ -3,13 +3,15 @@ package diplom.gorinych.data.remote
 import diplom.gorinych.data.remote.body_dto.AddAddonBody
 import diplom.gorinych.data.remote.body_dto.AddCallBody
 import diplom.gorinych.data.remote.body_dto.AddFeedbackBody
+import diplom.gorinych.data.remote.body_dto.AddHistoryBody
 import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
-import diplom.gorinych.data.remote.body_dto.UpdateHistoryBody
 import diplom.gorinych.data.remote.body_dto.UpdateFeedbackBody
+import diplom.gorinych.data.remote.body_dto.UpdateHistoryBody
 import diplom.gorinych.data.remote.body_dto.UpdateNewsBody
+import diplom.gorinych.data.remote.body_dto.UpdatePromoBody
 import diplom.gorinych.data.remote.body_dto.UpdateUserBody
 import diplom.gorinych.data.remote.dto.AddonDto
 import diplom.gorinych.data.remote.dto.CallDto
@@ -28,6 +30,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface HouseBoatApi {
+
     //Users
     @POST("users/login")
     suspend fun login (@Body loginBody: LoginBody) : UserDto?
@@ -36,7 +39,7 @@ interface HouseBoatApi {
     suspend fun getAllUsers () : List<UserDto>
 
     @GET("users/{userId}")
-    suspend fun getUserById (@Path("userId") userId: Int) : UserDto
+    suspend fun getUserById(@Path("userId") userId: Int): UserDto
 
     @PATCH("users")
     suspend fun updateUser(@Body updateUserBody: UpdateUserBody)
@@ -45,6 +48,9 @@ interface HouseBoatApi {
     suspend fun registration(@Body registrationBody: RegistrationBody): UserDto?
 
     //Reserve
+    @POST("history")
+    suspend fun addNewHistory(@Body addHistoryBody: AddHistoryBody)
+
     @GET("history/status")
     suspend fun getHistoryByStatus(@Query("status") status: String): List<HistoryDto>
 
@@ -53,6 +59,9 @@ interface HouseBoatApi {
 
     @GET("history/user")
     suspend fun getHistoryByUser(@Query("userId") userId: Int): List<HistoryDto>
+
+    @GET("history/house")
+    suspend fun getHistoryByHouse(@Query("houseId") houseId: Int): List<HistoryDto>
 
     @PATCH("history")
     suspend fun updateHistory(@Body updateHistoryBody: UpdateHistoryBody)
@@ -73,17 +82,25 @@ interface HouseBoatApi {
     @POST("promos")
     suspend fun addPromo(@Body addPromoBody: AddPromoBody)
 
+    @PATCH("promos")
+    suspend fun updatePromo(@Body updatePromoBody: UpdatePromoBody)
+
     @GET("promos")
     suspend fun getAllPromos(): List<PromoDto>
 
+    @GET("promos/search")
+    suspend fun getPromosByDescription(@Query("description") query: String): PromoDto?
+
 
     //Feedbacks
-
     @POST("feedback")
     suspend fun addFeedback(@Body addFeedbackBody: AddFeedbackBody)
 
     @GET("feedback")
     suspend fun getAllFeedbacks(): List<FeedbackDto>
+
+    @GET("feedback/house")
+    suspend fun getFeedbacksByHouse(@Query("houseId") houseId: Int): List<FeedbackDto>
 
     @PATCH("feedback")
     suspend fun updateFeedback(@Body updateFeedbackBody: UpdateFeedbackBody)
@@ -109,7 +126,9 @@ interface HouseBoatApi {
     suspend fun getAllCall(): List<CallDto>
 
     //House bots
-
     @GET("houses")
     suspend fun getAllHouses(): List<HouseDto>
+
+    @GET("houses/{houseId}")
+    suspend fun getHouseById(@Path("houseId") houseId: Int): HouseDto
 }

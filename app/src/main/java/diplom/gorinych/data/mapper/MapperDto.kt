@@ -12,6 +12,7 @@ import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
+import diplom.gorinych.domain.model.HouseDetail
 import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
@@ -73,6 +74,17 @@ fun PromoDto.mapFromDtoToPromo(): Promo {
     )
 }
 
+fun PromoDto?.mapFromDtoToPromoIsNull(): Promo? {
+    return if (this != null) {
+        Promo(
+            id = id,
+            description = description,
+            valueDiscount = valueDiscount,
+            isActive = isActive
+        )
+    } else null
+}
+
 fun FeedbackDto.mapFromDtoToFeedback(): Feedback {
     return Feedback(
         id = this.id,
@@ -111,5 +123,16 @@ fun HouseDto.mapFromDtoToHouse(): House {
         image = pathImage
     )
 }
+
+fun HouseDto.mapFromDtoToHouseDetail(): HouseDetail {
+    return HouseDetail(
+        id = id,
+        name = name,
+        description = description,
+        price = price,
+        image = images[id - 1],
+    )
+}
+
 
 

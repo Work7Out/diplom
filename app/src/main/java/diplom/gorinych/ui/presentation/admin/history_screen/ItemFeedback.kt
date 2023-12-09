@@ -53,7 +53,7 @@ fun ItemFeedbackScreen(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "квартира - ${feedback.idHouse}",
+            text = "хоус бот - ${feedback.idHouse}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),

@@ -4,6 +4,7 @@ import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
+import diplom.gorinych.domain.model.HouseDetail
 import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
@@ -42,4 +43,28 @@ interface RemoteRepository {
     suspend fun getAllHouses(): Resource<List<House>>
     suspend fun getHistoryByUser(userId: Int): Resource<List<Reserve>>
     suspend fun deleteHistory(historyId: Int)
+    suspend fun getHouseById(idHouse: Int): Resource<HouseDetail>
+    suspend fun getFeedbacksByHouse(houseId: Int): Resource<List<Feedback>>
+    suspend fun getHistoryByHouse(houseId: Int): Resource<List<Reserve>>
+    suspend fun getPromoByDescription(query: String): Resource<Promo?>
+    suspend fun addNewFeedback(
+        idUser: Int,
+        idHouse: Int,
+        dateFeedback: String,
+        content: String,
+        isBlocked: Boolean,
+        rang: Int
+    )
+
+    suspend fun updatePromo(id: Int, description: String, valueDiscount: Int, isActive: Boolean)
+    suspend fun addNewHistory(
+        idUser: Int,
+        idHouse: Int,
+        amount: Double,
+        confirmReservation: String,
+        additions: String,
+        dataBegin: String,
+        dataEnd: String,
+        dateCreate: String
+    )
 }

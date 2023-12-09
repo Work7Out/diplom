@@ -67,6 +67,7 @@ import androidx.navigation.NavController
 import diplom.gorinych.R
 import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.ui.presentation.base.ItemFeedback
+import diplom.gorinych.ui.presentation.base.LoadingScreen
 import diplom.gorinych.ui.presentation.login_screen.LoginEvent
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
@@ -153,223 +154,229 @@ fun HouseDetailScreen(
             }
         }
     ) { padding ->
-        Column(
-            modifier = modifier
-                .padding(padding)
-                .verticalScroll(rememberScrollState())
-                .fillMaxSize()
-                .background(color = grey)
-                .padding(10.dp),
-        ) {
-            Image(
-                modifier = modifier.fillMaxWidth(),
-                painter = painterResource(id = state.value.house?.image ?: R.drawable.image),
-                contentDescription = ""
+        if (state.value.isLoading) {
+            LoadingScreen(
+                paddingValues = padding
             )
-            Spacer(modifier = modifier.height(5.dp))
-            Text(
-                text = "${stringResource(id = R.string.price)} ${state.value.house?.price} ${
-                    stringResource(
-                        id = R.string.byn
-                    )
-                }",
-                style = TextStyle(
-                    fontSize = 25.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = blue
-                )
-            )
-            Spacer(modifier = modifier.height(5.dp))
-            Text(
-                modifier = modifier.fillMaxWidth(),
-                text = state.value.house?.description ?: "",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = baseText
-                )
-            )
-            Spacer(modifier = modifier.height(5.dp))
-            LazyRow(
+        } else {
+            Column(
                 modifier = modifier
-                    .fillMaxWidth()
+                    .padding(padding)
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
+                    .background(color = grey)
                     .padding(10.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                items(state.value.feedbacks) {
-                    ItemFeedback(
-                        feedback = it,
-                        name = state.value.nameUser
-                    )
-                }
-            }
-            Spacer(modifier = modifier.height(5.dp))
-            Text(
-                modifier = modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.choose_dates),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = baseText
-                ),
-                textAlign = TextAlign.Center
-            )
-            SelectableCalendar(
-                modifier = modifier
-                    .fillMaxWidth(),
-                monthHeader = {
-                    MonthHeader(monthState = it)
-                },
-                calendarState = calendarState,
-                dayContent = {
-                    ItemDay(
-                        state = it
-                    )
-                }
-            )
-            Spacer(modifier = modifier.height(5.dp))
-            Text(
-                modifier = modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.choose_addons),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = baseText
-                ),
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = modifier.height(5.dp))
-            LazyVerticalGrid(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .padding(10.dp),
-                columns = GridCells.Fixed(2),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                items(state.value.additions) { addon ->
-                    ItemAddon(
-                        addon = addon,
-                        isSelected = state.value.additionsSelected.contains(addon),
-                        onEvent = onEvent
-                    )
-                }
-            }
-            Spacer(modifier = modifier.height(5.dp))
-            Text(
-                modifier = modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.choose_promo),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = baseText
-                ),
-                textAlign = TextAlign.Center
-            )
-            Row(
-                modifier = modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextField(
-                    modifier = modifier.weight(8f),
-                    value = promo.value,
-                    placeholder = {
-                        Text(
-                            text = stringResource(id = R.string.add_promo),
-                            style = TextStyle(
-                                fontSize = 13.sp,
-                                fontFamily = FontFamily(Font(R.font.gilroy)),
-                                fontWeight = FontWeight(500),
-                                color = secondText,
-                            )
+                Image(
+                    modifier = modifier.fillMaxWidth(),
+                    painter = painterResource(id = state.value.house?.image ?: R.drawable.image),
+                    contentDescription = ""
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    text = "${stringResource(id = R.string.price)} ${state.value.house?.price} ${
+                        stringResource(
+                            id = R.string.byn
                         )
+                    }",
+                    style = TextStyle(
+                        fontSize = 25.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = blue
+                    )
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    modifier = modifier.fillMaxWidth(),
+                    text = state.value.house?.description ?: "",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    )
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                LazyRow(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(state.value.feedbacks) {
+                        ItemFeedback(
+                            feedback = it,
+                            name = state.value.nameUser
+                        )
+                    }
+                }
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    modifier = modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.choose_dates),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    ),
+                    textAlign = TextAlign.Center
+                )
+                SelectableCalendar(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    monthHeader = {
+                        MonthHeader(monthState = it)
                     },
-                    onValueChange = {
-                        promo.value = it
-                    })
-                Spacer(modifier = modifier.width(5.dp))
+                    calendarState = calendarState,
+                    dayContent = {
+                        ItemDay(
+                            state = it
+                        )
+                    }
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    modifier = modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.choose_addons),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    ),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                LazyVerticalGrid(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .padding(10.dp),
+                    columns = GridCells.Fixed(2),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    items(state.value.additions) { addon ->
+                        ItemAddon(
+                            addon = addon,
+                            isSelected = state.value.additionsSelected.contains(addon),
+                            onEvent = onEvent
+                        )
+                    }
+                }
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    modifier = modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.choose_promo),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    ),
+                    textAlign = TextAlign.Center
+                )
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextField(
+                        modifier = modifier.weight(8f),
+                        value = promo.value,
+                        placeholder = {
+                            Text(
+                                text = stringResource(id = R.string.add_promo),
+                                style = TextStyle(
+                                    fontSize = 13.sp,
+                                    fontFamily = FontFamily(Font(R.font.gilroy)),
+                                    fontWeight = FontWeight(500),
+                                    color = secondText,
+                                )
+                            )
+                        },
+                        onValueChange = {
+                            promo.value = it
+                        })
+                    Spacer(modifier = modifier.width(5.dp))
+                    Button(
+                        modifier = modifier.weight(1f),
+                        onClick = {
+                            onEvent(HouseDetailEvent.CheckPromo(promo.value))
+                            promo.value = ""
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        contentPadding = PaddingValues(vertical = 16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = blue
+                        ),
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.baseline_arrow_forward_24),
+                            contentDescription = "",
+                            tint = white
+                        )
+                    }
+                }
+                Spacer(modifier = modifier.height(10.dp))
                 Button(
-                    modifier = modifier.weight(1f),
-                    onClick = {
-                        onEvent(HouseDetailEvent.CheckPromo(promo.value))
-                        promo.value = ""
-                    },
+                    modifier = modifier
+                        .fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(vertical = 16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = blue
                     ),
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.baseline_arrow_forward_24),
-                        contentDescription = "",
-                        tint = white
+                    enabled = calendarState.selectionState.selection.isNotEmpty(),
+                    onClick = {
+                        onEvent(
+                            HouseDetailEvent.AddReserve(
+                                dateBegin = calendarState.selectionState.selection.first(),
+                                dateEnd = calendarState.selectionState.selection.last(),
+                                valueDays = calendarState.selectionState.selection.size,
+                                addons = emptyList() //TODO
+                            )
+                        )
+                        calendarState.selectionState.selection = emptyList()
+
+                    }) {
+                    Text(
+                        modifier = modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.do_reserve),
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.gilroy)),
+                            fontWeight = FontWeight(700),
+                            color = white,
+                        ),
+                        textAlign = TextAlign.Center
                     )
                 }
-            }
-            Spacer(modifier = modifier.height(10.dp))
-            Button(
-                modifier = modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp),
-                contentPadding = PaddingValues(vertical = 16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = blue
-                ),
-                enabled = calendarState.selectionState.selection.isNotEmpty(),
-                onClick = {
-                    onEvent(
-                        HouseDetailEvent.AddReserve(
-                            dateBegin = calendarState.selectionState.selection.first(),
-                            dateEnd = calendarState.selectionState.selection.last(),
-                            valueDays = calendarState.selectionState.selection.size,
-                            addons = emptyList() //TODO
-                        )
+                Spacer(modifier = modifier.height(10.dp))
+                Button(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(10.dp),
+                    contentPadding = PaddingValues(vertical = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = blue
+                    ),
+                    onClick = {
+                        isShowDialog.value = true
+                    }) {
+                    Text(
+                        modifier = modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.do_feedback),
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.gilroy)),
+                            fontWeight = FontWeight(700),
+                            color = white,
+                        ),
+                        textAlign = TextAlign.Center
                     )
-                    calendarState.selectionState.selection = emptyList()
-
-                }) {
-                Text(
-                    modifier = modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.do_reserve),
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.gilroy)),
-                        fontWeight = FontWeight(700),
-                        color = white,
-                    ),
-                    textAlign = TextAlign.Center
-                )
-            }
-            Spacer(modifier = modifier.height(10.dp))
-            Button(
-                modifier = modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp),
-                contentPadding = PaddingValues(vertical = 16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = blue
-                ),
-                onClick = {
-                    isShowDialog.value = true
-                }) {
-                Text(
-                    modifier = modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.do_feedback),
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.gilroy)),
-                        fontWeight = FontWeight(700),
-                        color = white,
-                    ),
-                    textAlign = TextAlign.Center
-                )
+                }
             }
         }
     }

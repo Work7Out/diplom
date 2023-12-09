@@ -1,16 +1,21 @@
 package diplom.gorinych.data.repository
 
+import android.util.Log
 import diplom.gorinych.data.mapper.mapDtoToUser
 import diplom.gorinych.data.mapper.mapFromDtoToAddon
 import diplom.gorinych.data.mapper.mapFromDtoToCall
 import diplom.gorinych.data.mapper.mapFromDtoToFeedback
 import diplom.gorinych.data.mapper.mapFromDtoToHouse
+import diplom.gorinych.data.mapper.mapFromDtoToHouseDetail
 import diplom.gorinych.data.mapper.mapFromDtoToNote
 import diplom.gorinych.data.mapper.mapFromDtoToPromo
+import diplom.gorinych.data.mapper.mapFromDtoToPromoIsNull
 import diplom.gorinych.data.mapper.mapFromDtoToReserve
 import diplom.gorinych.data.remote.HouseBoatApi
 import diplom.gorinych.data.remote.body_dto.AddAddonBody
 import diplom.gorinych.data.remote.body_dto.AddCallBody
+import diplom.gorinych.data.remote.body_dto.AddFeedbackBody
+import diplom.gorinych.data.remote.body_dto.AddHistoryBody
 import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
@@ -18,11 +23,13 @@ import diplom.gorinych.data.remote.body_dto.RegistrationBody
 import diplom.gorinych.data.remote.body_dto.UpdateFeedbackBody
 import diplom.gorinych.data.remote.body_dto.UpdateHistoryBody
 import diplom.gorinych.data.remote.body_dto.UpdateNewsBody
+import diplom.gorinych.data.remote.body_dto.UpdatePromoBody
 import diplom.gorinych.data.remote.body_dto.UpdateUserBody
 import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.House
+import diplom.gorinych.domain.model.HouseDetail
 import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
@@ -91,6 +98,32 @@ class RemoteRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun addNewHistory(
+        idUser:Int,
+        idHouse: Int,
+        amount: Double,
+        confirmReservation: String,
+        additions: String,
+        dataBegin: String,
+        dataEnd: String,
+        dateCreate: String,
+    ) {
+        Resource.handleResponse {
+            diplomaApi.addNewHistory(
+                AddHistoryBody(
+                    idUser = idUser,
+                    idHouse = idHouse,
+                    amount = amount,
+                    confirmReservation = confirmReservation,
+                    additions = additions,
+                    dataBegin = dataBegin,
+                    dataEnd = dataEnd,
+                    dateCreate = dateCreate
+                )
+            )
+        }
+    }
+
     override suspend fun getHistoryByUser(userId: Int): Resource<List<Reserve>> {
         return Resource.handleResponse {
             diplomaApi.getHistoryByUser(userId).map { it.mapFromDtoToReserve() }
@@ -155,6 +188,24 @@ class RemoteRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updatePromo(
+        id: Int,
+        description: String,
+        valueDiscount: Int,
+        isActive: Boolean
+    ) {
+        Resource.handleResponse {
+            diplomaApi.updatePromo(
+                UpdatePromoBody(
+                    id = id,
+                    description = description,
+                    valueDiscount = valueDiscount,
+                    isActive = isActive
+                )
+            )
+        }
+    }
+
     override suspend fun getAllAddons(): Resource<List<Addon>> {
         return Resource.handleResponse {
             diplomaApi.getAllAddons().map { it.mapFromDtoToAddon() }
@@ -167,9 +218,21 @@ class RemoteRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getPromoByDescription(query: String): Resource<Promo?> {
+        return Resource.handleResponse {
+            diplomaApi.getPromosByDescription(query).mapFromDtoToPromoIsNull()
+        }
+    }
+
     override suspend fun getAllHistory(): Resource<List<Reserve>> {
         return Resource.handleResponse {
             diplomaApi.getAllHistory().map { it.mapFromDtoToReserve() }
+        }
+    }
+
+    override suspend fun getHistoryByHouse(houseId: Int): Resource<List<Reserve>> {
+        return Resource.handleResponse {
+            diplomaApi.getHistoryByHouse(houseId).map { it.mapFromDtoToReserve() }
         }
     }
 
@@ -194,6 +257,34 @@ class RemoteRepositoryImpl @Inject constructor(
     override suspend fun getAllFeedbacks(): Resource<List<Feedback>> {
         return Resource.handleResponse {
             diplomaApi.getAllFeedbacks().map { it.mapFromDtoToFeedback() }
+        }
+    }
+
+    override suspend fun getFeedbacksByHouse(houseId: Int): Resource<List<Feedback>> {
+        return Resource.handleResponse {
+            diplomaApi.getFeedbacksByHouse(houseId).map { it.mapFromDtoToFeedback() }
+        }
+    }
+
+    override suspend fun addNewFeedback(
+        idUser: Int,
+        idHouse: Int,
+        dateFeedback: String,
+        content: String,
+        isBlocked: Boolean,
+        rang: Int
+    ) {
+        Resource.handleResponse {
+            diplomaApi.addFeedback(
+                AddFeedbackBody(
+                    content = content,
+                    dateCreate = dateFeedback,
+                    idHouse = idHouse,
+                    idUser = idUser,
+                    isBlocked = isBlocked,
+                    rang = rang
+                )
+            )
         }
     }
 
@@ -283,6 +374,12 @@ class RemoteRepositoryImpl @Inject constructor(
     override suspend fun getAllHouses(): Resource<List<House>> {
         return Resource.handleResponse {
             diplomaApi.getAllHouses().map { it.mapFromDtoToHouse() }
+        }
+    }
+
+    override suspend fun getHouseById(idHouse: Int): Resource<HouseDetail> {
+        return Resource.handleResponse {
+            diplomaApi.getHouseById(idHouse).mapFromDtoToHouseDetail()
         }
     }
 
