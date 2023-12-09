@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.repository.MailRepository
+import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.EMAIL_LOGIN
 import diplom.gorinych.domain.utils.EMAIL_PASSWORD
 import diplom.gorinych.domain.utils.OLD_PASSWORD_INCORRECT
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsScreenViewModel @Inject constructor(
-    private val repository: HouseRepository,
+    private val remoteRepository: RemoteRepository,
     private val savedStateHandle: SavedStateHandle,
     private val mailRepository: MailRepository
 ) : ViewModel() {
@@ -41,7 +41,7 @@ class SettingsScreenViewModel @Inject constructor(
         when (event) {
             SettingsEvent.OnSendCall -> {
                 viewModelScope.launch {
-                    repository.addCall(
+                    remoteRepository.addNewCall(
                         name = _state.value.user?.name ?: "",
                         phone = _state.value.user?.phone ?: ""
                     )
@@ -67,7 +67,7 @@ class SettingsScreenViewModel @Inject constructor(
                             )
                                 .updateStateUI()
                             _state.value.user?.copy(password = event.password)
-                                ?.let { repository.updateUser(it) }
+                                ?.let { remoteRepository.updateUser(it) }
                             viewModelScope.launch(Dispatchers.IO) {
                                 mailRepository.sendEmail(
                                     login = EMAIL_LOGIN,
@@ -90,7 +90,7 @@ class SettingsScreenViewModel @Inject constructor(
     }
 
     private suspend fun loadUserData(userId: Int) {
-        when (val result = repository.getUserById(userId)) {
+        when (val result = remoteRepository.getUserBiId(userId)) {
             is Resource.Error -> {
                 _state.value.copy(
                     message = result.message
