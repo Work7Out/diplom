@@ -1,6 +1,7 @@
 package diplom.gorinych.data.remote
 
 import diplom.gorinych.data.remote.body_dto.AddAddonBody
+import diplom.gorinych.data.remote.body_dto.AddCallBody
 import diplom.gorinych.data.remote.body_dto.AddFeedbackBody
 import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
@@ -11,6 +12,7 @@ import diplom.gorinych.data.remote.body_dto.UpdateFeedbackBody
 import diplom.gorinych.data.remote.body_dto.UpdateNewsBody
 import diplom.gorinych.data.remote.body_dto.UpdateUserBody
 import diplom.gorinych.data.remote.dto.AddonDto
+import diplom.gorinych.data.remote.dto.CallDto
 import diplom.gorinych.data.remote.dto.FeedbackDto
 import diplom.gorinych.data.remote.dto.HistoryDto
 import diplom.gorinych.data.remote.dto.NewsDto
@@ -91,4 +93,11 @@ interface HouseBoatApi {
 
     @GET("news")
     suspend fun getAllNews(): List<NewsDto>
+
+    //Calls
+    @POST("calls")
+    suspend fun addCall(@Body callBody: AddCallBody)
+
+    @GET("calls")
+    suspend fun getAllCall(): List<CallDto>
 }

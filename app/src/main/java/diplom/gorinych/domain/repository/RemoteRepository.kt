@@ -1,6 +1,7 @@
 package diplom.gorinych.domain.repository
 
 import diplom.gorinych.domain.model.Addon
+import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
@@ -35,4 +36,6 @@ interface RemoteRepository {
     suspend fun addNewNews(title: String, content: String, dateCreate: String)
     suspend fun updateNews(note: Note)
     suspend fun deleteNews(newsId: Int)
+    suspend fun addNewCall(name: String, phone: String)
+    suspend fun getAllCalls(): Resource<List<Call>>
 }

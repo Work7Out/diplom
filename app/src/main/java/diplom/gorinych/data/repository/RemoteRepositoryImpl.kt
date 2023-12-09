@@ -2,12 +2,14 @@ package diplom.gorinych.data.repository
 
 import diplom.gorinych.data.mapper.mapDtoToUser
 import diplom.gorinych.data.mapper.mapFromDtoToAddon
+import diplom.gorinych.data.mapper.mapFromDtoToCall
 import diplom.gorinych.data.mapper.mapFromDtoToFeedback
 import diplom.gorinych.data.mapper.mapFromDtoToNote
 import diplom.gorinych.data.mapper.mapFromDtoToPromo
 import diplom.gorinych.data.mapper.mapFromDtoToReserve
 import diplom.gorinych.data.remote.HouseBoatApi
 import diplom.gorinych.data.remote.body_dto.AddAddonBody
+import diplom.gorinych.data.remote.body_dto.AddCallBody
 import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
@@ -17,6 +19,7 @@ import diplom.gorinych.data.remote.body_dto.UpdateHistoryBody
 import diplom.gorinych.data.remote.body_dto.UpdateNewsBody
 import diplom.gorinych.data.remote.body_dto.UpdateUserBody
 import diplom.gorinych.domain.model.Addon
+import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
@@ -240,5 +243,26 @@ class RemoteRepositoryImpl @Inject constructor(
             diplomaApi.deleteNews(newsId)
         }
     }
+
+    override suspend fun addNewCall(
+        name: String,
+        phone: String
+    ) {
+        Resource.handleResponse {
+            diplomaApi.addCall(
+                AddCallBody(
+                    name = name,
+                    phone = phone
+                )
+            )
+        }
+    }
+
+    override suspend fun getAllCalls(): Resource<List<Call>> {
+        return Resource.handleResponse {
+            diplomaApi.getAllCall().map { it.mapFromDtoToCall() }
+        }
+    }
+
 }
 

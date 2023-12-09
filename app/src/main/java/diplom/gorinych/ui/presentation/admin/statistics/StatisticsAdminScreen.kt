@@ -30,6 +30,7 @@ import diplom.gorinych.R
 import diplom.gorinych.ui.presentation.admin.news.ItemNote
 import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
+import diplom.gorinych.ui.presentation.base.LoadingScreen
 import diplom.gorinych.ui.theme.PurpleGrey80
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.grey
@@ -58,95 +59,101 @@ fun StatisticsAdminScreen(
             )
         }
     ) { padding ->
-        Column(
-            modifier = modifier
-                .padding(padding)
-                .fillMaxSize()
-                .background(color = grey)
-                .padding(10.dp),
-        ) {
-            Text(
-                text = "${stringResource(id = R.string.all_orders)} ${state.value.countOrders}",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = baseText
-                ),
+        if (state.value.isLoading) {
+            LoadingScreen(
+                paddingValues = padding
             )
-            Spacer(modifier = modifier.height(5.dp))
-            Text(
-                text = "${stringResource(id = R.string.confirm_orders)} ${state.value.countConfirmOrders}",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = baseText
-                ),
-            )
-            Spacer(modifier = modifier.height(5.dp))
-            Text(
-                text = "${stringResource(id = R.string.amount)} ${state.value.amountAll} ${
-                    stringResource(
-                        id = R.string.byn
-                    )
-                }",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = baseText
-                )
-            )
-            Spacer(modifier = modifier.height(5.dp))
-            Text(
-                text = "${stringResource(id = R.string.amount_last_month)} ${state.value.amountLastMonth} ${
-                    stringResource(
-                        id = R.string.byn
-                    )
-                }",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = baseText
-                )
-            )
-            Spacer(modifier = modifier.height(5.dp))
-            Text(
-                text = "${stringResource(id = R.string.amount_last_year)} ${state.value.amountLastSeason} ${
-                    stringResource(
-                        id = R.string.byn
-                    )
-                }",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = baseText
-                )
-            )
-            Spacer(modifier = modifier.height(10.dp))
-            Text(
-                modifier = modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.history_calls),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(600),
-                    color = baseText
-                ),
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = modifier.height(5.dp))
-            LazyColumn(
+        } else {
+            Column(
                 modifier = modifier
-                    .fillMaxWidth()
+                    .padding(padding)
+                    .fillMaxSize()
+                    .background(color = grey)
                     .padding(10.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                items(state.value.calls) { call ->
-                    ItemCall(call = call)
+                Text(
+                    text = "${stringResource(id = R.string.all_orders)} ${state.value.countOrders}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    ),
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    text = "${stringResource(id = R.string.confirm_orders)} ${state.value.countConfirmOrders}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    ),
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    text = "${stringResource(id = R.string.amount)} ${state.value.amountAll} ${
+                        stringResource(
+                            id = R.string.byn
+                        )
+                    }",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    )
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    text = "${stringResource(id = R.string.amount_last_month)} ${state.value.amountLastMonth} ${
+                        stringResource(
+                            id = R.string.byn
+                        )
+                    }",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    )
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    text = "${stringResource(id = R.string.amount_last_year)} ${state.value.amountLastSeason} ${
+                        stringResource(
+                            id = R.string.byn
+                        )
+                    }",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    )
+                )
+                Spacer(modifier = modifier.height(10.dp))
+                Text(
+                    modifier = modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.history_calls),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    ),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                LazyColumn(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(state.value.calls) { call ->
+                        ItemCall(call = call)
+                    }
                 }
             }
         }

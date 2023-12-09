@@ -1,12 +1,14 @@
 package diplom.gorinych.data.mapper
 
 import diplom.gorinych.data.remote.dto.AddonDto
+import diplom.gorinych.data.remote.dto.CallDto
 import diplom.gorinych.data.remote.dto.FeedbackDto
 import diplom.gorinych.data.remote.dto.HistoryDto
 import diplom.gorinych.data.remote.dto.NewsDto
 import diplom.gorinych.data.remote.dto.PromoDto
 import diplom.gorinych.data.remote.dto.UserDto
 import diplom.gorinych.domain.model.Addon
+import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.model.Promo
@@ -89,3 +91,12 @@ fun NewsDto.mapFromDtoToNote(): Note {
         dateCreate = dateCreate
     )
 }
+
+fun CallDto.mapFromDtoToCall(): Call {
+    return Call(
+        id = id,
+        name = name,
+        phone = phone
+    )
+}
+

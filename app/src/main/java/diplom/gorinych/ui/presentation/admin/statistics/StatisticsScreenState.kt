@@ -13,5 +13,6 @@ data class StatisticsScreenState(
     val amountLastMonth: Double = 0.0,
     val amountLastSeason: Double = 0.0,
     val countNewReserves: Int = 0,
+    val isLoading: Boolean = true,
     val calls: List<Call> = emptyList(),
 )
