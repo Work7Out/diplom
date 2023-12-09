@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.Resource.Error
 import diplom.gorinych.domain.utils.Resource.Success
 import diplom.gorinych.ui.presentation.user.history_user.HistoryUserEvent.OnDeleteReserve
@@ -18,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryUserScreenViewModel @Inject constructor(
-    private val repository: HouseRepository,
+    private val remoteRepository: RemoteRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = MutableStateFlow(HistoryUserScreenState())
@@ -33,14 +35,14 @@ class HistoryUserScreenViewModel @Inject constructor(
         when (historyUserEvent) {
             is OnDeleteReserve -> {
                 viewModelScope.launch {
-                    repository.deleteReserve(historyUserEvent.reserve)
-                    getHistory(_state.value.idUser)
+                    remoteRepository.deleteHistory(historyUserEvent.reserve.id)
+                    getHistory()
                 }
             }
 
             HistoryUserEvent.OnSendCall -> {
                 viewModelScope.launch {
-                    repository.addCall(
+                    remoteRepository.addNewCall(
                         name = _state.value.user?.name ?: "",
                         phone = _state.value.user?.phone ?: ""
                     )
@@ -56,33 +58,34 @@ class HistoryUserScreenViewModel @Inject constructor(
                 idUser = userId,
             )
                 .updateStateUI()
-            async { getHistory(_state.value.idUser) }.onAwait
+            async { getHistory() }.onAwait
             async { loadUserData() }.onAwait
         }
     }
 
     private suspend fun loadUserData() {
-        when (val result = repository.getUserById(_state.value.idUser)) {
+        when (val resultUser = remoteRepository.getUserBiId(_state.value.idUser)) {
             is Error -> {
                 _state.value.copy(
-                    message = result.message
+                    message = resultUser.message
                 )
                     .updateStateUI()
             }
 
             is Success -> {
                 _state.value.copy(
-                    user = result.data
+                    user = resultUser.data
                 )
                     .updateStateUI()
             }
         }
     }
 
-    private suspend fun getHistory(id: Int) {
-        when (val result = repository.getReserveByUser(id)) {
+    private suspend fun getHistory() {
+        when (val result = remoteRepository.getHistoryByUser(_state.value.idUser)) {
             is Error -> {
                 _state.value.copy(
+                    isLoading = false,
                     message = result.message
                 )
                     .updateStateUI()
@@ -90,6 +93,7 @@ class HistoryUserScreenViewModel @Inject constructor(
 
             is Success -> {
                 _state.value.copy(
+                    isLoading = false,
                     reserves = result.data ?: emptyList()
                 )
                     .updateStateUI()

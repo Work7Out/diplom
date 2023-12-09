@@ -91,6 +91,20 @@ class RemoteRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getHistoryByUser(userId: Int): Resource<List<Reserve>> {
+        return Resource.handleResponse {
+            diplomaApi.getHistoryByUser(userId).map { it.mapFromDtoToReserve() }
+        }
+    }
+
+    override suspend fun deleteHistory(
+        historyId: Int
+    ) {
+        Resource.handleResponse {
+            diplomaApi.deleteHistory(historyId)
+        }
+    }
+
     override suspend fun updateUser(
         user:User
     ) {

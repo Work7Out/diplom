@@ -40,4 +40,6 @@ interface RemoteRepository {
     suspend fun addNewCall(name: String, phone: String)
     suspend fun getAllCalls(): Resource<List<Call>>
     suspend fun getAllHouses(): Resource<List<House>>
+    suspend fun getHistoryByUser(userId: Int): Resource<List<Reserve>>
+    suspend fun deleteHistory(historyId: Int)
 }

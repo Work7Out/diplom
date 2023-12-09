@@ -51,8 +51,14 @@ interface HouseBoatApi {
     @GET("history")
     suspend fun getAllHistory(): List<HistoryDto>
 
+    @GET("history/user")
+    suspend fun getHistoryByUser(@Query("userId") userId: Int): List<HistoryDto>
+
     @PATCH("history")
     suspend fun updateHistory(@Body updateHistoryBody: UpdateHistoryBody)
+
+    @DELETE("history/{id}")
+    suspend fun deleteHistory(@Path("id") idHistory: Int)
 
 
     //Addons

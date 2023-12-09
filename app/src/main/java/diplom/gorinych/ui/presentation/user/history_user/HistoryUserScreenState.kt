@@ -7,5 +7,6 @@ data class HistoryUserScreenState (
     val message:String? = null,
     val idUser: Int = -1,
     val user: User? =null,
+    val isLoading: Boolean = true,
     val reserves: List<Reserve> = emptyList()
 )

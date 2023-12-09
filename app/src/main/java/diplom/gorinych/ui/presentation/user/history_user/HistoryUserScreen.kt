@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import diplom.gorinych.ui.presentation.base.AppBarUser
 import diplom.gorinych.ui.presentation.base.BottomBarUser
 import diplom.gorinych.ui.presentation.base.ItemHistory
+import diplom.gorinych.ui.presentation.base.LoadingScreen
 import diplom.gorinych.ui.theme.grey
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,20 +45,26 @@ fun HistoryUserScreen(
             )
         }
     ) { padding ->
-        LazyColumn(
-            modifier = modifier
-                .padding(padding)
-                .fillMaxSize()
-                .background(color = grey)
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(state.value.reserves) { reserve ->
-                ItemHistory(
-                    reserve = reserve,
-                    onClick = {
-                        onEvent(HistoryUserEvent.OnDeleteReserve(reserve))
-                    })
+        if (state.value.isLoading) {
+            LoadingScreen(
+                paddingValues = padding
+            )
+        } else {
+            LazyColumn(
+                modifier = modifier
+                    .padding(padding)
+                    .fillMaxSize()
+                    .background(color = grey)
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(state.value.reserves) { reserve ->
+                    ItemHistory(
+                        reserve = reserve,
+                        onClick = {
+                            onEvent(HistoryUserEvent.OnDeleteReserve(reserve))
+                        })
+                }
             }
         }
     }
