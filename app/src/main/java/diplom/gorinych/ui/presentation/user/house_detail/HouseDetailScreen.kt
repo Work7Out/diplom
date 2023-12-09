@@ -2,7 +2,6 @@ package diplom.gorinych.ui.presentation.user.house_detail
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +30,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -47,11 +45,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -64,11 +61,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import diplom.gorinych.R
-import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.ui.presentation.base.ItemFeedback
 import diplom.gorinych.ui.presentation.base.LoadingScreen
-import diplom.gorinych.ui.presentation.login_screen.LoginEvent
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.grey
@@ -167,10 +163,11 @@ fun HouseDetailScreen(
                     .background(color = grey)
                     .padding(10.dp),
             ) {
-                Image(
+                AsyncImage(
                     modifier = modifier.fillMaxWidth(),
-                    painter = painterResource(id = state.value.house?.image ?: R.drawable.image),
-                    contentDescription = ""
+                    model = state.value.house?.image,
+                    contentDescription = "",
+                    contentScale = ContentScale.FillWidth
                 )
                 Spacer(modifier = modifier.height(5.dp))
                 Text(

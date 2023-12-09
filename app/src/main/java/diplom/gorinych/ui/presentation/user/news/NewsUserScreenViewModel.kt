@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.Resource
 import kotlinx.coroutines.async

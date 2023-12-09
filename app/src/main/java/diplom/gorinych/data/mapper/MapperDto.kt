@@ -131,7 +131,7 @@ fun HouseDto.mapFromDtoToHouseDetail(): HouseDetail {
         name = name,
         description = description,
         price = price,
-        image = images[id - 1],
+        image = pathImage,
     )
 }
 

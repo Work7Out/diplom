@@ -5,9 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import diplom.gorinych.domain.repository.HouseRepository
 import diplom.gorinych.domain.repository.RemoteRepository
-import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.Resource.Error
 import diplom.gorinych.domain.utils.Resource.Success
 import diplom.gorinych.ui.presentation.user.history_user.HistoryUserEvent.OnDeleteReserve
