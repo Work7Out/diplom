@@ -27,11 +27,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import diplom.gorinych.R
-import diplom.gorinych.ui.presentation.admin.news.ItemNote
 import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
 import diplom.gorinych.ui.presentation.base.LoadingScreen
-import diplom.gorinych.ui.theme.PurpleGrey80
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.grey
 
@@ -92,7 +90,32 @@ fun StatisticsAdminScreen(
                 )
                 Spacer(modifier = modifier.height(5.dp))
                 Text(
-                    text = "${stringResource(id = R.string.amount)} ${state.value.amountAll} ${
+                    text = "${stringResource(id = R.string.amount)} ${
+                        String.format(
+                            "%.2f",
+                            state.value.amountAll
+                        )
+                    } ${
+                        stringResource(
+                            id = R.string.byn
+                        )
+                    }",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    )
+                )
+                Spacer(modifier = modifier.height(5.dp))
+
+                Text(
+                    text = "${stringResource(id = R.string.amount_last_month)} ${
+                        String.format(
+                            "%.2f",
+                            state.value.amountLastMonth
+                        )
+                    } ${
                         stringResource(
                             id = R.string.byn
                         )
@@ -106,21 +129,12 @@ fun StatisticsAdminScreen(
                 )
                 Spacer(modifier = modifier.height(5.dp))
                 Text(
-                    text = "${stringResource(id = R.string.amount_last_month)} ${state.value.amountLastMonth} ${
-                        stringResource(
-                            id = R.string.byn
+                    text = "${stringResource(id = R.string.amount_last_year)} ${
+                        String.format(
+                            "%.2f",
+                            state.value.amountLastSeason
                         )
-                    }",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.gilroy)),
-                        fontWeight = FontWeight(600),
-                        color = baseText
-                    )
-                )
-                Spacer(modifier = modifier.height(5.dp))
-                Text(
-                    text = "${stringResource(id = R.string.amount_last_year)} ${state.value.amountLastSeason} ${
+                    } ${
                         stringResource(
                             id = R.string.byn
                         )

@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.sp
 import diplom.gorinych.R
 import diplom.gorinych.ui.presentation.base.FeedbackStars
 import diplom.gorinych.ui.presentation.base.calculateCheckedStar
-import diplom.gorinych.ui.theme.Pink80
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.lightGrey
 import diplom.gorinych.ui.theme.secondText

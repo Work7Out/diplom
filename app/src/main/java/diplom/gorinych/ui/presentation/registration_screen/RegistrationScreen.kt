@@ -36,23 +36,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import diplom.gorinych.R
 import diplom.gorinych.R.font
 import diplom.gorinych.R.string
 import diplom.gorinych.domain.utils.ALREADY_EXIST
 import diplom.gorinych.domain.utils.PhoneNumberTransformation
-import diplom.gorinych.domain.utils.SUCCESS_REGISTRATION
 import diplom.gorinych.domain.utils.isEmailValid
-import diplom.gorinych.domain.utils.sendMail
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.secondText
 import diplom.gorinych.ui.theme.thirdText
 import diplom.gorinych.ui.theme.white
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -101,7 +96,7 @@ fun RegistrationScreen(
                         text = stringResource(id = string.enter_login),
                         style = TextStyle(
                             fontSize = 13.sp,
-                            fontFamily = FontFamily(Font(R.font.gilroy)),
+                            fontFamily = FontFamily(Font(font.gilroy)),
                             fontWeight = FontWeight(500),
                             color = secondText,
                         )
@@ -123,7 +118,7 @@ fun RegistrationScreen(
                         text = stringResource(id = string.enter_password),
                         style = TextStyle(
                             fontSize = 13.sp,
-                            fontFamily = FontFamily(Font(R.font.gilroy)),
+                            fontFamily = FontFamily(Font(font.gilroy)),
                             fontWeight = FontWeight(500),
                             color = secondText,
                         )
@@ -143,7 +138,7 @@ fun RegistrationScreen(
                         text = stringResource(id = string.enter_phone),
                         style = TextStyle(
                             fontSize = 13.sp,
-                            fontFamily = FontFamily(Font(R.font.gilroy)),
+                            fontFamily = FontFamily(Font(font.gilroy)),
                             fontWeight = FontWeight(500),
                             color = secondText,
                         )
@@ -167,7 +162,7 @@ fun RegistrationScreen(
                         text = stringResource(id = string.enter_email),
                         style = TextStyle(
                             fontSize = 13.sp,
-                            fontFamily = FontFamily(Font(R.font.gilroy)),
+                            fontFamily = FontFamily(Font(font.gilroy)),
                             fontWeight = FontWeight(500),
                             color = secondText,
                         )
@@ -217,7 +212,7 @@ fun RegistrationScreen(
                     text = stringResource(id = string.do_registration),
                     style = TextStyle(
                         fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontFamily = FontFamily(Font(font.gilroy)),
                         fontWeight = FontWeight(700),
                         color = white,
                     )
@@ -228,7 +223,7 @@ fun RegistrationScreen(
                     text = state.value.message!!,
                     style = TextStyle(
                         fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontFamily = FontFamily(Font(font.gilroy)),
                         fontWeight = FontWeight(600),
                         color = thirdText,
                     )

@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import diplom.gorinych.R
@@ -80,21 +79,4 @@ fun ItemFeedback(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun SampleItemFeedback() {
-    ItemFeedback(
-        feedback = Feedback(
-            id =1,
-            idUser = 1,
-            idHouse = 1,
-            isBlocked = false,
-            content = "ddfdjfdhj fvgffgf",
-            rang = 3,
-            dateFeedback = "2023-03-31"
-        ),
-        name = "Petia"
-    )
 }

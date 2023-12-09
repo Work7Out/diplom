@@ -43,7 +43,7 @@ fun ItemFeedbackScreen(
             .padding(10.dp)
     ) {
         Text(
-            text = "пользователь - ${feedback.idUser}",
+            text = "${stringResource(id = R.string.user_login)} ${feedback.idUser}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -53,7 +53,7 @@ fun ItemFeedbackScreen(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "хоус бот - ${feedback.idHouse}",
+            text = "${stringResource(id = R.string.house_boat)} ${feedback.idHouse}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -85,7 +85,7 @@ fun ItemFeedbackScreen(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "оценка - ${feedback.rang}",
+            text = "${stringResource(id = R.string.rang)} ${feedback.rang}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),

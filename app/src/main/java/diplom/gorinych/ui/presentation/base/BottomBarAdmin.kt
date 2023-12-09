@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import diplom.gorinych.R
 import diplom.gorinych.R.drawable
 import diplom.gorinych.ui.presentation.navigation.NavigationDestination
 import diplom.gorinych.ui.theme.baseText

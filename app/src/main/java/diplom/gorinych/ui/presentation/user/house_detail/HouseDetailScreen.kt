@@ -332,7 +332,6 @@ fun HouseDetailScreen(
                                 dateBegin = calendarState.selectionState.selection.first(),
                                 dateEnd = calendarState.selectionState.selection.last(),
                                 valueDays = calendarState.selectionState.selection.size,
-                                addons = emptyList() //TODO
                             )
                         )
                         calendarState.selectionState.selection = emptyList()

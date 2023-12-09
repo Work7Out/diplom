@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -25,8 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import diplom.gorinych.R
+import diplom.gorinych.R.string
 import diplom.gorinych.domain.model.User
-import diplom.gorinych.ui.theme.PurpleGrey80
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.white
@@ -47,7 +48,7 @@ fun ItemUser(
             .padding(10.dp)
     ) {
         Text(
-            text = "логин - ${user.name}",
+            text = "${stringResource(id = string.user_login)} ${user.name}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -58,7 +59,7 @@ fun ItemUser(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "пароль - ${user.password}",
+            text = "${stringResource(id = string.user_password)} ${user.password}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -69,7 +70,7 @@ fun ItemUser(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "роль - ${user.role}",
+            text = "${stringResource(id = string.user_role)} ${user.role}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -80,7 +81,7 @@ fun ItemUser(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = if (user.isBlocked) "Заблокирован" else "Не заблокирован",
+            text = if (user.isBlocked) stringResource(id = string.blocked) else stringResource(id = string.not_blocked),
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -90,7 +91,7 @@ fun ItemUser(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "телефон - ${user.phone}",
+            text = "${stringResource(id = string.phone)} ${user.phone}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -101,7 +102,7 @@ fun ItemUser(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "email - ${user.email}",
+            text = "${stringResource(id = string.user_email)} ${user.email}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -123,7 +124,7 @@ fun ItemUser(
             }) {
             Text(
                 modifier = modifier.fillMaxWidth(),
-                text = if (user.isBlocked) "Разблокировать" else "Заблокировать",
+                text = if (user.isBlocked) stringResource(id = string.make_unblocked) else stringResource(id = string.make_blocked) ,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(R.font.gilroy)),

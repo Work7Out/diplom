@@ -8,7 +8,7 @@ import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.domain.utils.calculateAllSum
-import diplom.gorinych.domain.utils.calculateComfirmOrders
+import diplom.gorinych.domain.utils.calculateConfirmOrders
 import diplom.gorinych.domain.utils.calculateMonthSum
 import diplom.gorinych.domain.utils.calculateSeasonSum
 import kotlinx.coroutines.async
@@ -57,7 +57,7 @@ class StatisticsViewModel @Inject constructor(
                     .updateStateUI()
                 _state.value.copy(
                     countOrders = _state.value.reserves.size,
-                    countConfirmOrders = calculateComfirmOrders(_state.value.reserves),
+                    countConfirmOrders = calculateConfirmOrders(_state.value.reserves),
                     amountAll = calculateAllSum(_state.value.reserves),
                     amountLastMonth = calculateMonthSum(_state.value.reserves),
                     amountLastSeason = calculateSeasonSum(_state.value.reserves)

@@ -8,8 +8,6 @@ sealed class HouseDetailEvent {
         val dateBegin: LocalDate,
         val dateEnd: LocalDate,
         val valueDays: Int,
-        val addons: List<String>,
-      //  val additions: String
     ): HouseDetailEvent()
 
     class AddFeedback(
@@ -20,14 +18,4 @@ sealed class HouseDetailEvent {
     class AddAddon(val addon: Addon):HouseDetailEvent()
     class CheckPromo(val query: String):HouseDetailEvent()
 
-  /*  class DeleteReserve(
-        val id: Int,
-        val idUser: Int,
-        val idHouse: Int,
-        val dateBegin: String,
-        val dateEnd: String,
-        val confirmReservation: String,
-        val amount: Double,
-        val dateCreate: String
-    ): HouseDetailEvent()*/
 }

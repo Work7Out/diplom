@@ -1,6 +1,5 @@
 package diplom.gorinych.ui.presentation.user.house_detail
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -243,11 +242,9 @@ class HouseDetailViewModel @Inject constructor(
     }
 
     private suspend fun loadFeedbacks() {
-        Log.d("TAG feedbacks", "idhouse ${_state.value.idHouse}")
         when (val resultFeedbacks = remoteRepository.getFeedbacksByHouse(_state.value.idHouse)) {
 
             is Resource.Error -> {
-                Log.d("TAG feedbacks", "error ${resultFeedbacks.message}")
                 _state.value.copy(
                     isLoading = false,
                     message = resultFeedbacks.message
@@ -256,7 +253,6 @@ class HouseDetailViewModel @Inject constructor(
             }
 
             is Resource.Success -> {
-                Log.d("TAG feedbacks", "feedbacks ${resultFeedbacks.data}")
                 _state.value.copy(
                     isLoading = false,
                     message = "",

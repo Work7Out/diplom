@@ -1,6 +1,5 @@
 package diplom.gorinych.data.repository
 
-import android.util.Log
 import diplom.gorinych.data.mapper.mapDtoToUser
 import diplom.gorinych.data.mapper.mapDtoToUserNull
 import diplom.gorinych.data.mapper.mapFromDtoToAddon

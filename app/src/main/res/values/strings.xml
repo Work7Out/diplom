@@ -61,4 +61,15 @@
     <string name="do_feedback">Оставить отзыв</string>
     <string name="enter_feedback">Введите отзыв</string>
 
+
+    <string name="user_login">логин -</string>
+    <string name="user_password">пароль -</string>
+    <string name="user_role">роль -</string>
+    <string name="user_email">email -</string>
+    <string name="house_boat">хоуз бот -</string>
+    <string name="begin">начало -</string>
+    <string name="end">конец -</string>
+    <string name="reserve_amount">сумма -</string>
+    <string name="state_reserve">статус регистрации -</string>
+    <string name="rang">оценка -</string>
 </resources>

@@ -44,7 +44,7 @@ fun ItemAdminHistory(
             .padding(10.dp)
     ) {
         Text(
-            text = "логин - ${reserve.idUser}",
+            text = "${stringResource(id = R.string.user_login)} ${reserve.idUser}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -54,7 +54,7 @@ fun ItemAdminHistory(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "дом - ${reserve.idHouse}",
+            text = "${stringResource(id = R.string.house_boat)} ${reserve.idHouse}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -65,7 +65,7 @@ fun ItemAdminHistory(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "начало - ${reserve.dateBegin}",
+            text = "${stringResource(id = R.string.begin)} ${reserve.dateBegin}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -76,7 +76,7 @@ fun ItemAdminHistory(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "конец - ${reserve.dateEnd}",
+            text = "${stringResource(id = R.string.end)} ${reserve.dateEnd}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -87,7 +87,7 @@ fun ItemAdminHistory(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "сумма - ${reserve.amount}",
+            text = "${stringResource(id = R.string.reserve_amount)} ${reserve.amount}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
@@ -98,7 +98,7 @@ fun ItemAdminHistory(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "статус регистрации - ${reserve.confirmReservation}",
+            text = "${stringResource(id = R.string.state_reserve)} ${reserve.confirmReservation}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
