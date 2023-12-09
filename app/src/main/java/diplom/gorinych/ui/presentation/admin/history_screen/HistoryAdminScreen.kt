@@ -32,6 +32,7 @@ import diplom.gorinych.domain.utils.INACTIVE
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
+import diplom.gorinych.ui.presentation.base.LoadingScreen
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.grey
@@ -60,74 +61,81 @@ fun HistoryAdminScreen(
             )
         }
     ) { padding ->
-        Column(
-            modifier = modifier
-                .padding(padding)
-                .fillMaxSize()
-                .background(color = grey)
-                .padding(horizontal = 10.dp)
-        ) {
-            Row(
+        if (state.value.isLoading) {
+            LoadingScreen(
+                paddingValues = padding
+            )
+        } else {
+            Column(
                 modifier = modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
+                    .padding(padding)
+                    .fillMaxSize()
+                    .background(color = grey)
+                    .padding(horizontal = 10.dp)
             ) {
-                TextButton(onClick = {
-                    onEvent(HistoryScreenEvent.OnChangeHistoryState(HistoryState.ReserveState))
-                }) {
-                    Text(
-                        text = stringResource(id = R.string.history_reserve),
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            fontFamily = FontFamily(Font(R.font.gilroy)),
-                            fontWeight = FontWeight(600),
-                            color = if (state.value.historyState is HistoryState.ReserveState) blue else baseText,
-                        )
-                    )
-                }
-                TextButton(onClick = {
-                    onEvent(HistoryScreenEvent.OnChangeHistoryState(HistoryState.FeedbackState))
-                }) {
-                    Text(
-                        text = stringResource(id = R.string.history_feedback),
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            fontFamily = FontFamily(Font(R.font.gilroy)),
-                            fontWeight = FontWeight(600),
-                            color = if (state.value.historyState is HistoryState.FeedbackState) blue else baseText,
-                        )
-                    )
-                }
-            }
-            when (state.value.historyState) {
-                HistoryState.FeedbackState -> {
-                    LazyColumn(
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        items(state.value.feedbacks) { feedback ->
-                            ItemFeedbackScreen(
-                                feedback = feedback,
-                                onEvent = onEvent
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    TextButton(onClick = {
+                        onEvent(HistoryScreenEvent.OnChangeHistoryState(HistoryState.ReserveState))
+                    }) {
+                        Text(
+                            text = stringResource(id = R.string.history_reserve),
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = FontFamily(Font(R.font.gilroy)),
+                                fontWeight = FontWeight(600),
+                                color = if (state.value.historyState is HistoryState.ReserveState) blue else baseText,
                             )
-                        }
+                        )
+                    }
+                    TextButton(onClick = {
+                        onEvent(HistoryScreenEvent.OnChangeHistoryState(HistoryState.FeedbackState))
+                    }) {
+                        Text(
+                            text = stringResource(id = R.string.history_feedback),
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = FontFamily(Font(R.font.gilroy)),
+                                fontWeight = FontWeight(600),
+                                color = if (state.value.historyState is HistoryState.FeedbackState) blue else baseText,
+                            )
+                        )
                     }
                 }
-                HistoryState.ReserveState -> {
-                    LazyColumn(
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        items(state.value.reserves) { reserve ->
-                            val statuses = listOf(INACTIVE, WAITING_CONFIRM, ACTIVE)
-                            ItemAdminHistory(
-                                reserve = reserve,
-                                statuses = statuses,
-                                onEvent = onEvent
-                            )
+                when (state.value.historyState) {
+                    HistoryState.FeedbackState -> {
+                        LazyColumn(
+                            modifier = modifier
+                                .fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(state.value.feedbacks) { feedback ->
+                                ItemFeedbackScreen(
+                                    feedback = feedback,
+                                    onEvent = onEvent
+                                )
+                            }
+                        }
+                    }
+
+                    HistoryState.ReserveState -> {
+                        LazyColumn(
+                            modifier = modifier
+                                .fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(state.value.reserves) { reserve ->
+                                val statuses = listOf(INACTIVE, WAITING_CONFIRM, ACTIVE)
+                                ItemAdminHistory(
+                                    reserve = reserve,
+                                    statuses = statuses,
+                                    onEvent = onEvent
+                                )
+                            }
                         }
                     }
                 }

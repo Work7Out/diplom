@@ -57,6 +57,7 @@ const val SUCCESS_REGISTRATION = "Успешная регистрация"
 const val USER_BLOCKED = "Пользователь заблокирован"
 const val USER_UNBLOCKED = "Пользователь разблокирован"
 const val USER = "Пользователь:"
+const val FEEDBACK_ST = "Отзыв:"
 const val BLOCKED = "заблокирован"
 const val UNBLOCKED = "разблокирован"
 
@@ -73,4 +74,4 @@ const val UNCORRECT_PROMO = "Неверный промокод"
 const val EXPIRED_PROMO = "Промокод уже использован"
 const val SUCCESS_PROMO = "Промокод применен"
 
-const val BASE_URL = "https://2420-109-198-122-196.ngrok-free.app/"
+const val BASE_URL = "https://8dec-109-198-122-196.ngrok-free.app/"

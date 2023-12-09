@@ -9,5 +9,6 @@ data class HistoryScreenState(
     val message:String? = null,
     val idUser: Int = -1,
     val countNewReserves: Int = 0,
-    val historyState: HistoryState = HistoryState.ReserveState
+    val historyState: HistoryState = HistoryState.ReserveState,
+    val isLoading: Boolean = true,
 )

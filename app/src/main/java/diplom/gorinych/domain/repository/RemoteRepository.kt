@@ -1,6 +1,7 @@
 package diplom.gorinych.domain.repository
 
 import diplom.gorinych.domain.model.Addon
+import diplom.gorinych.domain.model.Feedback
 import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
@@ -24,4 +25,9 @@ interface RemoteRepository {
     suspend fun addNewPromo(description: String, valueDiscount: Int, isActive: Boolean)
     suspend fun getAllAddons(): Resource<List<Addon>>
     suspend fun getAllPromos(): Resource<List<Promo>>
+    suspend fun getAllHistory(): Resource<List<Reserve>>
+    suspend fun getAllFeedbacks(): Resource<List<Feedback>>
+    suspend fun updateFeedback(feedback: Feedback)
+    suspend fun updateHistory(reserve: Reserve)
+    suspend fun getUserBiId(idUser: Int): Resource<User>
 }

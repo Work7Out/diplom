@@ -36,6 +36,7 @@ import androidx.navigation.NavController
 import diplom.gorinych.R
 import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
+import diplom.gorinych.ui.presentation.base.LoadingScreen
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.blue
 import diplom.gorinych.ui.theme.grey
@@ -107,67 +108,73 @@ fun AddonsScreen(
             }
         }
     ) { padding ->
-        Column(
-            modifier = modifier
-                .padding(padding)
-                .fillMaxSize()
-                .background(color = grey)
-                .padding(horizontal = 10.dp)
-        ) {
-            Row(
+        if (state.value.isLoading) {
+            LoadingScreen(
+                paddingValues = padding
+            )
+        } else {
+            Column(
                 modifier = modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
+                    .padding(padding)
+                    .fillMaxSize()
+                    .background(color = grey)
+                    .padding(horizontal = 10.dp)
             ) {
-                TextButton(onClick = {
-                    onEvent(AddonScreenEvent.ChangeState(AddonState.AdditionState))
-                }) {
-                    Text(
-                        text = stringResource(id = R.string.addons_add),
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            fontFamily = FontFamily(Font(R.font.gilroy)),
-                            fontWeight = FontWeight(600),
-                            color = if (state.value.addonState is AddonState.AdditionState) blue else baseText,
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    TextButton(onClick = {
+                        onEvent(AddonScreenEvent.ChangeState(AddonState.AdditionState))
+                    }) {
+                        Text(
+                            text = stringResource(id = R.string.addons_add),
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = FontFamily(Font(R.font.gilroy)),
+                                fontWeight = FontWeight(600),
+                                color = if (state.value.addonState is AddonState.AdditionState) blue else baseText,
+                            )
                         )
-                    )
-                }
-                TextButton(onClick = {
-                    onEvent(AddonScreenEvent.ChangeState(AddonState.PromoState))
-                }) {
-                    Text(
-                        text = stringResource(id = R.string.addons_promo),
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            fontFamily = FontFamily(Font(R.font.gilroy)),
-                            fontWeight = FontWeight(600),
-                            color = if (state.value.addonState is AddonState.PromoState) blue else baseText,
+                    }
+                    TextButton(onClick = {
+                        onEvent(AddonScreenEvent.ChangeState(AddonState.PromoState))
+                    }) {
+                        Text(
+                            text = stringResource(id = R.string.addons_promo),
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = FontFamily(Font(R.font.gilroy)),
+                                fontWeight = FontWeight(600),
+                                color = if (state.value.addonState is AddonState.PromoState) blue else baseText,
+                            )
                         )
-                    )
-                }
-            }
-            when (state.value.addonState) {
-                AddonState.AdditionState -> {
-                    LazyColumn(
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        items(state.value.addons) { addon ->
-                            ItemAddon(addon = addon)
-                        }
                     }
                 }
+                when (state.value.addonState) {
+                    AddonState.AdditionState -> {
+                        LazyColumn(
+                            modifier = modifier
+                                .fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(state.value.addons) { addon ->
+                                ItemAddon(addon = addon)
+                            }
+                        }
+                    }
 
-                AddonState.PromoState -> {
-                    LazyColumn(
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        items(state.value.promos) { promo ->
-                            ItemPromo(promo = promo)
+                    AddonState.PromoState -> {
+                        LazyColumn(
+                            modifier = modifier
+                                .fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(state.value.promos) { promo ->
+                                ItemPromo(promo = promo)
+                            }
                         }
                     }
                 }

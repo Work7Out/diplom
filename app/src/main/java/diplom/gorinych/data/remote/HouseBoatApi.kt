@@ -1,11 +1,15 @@
 package diplom.gorinych.data.remote
 
+import diplom.gorinych.data.remote.body_dto.AddAddonBody
+import diplom.gorinych.data.remote.body_dto.AddFeedbackBody
+import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
+import diplom.gorinych.data.remote.body_dto.UpdateHistoryBody
+import diplom.gorinych.data.remote.body_dto.UpdateFeedbackBody
 import diplom.gorinych.data.remote.body_dto.UpdateUserBody
-import diplom.gorinych.data.remote.body_dto.AddAddonBody
-import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.dto.AddonDto
+import diplom.gorinych.data.remote.dto.FeedbackDto
 import diplom.gorinych.data.remote.dto.HistoryDto
 import diplom.gorinych.data.remote.dto.PromoDto
 import diplom.gorinych.data.remote.dto.UserDto
@@ -13,6 +17,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface HouseBoatApi {
@@ -23,33 +28,50 @@ interface HouseBoatApi {
     @GET("users")
     suspend fun getAllUsers () : List<UserDto>
 
+    @GET("users/{userId}")
+    suspend fun getUserById (@Path("userId") userId: Int) : UserDto
+
     @PATCH("users")
-    suspend fun updateUser (@Body updateUserBody: UpdateUserBody)
+    suspend fun updateUser(@Body updateUserBody: UpdateUserBody)
 
     @POST("users")
-    suspend fun registration (@Body registrationBody: RegistrationBody) : UserDto?
+    suspend fun registration(@Body registrationBody: RegistrationBody): UserDto?
 
     //Reserve
     @GET("history/status")
-    suspend fun getHistoryByStatus (@Query("status") status:String) : List<HistoryDto>
+    suspend fun getHistoryByStatus(@Query("status") status: String): List<HistoryDto>
 
+    @GET("history")
+    suspend fun getAllHistory(): List<HistoryDto>
+
+    @PATCH("history")
+    suspend fun updateHistory(@Body updateHistoryBody: UpdateHistoryBody)
 
 
     //Addons
     @POST("addons")
-    suspend fun addAddon (@Body addAddonBody: AddAddonBody)
+    suspend fun addAddon(@Body addAddonBody: AddAddonBody)
 
     @GET("addons")
-    suspend fun getAllAddons () : List<AddonDto>
-
+    suspend fun getAllAddons(): List<AddonDto>
 
 
     //Promos
     @POST("promos")
-    suspend fun addPromo (@Body addPromoBody: AddPromoBody)
+    suspend fun addPromo(@Body addPromoBody: AddPromoBody)
 
     @GET("promos")
-    suspend fun getAllPromos () : List<PromoDto>
+    suspend fun getAllPromos(): List<PromoDto>
 
 
+    //Feedbacks
+
+    @POST("feedback")
+    suspend fun addFeedback(@Body addFeedbackBody: AddFeedbackBody)
+
+    @GET("feedback")
+    suspend fun getAllFeedbacks(): List<FeedbackDto>
+
+    @PATCH("feedback")
+    suspend fun updateFeedback(@Body updateFeedbackBody: UpdateFeedbackBody)
 }
