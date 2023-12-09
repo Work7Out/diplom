@@ -2,6 +2,7 @@ package diplom.gorinych.data.repository
 
 import android.util.Log
 import diplom.gorinych.data.mapper.mapDtoToUser
+import diplom.gorinych.data.mapper.mapDtoToUserNull
 import diplom.gorinych.data.mapper.mapFromDtoToAddon
 import diplom.gorinych.data.mapper.mapFromDtoToCall
 import diplom.gorinych.data.mapper.mapFromDtoToFeedback
@@ -52,7 +53,7 @@ class RemoteRepositoryImpl @Inject constructor(
                     login = login,
                     password = password
                 )
-            )?.mapDtoToUser()
+            )?.mapDtoToUserNull()
         }
     }
 

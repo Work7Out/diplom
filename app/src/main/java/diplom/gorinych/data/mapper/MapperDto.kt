@@ -18,6 +18,19 @@ import diplom.gorinych.domain.model.Promo
 import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 
+fun UserDto?.mapDtoToUserNull(): User? {
+    return if (this!=null)
+        User(
+            id = this.id,
+            name = this.name,
+            password = this.password,
+            role = this.role,
+            isBlocked = this.isBlocked,
+            phone = this.phone,
+            email = this.eMail
+        ) else null
+}
+
 
 fun UserDto.mapDtoToUser(): User {
     return User(
@@ -28,18 +41,6 @@ fun UserDto.mapDtoToUser(): User {
         isBlocked = this.isBlocked,
         phone = this.phone,
         email = this.eMail
-    )
-}
-
-fun User.mapDtoToUserDto(): UserDto {
-    return UserDto(
-        id = this.id,
-        name = this.name,
-        password = this.password,
-        role = this.role,
-        isBlocked = this.isBlocked,
-        phone = this.phone,
-        eMail = this.email
     )
 }
 
