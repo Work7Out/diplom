@@ -63,6 +63,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import diplom.gorinych.R
+import diplom.gorinych.domain.utils.BASE_URL
 import diplom.gorinych.ui.presentation.base.ItemFeedback
 import diplom.gorinych.ui.presentation.base.LoadingScreen
 import diplom.gorinych.ui.theme.baseText
@@ -165,7 +166,7 @@ fun HouseDetailScreen(
             ) {
                 AsyncImage(
                     modifier = modifier.fillMaxWidth(),
-                    model = state.value.house?.image,
+                    model = BASE_URL+state.value.house?.image,
                     contentDescription = "",
                     contentScale = ContentScale.FillWidth
                 )

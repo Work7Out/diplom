@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import diplom.gorinych.R
 import diplom.gorinych.domain.model.House
+import diplom.gorinych.domain.utils.BASE_URL
 import diplom.gorinych.ui.theme.baseText
 import diplom.gorinych.ui.theme.secondText
 import diplom.gorinych.ui.theme.white
@@ -48,7 +49,7 @@ fun ItemHouse(
     ) {
         AsyncImage(
             modifier = modifier.size(100.dp),
-            model = house.image,
+            model = BASE_URL +house.image,
             contentDescription = "",
             contentScale = ContentScale.FillWidth
         )

@@ -1,5 +1,6 @@
 package diplom.gorinych.data.repository
 
+import android.util.Log
 import diplom.gorinych.data.mapper.mapDtoToUser
 import diplom.gorinych.data.mapper.mapDtoToUserNull
 import diplom.gorinych.data.mapper.mapFromDtoToAddon
@@ -226,7 +227,9 @@ class RemoteRepositoryImpl @Inject constructor(
 
     override suspend fun getAllHistory(): Resource<List<Reserve>> {
         return Resource.handleResponse {
-            diplomaApi.getAllHistory().map { it.mapFromDtoToReserve() }
+            diplomaApi.getAllHistory().map {
+                Log.d("find error",  "$it")
+                it.mapFromDtoToReserve() }
         }
     }
 
