@@ -5,7 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.utils.BLOCKED
+import diplom.gorinych.domain.utils.INCORRECT_LOGIN
 import diplom.gorinych.domain.utils.Resource
+import diplom.gorinych.domain.utils.SUCCESS
+import diplom.gorinych.domain.utils.USER
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -49,13 +53,13 @@ class LoginViewModel @Inject constructor(
                         is Resource.Success -> {
                             if (remoteResult.data == null) {
                                 _state.value.copy(
-                                    message = "login or password invalid"
+                                    message = INCORRECT_LOGIN
                                 )
                                     .updateStateUI()
                             } else {
                                 if (!remoteResult.data.isBlocked) {
                                     _state.value.copy(
-                                        message = "success",
+                                        message = SUCCESS,
                                         idUser = remoteResult.data.id,
                                         role = remoteResult.data.role
                                     )
@@ -63,7 +67,7 @@ class LoginViewModel @Inject constructor(
                                 } else {
                                     Log.d("TAG check login", "user ${remoteResult.data.name}")
                                     _state.value.copy(
-                                        message = "user ${remoteResult.data.name} is blocked"
+                                        message = "$USER ${remoteResult.data.name} $BLOCKED"
                                     )
                                         .updateStateUI()
                                 }

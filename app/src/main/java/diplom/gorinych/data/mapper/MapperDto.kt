@@ -19,7 +19,7 @@ import diplom.gorinych.domain.model.Reserve
 import diplom.gorinych.domain.model.User
 
 fun UserDto?.mapDtoToUserNull(): User? {
-    return if (this!=null)
+    return if (this != null && id != null && name != null && password != null && role != null && isBlocked != null && phone != null && eMail != null)
         User(
             id = this.id,
             name = this.name,
@@ -34,13 +34,13 @@ fun UserDto?.mapDtoToUserNull(): User? {
 
 fun UserDto.mapDtoToUser(): User {
     return User(
-        id = this.id,
-        name = this.name,
-        password = this.password,
-        role = this.role,
-        isBlocked = this.isBlocked,
-        phone = this.phone,
-        email = this.eMail
+        id = this.id?:0,
+        name = this.name?:"",
+        password = this.password?:"",
+        role = this.role?:"",
+        isBlocked = this.isBlocked?:false,
+        phone = this.phone?:"",
+        email = this.eMail?:""
     )
 }
 
@@ -99,7 +99,7 @@ fun FeedbackDto.mapFromDtoToFeedback(): Feedback {
 }
 
 fun NewsDto.mapFromDtoToNote(): Note {
-    return  Note(
+    return Note(
         id = id,
         title = title,
         content = content,

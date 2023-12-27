@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName
 
 data class UserDto(
     @SerializedName("e_mail")
-    val eMail: String,
+    val eMail: String?,
     @SerializedName("id")
-    val id: Int,
+    val id: Int?,
     @SerializedName("is_blocked")
-    val isBlocked: Boolean,
+    val isBlocked: Boolean?,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("password")
-    val password: String,
+    val password: String?,
     @SerializedName("phone")
-    val phone: String,
+    val phone: String?,
     @SerializedName("role")
-    val role: String
+    val role: String?
 )
