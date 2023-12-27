@@ -23,8 +23,8 @@ const val OLD_PASSWORD_INCORRECT = "Предыдущий пароль невер
 const val PASSWORD_DONT_MATCH = "Пароли не совпадают"
 const val PASSWORD_IS_CHANGED = "Пароль изменен"
 
-const val EMAIL_LOGIN = "edurda77@mail.ru"
-const val EMAIL_PASSWORD = "igzLy2rqDd8Q5VLehGhT"
+const val EMAIL_LOGIN = "houseboat_2024@mail.ru"
+const val EMAIL_PASSWORD = "ZjapGDTGFyLpvyUAkQka"
 
 const val DATA_LESS_TODAY = "одна из дат меньше сегодняшнего дня"
 const val SOME_DATES_UNAVAIBLE = "некоторые из даты недоступны для брони"
@@ -36,3 +36,7 @@ const val BASE_URL = "https://quart-a.ru/api/"
 const val BASE_URL_IMAGE = "https://quart-a.ru"
 const val INCORRECT_LOGIN = "Логин или пароль неверный"
 const val SUCCESS = "Успешно"
+
+const val GET_IS_AWAITED = "IS_AWAITED"
+const val GET_INACTIVE = "INACTIVE"
+const val GET_ACTIVE = "ACTIVE"

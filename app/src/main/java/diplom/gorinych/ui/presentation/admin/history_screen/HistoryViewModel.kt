@@ -10,6 +10,7 @@ import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.EMAIL_LOGIN
 import diplom.gorinych.domain.utils.EMAIL_PASSWORD
 import diplom.gorinych.domain.utils.FEEDBACK_ST
+import diplom.gorinych.domain.utils.GET_IS_AWAITED
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.ui.presentation.admin.history_screen.HistoryScreenEvent.OnConfirmReserve
@@ -109,7 +110,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     private suspend fun loadNewReserves() {
-        when (val result = remoteRepository.getHistoryByStatus(status = WAITING_CONFIRM)) {
+        when (val result = remoteRepository.getHistoryByStatus(status = GET_IS_AWAITED)) {
             is Resource.Error -> {
                 _state.value.copy(
                     message = result.message

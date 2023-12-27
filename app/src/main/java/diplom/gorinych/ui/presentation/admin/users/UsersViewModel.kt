@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.admin.users
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.utils.BLOCKED
 import diplom.gorinych.domain.utils.EMAIL_LOGIN
 import diplom.gorinych.domain.utils.EMAIL_PASSWORD
+import diplom.gorinych.domain.utils.GET_IS_AWAITED
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.UNBLOCKED
 import diplom.gorinych.domain.utils.USER
@@ -91,8 +93,9 @@ class UsersViewModel @Inject constructor(
     }
 
     private suspend fun loadNewReserves() {
-        when (val result = remoteRepository.getHistoryByStatus(status = WAITING_CONFIRM)) {
+        when (val result = remoteRepository.getHistoryByStatus(status = GET_IS_AWAITED)) {
             is Resource.Error -> {
+                Log.d("test users viewmodel", "new reserves error ${result.message}")
                 _state.value.copy(
                     message = result.message
                 )
@@ -100,6 +103,7 @@ class UsersViewModel @Inject constructor(
             }
 
             is Resource.Success -> {
+                Log.d("test users viewmodel", "new reserves data  ${result.data}")
                 _state.value.copy(
                     countNewReserves = result.data?.size ?: 0
                 )

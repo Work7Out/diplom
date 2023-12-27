@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.user.house_detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -184,6 +185,7 @@ class HouseDetailViewModel @Inject constructor(
     private suspend fun loadUserData() {
         when (val resultUser = remoteRepository.getUserBiId(_state.value.idUser)) {
             is Resource.Error -> {
+                Log.d("text detail viewmodel", "user error ${resultUser.message}")
                 _state.value.copy(
                     message = resultUser.message
                 )
@@ -204,6 +206,7 @@ class HouseDetailViewModel @Inject constructor(
     private suspend fun loadHouseData() {
         when (val resultHouses = remoteRepository.getHouseById(_state.value.idHouse)) {
             is Resource.Error -> {
+                Log.d("text detail viewmodel", "house error ${resultHouses.message}")
                 _state.value.copy(
                     isLoading = false,
                     message = resultHouses.message
@@ -225,6 +228,7 @@ class HouseDetailViewModel @Inject constructor(
     private suspend fun loadReserves() {
         when (val resultReserves = remoteRepository.getHistoryByHouse(_state.value.idHouse)) {
             is Resource.Error -> {
+                Log.d("text detail viewmodel", "reserves error ${resultReserves.message}")
                 _state.value.copy(
                     message = resultReserves.message
                 )
@@ -245,6 +249,7 @@ class HouseDetailViewModel @Inject constructor(
         when (val resultFeedbacks = remoteRepository.getFeedbacksByHouse(_state.value.idHouse)) {
 
             is Resource.Error -> {
+                Log.d("text detail viewmodel", "feedback error ${resultFeedbacks.message}")
                 _state.value.copy(
                     isLoading = false,
                     message = resultFeedbacks.message
@@ -266,6 +271,7 @@ class HouseDetailViewModel @Inject constructor(
     private suspend fun loadAdditions() {
         when (val resultFeedbacks = remoteRepository.getAllAddons()) {
             is Resource.Error -> {
+                Log.d("text detail viewmodel", "addons error ${resultFeedbacks.message}")
                 _state.value.copy(
                     message = resultFeedbacks.message
                 )

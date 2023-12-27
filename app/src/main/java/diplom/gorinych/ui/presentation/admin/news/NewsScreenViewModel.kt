@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.utils.GET_IS_AWAITED
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.domain.utils.formatLocalDateRu
@@ -106,7 +107,7 @@ class NewsScreenViewModel @Inject constructor(
     }
 
     private suspend fun loadNewReserves() {
-        when (val result = remoteRepository.getHistoryByStatus(status = WAITING_CONFIRM)) {
+        when (val result = remoteRepository.getHistoryByStatus(status = GET_IS_AWAITED)) {
             is Resource.Error -> {
                 _state.value.copy(
                     message = result.message
