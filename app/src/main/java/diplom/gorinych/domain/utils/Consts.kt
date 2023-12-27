@@ -32,6 +32,6 @@ const val UNCORRECT_PROMO = "Неверный промокод"
 const val EXPIRED_PROMO = "Промокод уже использован"
 const val SUCCESS_PROMO = "Промокод применен"
 
-const val BASE_URL = "https://quart-a.ru"
+const val BASE_URL = "https://quart-a.ru/api/"
 const val INCORRECT_LOGIN = "Логин или пароль неверный"
 const val SUCCESS = "Успешно"
