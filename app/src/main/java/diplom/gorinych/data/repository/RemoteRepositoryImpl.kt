@@ -21,6 +21,7 @@ import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
+import diplom.gorinych.data.remote.body_dto.UpdateCallBody
 import diplom.gorinych.data.remote.body_dto.UpdateFeedbackBody
 import diplom.gorinych.data.remote.body_dto.UpdateHistoryBody
 import diplom.gorinych.data.remote.body_dto.UpdateNewsBody
@@ -356,13 +357,30 @@ class RemoteRepositoryImpl @Inject constructor(
 
     override suspend fun addNewCall(
         name: String,
-        phone: String
+        phone: String,
+        isResponse: Boolean
     ) {
         Resource.handleResponse {
             diplomaApi.addCall(
                 AddCallBody(
                     name = name,
-                    phone = phone
+                    phone = phone,
+                    isResponse = isResponse
+                )
+            )
+        }
+    }
+
+    override suspend fun updateCall(
+        call: Call
+    ) {
+        Resource.handleResponse {
+            diplomaApi.updateCall(
+                UpdateCallBody(
+                    id = call.id,
+                    name = call.name,
+                    phone = call.phone,
+                    isResponse = call.isResponse
                 )
             )
         }

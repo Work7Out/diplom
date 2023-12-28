@@ -7,5 +7,7 @@ data class AddCallBody(
     @SerializedName("name")
     val name: String,
     @SerializedName("phone")
-    val phone: String
+    val phone: String,
+    @SerializedName("is_response")
+    val isResponse: Boolean
 )

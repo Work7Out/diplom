@@ -38,7 +38,10 @@ interface RemoteRepository {
     suspend fun addNewNews(title: String, content: String, dateCreate: String)
     suspend fun updateNews(note: Note)
     suspend fun deleteNews(newsId: Int)
-    suspend fun addNewCall(name: String, phone: String)
+    suspend fun addNewCall(
+        name: String,
+        phone: String,
+        isResponse: Boolean)
     suspend fun getAllCalls(): Resource<List<Call>>
     suspend fun getAllHouses(): Resource<List<House>>
     suspend fun getHistoryByUser(userId: Int): Resource<List<Reserve>>
@@ -67,4 +70,6 @@ interface RemoteRepository {
         dataEnd: String,
         dateCreate: String
     )
+
+    suspend fun updateCall(call: Call)
 }

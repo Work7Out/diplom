@@ -38,7 +38,8 @@ class NewsUserScreenViewModel @Inject constructor(
                 viewModelScope.launch {
                     remoteRepository.addNewCall(
                         name = _state.value.user?.name ?: "",
-                        phone = _state.value.user?.phone ?: ""
+                        phone = _state.value.user?.phone ?: "",
+                        isResponse = false
                     )
                 }
             }

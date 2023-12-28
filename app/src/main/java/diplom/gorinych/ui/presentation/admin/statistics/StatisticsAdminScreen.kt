@@ -169,7 +169,9 @@ fun StatisticsAdminScreen(
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     items(state.value.calls) { call ->
-                        ItemCall(call = call)
+                        ItemCall(
+                            call = call,
+                            onEvent = onEvent)
                     }
                 }
             }

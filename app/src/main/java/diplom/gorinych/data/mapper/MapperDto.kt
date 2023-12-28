@@ -111,7 +111,8 @@ fun CallDto.mapFromDtoToCall(): Call {
     return Call(
         id = id,
         name = name,
-        phone = phone
+        phone = phone,
+        isResponse = isResponse
     )
 }
 

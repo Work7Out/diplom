@@ -4,16 +4,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import diplom.gorinych.domain.model.Call
 import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.GET_IS_AWAITED
 import diplom.gorinych.domain.utils.Resource
-import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.domain.utils.calculateAllSum
 import diplom.gorinych.domain.utils.calculateConfirmOrders
 import diplom.gorinych.domain.utils.calculateMonthSum
 import diplom.gorinych.domain.utils.calculateSeasonSum
-import diplom.gorinych.ui.presentation.admin.addons.AddonScreenEvent
 import kotlinx.coroutines.async
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -114,6 +113,20 @@ class StatisticsViewModel @Inject constructor(
             StatisticScreenEvent.Exit -> {
                 sharedRepository.setUser(-1)
                 sharedRepository.setRole("")
+            }
+
+            is StatisticScreenEvent.OnUpdatePhone -> {
+                viewModelScope.launch {
+                    remoteRepository.updateCall(
+                        Call(
+                            id = event.id,
+                            name = event.name,
+                            phone = event.phone,
+                            isResponse = event.isResponse
+                        )
+                    )
+                    loadCalls()
+                }
             }
         }
     }

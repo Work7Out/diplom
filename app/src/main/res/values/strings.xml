@@ -46,6 +46,9 @@
     <string name="byn">BYN</string>
     <string name="history_calls">Заказанные звонки</string>
     <string name="phone">телефон -</string>
+    <string name="status_call">статус ответа:</string>
+    <string name="recall">перезвонили</string>
+    <string name="not_recall">не перезвонили</string>
     <string name="name">пользователь - </string>
     <string name="status">статус:</string>
     <string name="delete_reserve">Удалить бронь</string>
