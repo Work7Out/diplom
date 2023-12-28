@@ -24,15 +24,6 @@ class LoginViewModel @Inject constructor(
     private val _state = MutableStateFlow(LoginScreenState())
     val state = _state.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            delay(2000)
-            _state.value.copy(
-                loginScreenWindowState = LoginScreenWindowState.BaseScreen
-            )
-                .updateStateUI()
-        }
-    }
 
     fun onEvent(loginEvent: LoginEvent) {
         when (loginEvent) {

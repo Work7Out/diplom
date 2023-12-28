@@ -13,6 +13,7 @@ import diplom.gorinych.ui.presentation.admin.statistics.StatisticsAdminScreen
 import diplom.gorinych.ui.presentation.admin.users.UsersScreen
 import diplom.gorinych.ui.presentation.login_screen.LoginScreen
 import diplom.gorinych.ui.presentation.registration_screen.RegistrationScreen
+import diplom.gorinych.ui.presentation.splash.SplashScreen
 import diplom.gorinych.ui.presentation.user.history_user.HistoryUserScreen
 import diplom.gorinych.ui.presentation.user.house_detail.HouseDetailScreen
 import diplom.gorinych.ui.presentation.user.list_houses_screen.ListHousesUserScreen
@@ -21,11 +22,16 @@ import diplom.gorinych.ui.presentation.user.settings.SettingsScreen
 
 @Composable
 fun NavController(
-    startDestination: String = "loginScreen",
+    startDestination: String = "splashScreen",
 ) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = startDestination) {
+        composable(NavigationDestination.SplashScreenDestination.destination) {
+            SplashScreen(
+                navController
+            )
+        }
         composable(NavigationDestination.LoginScreenDestination.destination) {
             LoginScreen(
                 navController
