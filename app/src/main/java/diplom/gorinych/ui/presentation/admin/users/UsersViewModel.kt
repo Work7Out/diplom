@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.MailRepository
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.BLOCKED
 import diplom.gorinych.domain.utils.EMAIL_LOGIN
 import diplom.gorinych.domain.utils.EMAIL_PASSWORD
@@ -31,7 +32,8 @@ import kotlinx.coroutines.launch
 class UsersViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository,
     private val mailRepository: MailRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(UsersScreenState())
     val state = _state.asStateFlow()
@@ -88,6 +90,11 @@ class UsersViewModel @Inject constructor(
                         content = if (newStatus) "$USER ${usersScreenEvent.user.name} $BLOCKED" else "$USER ${usersScreenEvent.user.name} $UNBLOCKED"
                     )
                 }
+            }
+
+            UsersScreenEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
             }
         }
     }

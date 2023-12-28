@@ -6,8 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import diplom.gorinych.data.repository.MailRepositoryImpl
 import diplom.gorinych.data.repository.RemoteRepositoryImpl
+import diplom.gorinych.data.repository.SharedRepositoryImpl
 import diplom.gorinych.domain.repository.MailRepository
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import javax.inject.Singleton
 
 @Module
@@ -26,5 +28,11 @@ abstract class RepositoryModule {
     abstract fun bindRemoteRepository(
         repository: RemoteRepositoryImpl
     ): RemoteRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSharedRepository(
+        repository: SharedRepositoryImpl
+    ): SharedRepository
 
 }

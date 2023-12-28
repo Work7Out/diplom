@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.Resource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsUserScreenViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(NewsUserScreenState())
     val state = _state.asStateFlow()
@@ -39,6 +41,11 @@ class NewsUserScreenViewModel @Inject constructor(
                         phone = _state.value.user?.phone ?: ""
                     )
                 }
+            }
+
+            NewsUserScreenEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.Resource
 import javax.inject.Inject
 import kotlinx.coroutines.async
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ListHousesViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(ListHousesScreenState())
     val state = _state.asStateFlow()
@@ -39,6 +41,11 @@ class ListHousesViewModel @Inject constructor(
                         phone = _state.value.user?.phone ?: ""
                     )
                 }
+            }
+
+            ListHousesEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
             }
         }
     }

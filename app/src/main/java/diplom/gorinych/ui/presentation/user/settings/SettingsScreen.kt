@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import diplom.gorinych.R
+import diplom.gorinych.ui.presentation.admin.addons.AddonScreenEvent
 import diplom.gorinych.ui.presentation.base.AppBarUser
 import diplom.gorinych.ui.presentation.base.BottomBarUser
 import diplom.gorinych.ui.theme.baseText
@@ -65,7 +66,8 @@ fun SettingsScreen(
                 navController = navController,
                 onSendCall = {
                     onEvent(SettingsEvent.OnSendCall)
-                })
+                },
+                onClick = { onEvent(SettingsEvent.Exit) })
         },
         bottomBar = {
             BottomBarUser(

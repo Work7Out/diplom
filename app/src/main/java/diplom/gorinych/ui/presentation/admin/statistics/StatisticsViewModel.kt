@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.GET_IS_AWAITED
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
@@ -12,6 +13,7 @@ import diplom.gorinych.domain.utils.calculateAllSum
 import diplom.gorinych.domain.utils.calculateConfirmOrders
 import diplom.gorinych.domain.utils.calculateMonthSum
 import diplom.gorinych.domain.utils.calculateSeasonSum
+import diplom.gorinych.ui.presentation.admin.addons.AddonScreenEvent
 import kotlinx.coroutines.async
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +24,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(StatisticsScreenState())
     val state = _state.asStateFlow()
@@ -102,6 +105,15 @@ class StatisticsViewModel @Inject constructor(
                     calls = result.data ?: emptyList()
                 )
                     .updateStateUI()
+            }
+        }
+    }
+
+    fun onEvent(event: StatisticScreenEvent) {
+        when (event) {
+            StatisticScreenEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
             }
         }
     }

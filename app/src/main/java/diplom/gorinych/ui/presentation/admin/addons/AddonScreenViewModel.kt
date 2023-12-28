@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.GET_IS_AWAITED
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class AddonScreenViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(AddonScreenState())
     val state = _state.asStateFlow()
@@ -73,6 +75,11 @@ class AddonScreenViewModel @Inject constructor(
                     addonState = event.addonState
                 )
                     .updateStateUI()
+            }
+
+            AddonScreenEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
             }
         }
     }

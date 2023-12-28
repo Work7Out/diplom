@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import diplom.gorinych.ui.presentation.admin.addons.AddonScreenEvent
 import diplom.gorinych.ui.presentation.base.AppBarUser
 import diplom.gorinych.ui.presentation.base.BottomBarUser
 import diplom.gorinych.ui.presentation.base.ItemHouse
@@ -37,7 +38,8 @@ fun ListHousesUserScreen(
                 navController = navController,
                 onSendCall = {
                     onEvent(ListHousesEvent.OnSendCall)
-                })
+                },
+                onClick = { onEvent(ListHousesEvent.Exit) })
         },
         bottomBar = {
             BottomBarUser(

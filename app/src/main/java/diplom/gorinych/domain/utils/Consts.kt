@@ -40,3 +40,7 @@ const val SUCCESS = "Успешно"
 const val GET_IS_AWAITED = "IS_AWAITED"
 const val GET_INACTIVE = "INACTIVE"
 const val GET_ACTIVE = "ACTIVE"
+
+const val SHARED_DATA = "shared_data"
+const val SHARE_USER = "user"
+const val SHARE_ROLE = "role"

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.model.Note
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.GET_IS_AWAITED
 import diplom.gorinych.domain.utils.Resource
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
@@ -21,7 +22,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class NewsScreenViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(NewsScreenState())
     val state = _state.asStateFlow()
@@ -82,6 +84,11 @@ class NewsScreenViewModel @Inject constructor(
                     )
                     loadNewsData()
                 }
+            }
+
+            NewsScreenEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
             }
         }
     }

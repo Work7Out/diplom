@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.model.User
 import diplom.gorinych.domain.repository.MailRepository
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.EMAIL_LOGIN
 import diplom.gorinych.domain.utils.EMAIL_PASSWORD
 import diplom.gorinych.domain.utils.FEEDBACK_ST
@@ -27,7 +28,8 @@ import kotlinx.coroutines.launch
 class HistoryViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository,
     private val mailRepository: MailRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(HistoryScreenState())
     val state = _state.asStateFlow()
@@ -105,6 +107,11 @@ class HistoryViewModel @Inject constructor(
                     historyState = historyScreenEvent.historyState
                 )
                     .updateStateUI()
+            }
+
+            HistoryScreenEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
             }
         }
     }

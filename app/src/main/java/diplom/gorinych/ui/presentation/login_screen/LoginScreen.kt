@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.login_screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ import diplom.gorinych.ui.theme.white
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
@@ -54,130 +56,143 @@ fun LoginScreen(
     val onEvent = viewModel::onEvent
     val scope = rememberCoroutineScope()
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = white)
-            .padding(10.dp)
-    ) {
-        Column(
+    if (state.value.savedUser is SavedUser.NotSaved) {
+        Box(
             modifier = modifier
-                .fillMaxWidth()
-                .align(alignment = Alignment.Center)
+                .fillMaxSize()
+                .background(color = white)
+                .padding(10.dp)
         ) {
-            Text(
-                modifier = modifier
-                    .fillMaxWidth(),
-                text = stringResource(id = R.string.authorization),
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(700),
-                    color = baseText,
-                ),
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = modifier.height(26.dp))
-            TextField(
-                modifier = modifier
-                    .fillMaxWidth(),
-                value = state.value.login,
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.login),
-                        style = TextStyle(
-                            fontSize = 13.sp,
-                            fontFamily = FontFamily(Font(R.font.gilroy)),
-                            fontWeight = FontWeight(500),
-                            color = secondText,
-                        )
-                    )
-                },
-                onValueChange = {
-                    onEvent(LoginEvent.SetLogin(it))
-                })
-            Spacer(modifier = modifier.height(22.dp))
-            TextField(
-                modifier = modifier
-                    .fillMaxWidth(),
-                value = state.value.password,
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.password),
-                        style = TextStyle(
-                            fontSize = 13.sp,
-                            fontFamily = FontFamily(Font(R.font.gilroy)),
-                            fontWeight = FontWeight(500),
-                            color = secondText,
-                        )
-                    )
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                visualTransformation = PasswordVisualTransformation(),
-                onValueChange = {
-                    onEvent(LoginEvent.SetPassword(it))
-                })
-            Spacer(modifier = modifier.height(26.dp))
-            Button(
+            Column(
                 modifier = modifier
                     .fillMaxWidth()
-                    .align(alignment = Alignment.CenterHorizontally),
-                shape = RoundedCornerShape(10.dp),
-                contentPadding = PaddingValues(vertical = 16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = blue
-                ),
-                onClick = {
-                    onEvent(LoginEvent.OnLogin)
-                    scope.launch {
-                        delay(1000)
-                        if (state.value.idUser != -1) {
-                            if (state.value.role == "admin") {
-                                navController.navigate("usersScreen/${state.value.idUser}")
-                            } else {
-                                navController.navigate("listHousesUserScreen/${state.value.idUser}")
-                            }
-                        }
-                    }
-                }) {
+                    .align(alignment = Alignment.Center)
+            ) {
                 Text(
-                    text = stringResource(id = R.string.enter),
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    text = stringResource(id = R.string.authorization),
                     style = TextStyle(
-                        fontSize = 14.sp,
+                        fontSize = 20.sp,
                         fontFamily = FontFamily(Font(R.font.gilroy)),
                         fontWeight = FontWeight(700),
-                        color = white,
-                    )
+                        color = baseText,
+                    ),
+                    textAlign = TextAlign.Center
                 )
+                Spacer(modifier = modifier.height(26.dp))
+                TextField(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    value = state.value.login,
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.login),
+                            style = TextStyle(
+                                fontSize = 13.sp,
+                                fontFamily = FontFamily(Font(R.font.gilroy)),
+                                fontWeight = FontWeight(500),
+                                color = secondText,
+                            )
+                        )
+                    },
+                    onValueChange = {
+                        onEvent(LoginEvent.SetLogin(it))
+                    })
+                Spacer(modifier = modifier.height(22.dp))
+                TextField(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    value = state.value.password,
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.password),
+                            style = TextStyle(
+                                fontSize = 13.sp,
+                                fontFamily = FontFamily(Font(R.font.gilroy)),
+                                fontWeight = FontWeight(500),
+                                color = secondText,
+                            )
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    visualTransformation = PasswordVisualTransformation(),
+                    onValueChange = {
+                        onEvent(LoginEvent.SetPassword(it))
+                    })
+                Spacer(modifier = modifier.height(26.dp))
+                Button(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .align(alignment = Alignment.CenterHorizontally),
+                    shape = RoundedCornerShape(10.dp),
+                    contentPadding = PaddingValues(vertical = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = blue
+                    ),
+                    onClick = {
+                        onEvent(LoginEvent.OnLogin)
+                        scope.launch {
+                            delay(1000)
+                            if (state.value.idUser != -1) {
+                                if (state.value.role == "admin") {
+                                    navController.navigate("usersScreen/${state.value.idUser}")
+                                } else {
+                                    navController.navigate("listHousesUserScreen/${state.value.idUser}")
+                                }
+                            }
+                        }
+                    }) {
+                    Text(
+                        text = stringResource(id = R.string.enter),
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.gilroy)),
+                            fontWeight = FontWeight(700),
+                            color = white,
+                        )
+                    )
+                }
+                if (state.value.message != null) {
+                    Text(
+                        text = state.value.message!!,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.gilroy)),
+                            fontWeight = FontWeight(600),
+                            color = thirdText,
+                        )
+                    )
+                }
             }
-            if (state.value.message != null) {
+            TextButton(
+                modifier = modifier
+                    .align(alignment = Alignment.BottomCenter),
+                onClick = {
+                    navController.navigate("registrationScreen")
+                }) {
                 Text(
-                    text = state.value.message!!,
+                    text = stringResource(id = R.string.registration),
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.gilroy)),
-                        fontWeight = FontWeight(600),
-                        color = thirdText,
-                    )
+                        fontWeight = FontWeight(500),
+                        color = secondText,
+                    ),
+                    textAlign = TextAlign.Center
                 )
             }
         }
-        TextButton(
-            modifier = modifier
-                .align(alignment = Alignment.BottomCenter),
-            onClick = {
-                navController.navigate("registrationScreen")
-            }) {
-            Text(
-                text = stringResource(id = R.string.registration),
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.gilroy)),
-                    fontWeight = FontWeight(500),
-                    color = secondText,
-                ),
-                textAlign = TextAlign.Center
-            )
+    } else {
+        scope.launch {
+            delay(1000)
+            if (state.value.idUser != -1) {
+                if (state.value.role == "admin") {
+                    navController.navigate("usersScreen/${state.value.idUser}")
+                } else {
+                    navController.navigate("listHousesUserScreen/${state.value.idUser}")
+                }
+            }
         }
     }
 }

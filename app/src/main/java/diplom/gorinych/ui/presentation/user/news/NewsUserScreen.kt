@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import diplom.gorinych.ui.presentation.admin.addons.AddonScreenEvent
 import diplom.gorinych.ui.presentation.base.AppBarUser
 import diplom.gorinych.ui.presentation.base.BottomBarUser
 import diplom.gorinych.ui.presentation.base.LoadingScreen
@@ -36,7 +37,8 @@ fun NewsUserScreen(
                 navController = navController,
                 onSendCall = {
                     onEvent(NewsUserScreenEvent.OnSendCall)
-                })
+                },
+                onClick = { onEvent(NewsUserScreenEvent.Exit) })
         },
         bottomBar = {
             BottomBarUser(

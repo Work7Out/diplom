@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.Resource.Error
 import diplom.gorinych.domain.utils.Resource.Success
 import diplom.gorinych.ui.presentation.user.history_user.HistoryUserEvent.OnDeleteReserve
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoryUserScreenViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(HistoryUserScreenState())
     val state = _state.asStateFlow()
@@ -45,6 +47,11 @@ class HistoryUserScreenViewModel @Inject constructor(
                         phone = _state.value.user?.phone ?: ""
                     )
                 }
+            }
+
+            HistoryUserEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
             }
         }
     }

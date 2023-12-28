@@ -20,7 +20,8 @@ import diplom.gorinych.ui.theme.baseText
 fun AppBarUser(
     navController: NavController,
     modifier: Modifier = Modifier,
-    onSendCall: () -> Unit
+    onSendCall: () -> Unit,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -42,6 +43,7 @@ fun AppBarUser(
                     inclusive = true
                 }
             }
+            onClick.invoke()
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.baseline_logout_24),

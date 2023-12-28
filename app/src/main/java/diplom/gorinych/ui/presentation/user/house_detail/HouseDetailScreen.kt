@@ -1,6 +1,5 @@
 package diplom.gorinych.ui.presentation.user.house_detail
 
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -63,7 +62,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import diplom.gorinych.R
-import diplom.gorinych.domain.utils.BASE_URL
 import diplom.gorinych.domain.utils.BASE_URL_IMAGE
 import diplom.gorinych.ui.presentation.base.ItemFeedback
 import diplom.gorinych.ui.presentation.base.LoadingScreen
@@ -111,13 +109,6 @@ fun HouseDetailScreen(
                 onEvent = onEvent
             )
         }
-    }
-    if (!state.value.message.isNullOrBlank()) {
-        Toast.makeText(
-            context,
-            state.value.message,
-            Toast.LENGTH_LONG
-        ).show()
     }
 
     Scaffold(

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import diplom.gorinych.R
+import diplom.gorinych.ui.presentation.admin.addons.AddonScreenEvent
 import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
 import diplom.gorinych.ui.presentation.base.LoadingScreen
@@ -41,12 +42,14 @@ fun StatisticsAdminScreen(
     viewModel: StatisticsViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
+    val onEvent = viewModel::onEvent
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             AppBarAdmin(
-                navController = navController
+                navController = navController,
+                onClick = { onEvent(StatisticScreenEvent.Exit) }
             )
         },
         bottomBar = {

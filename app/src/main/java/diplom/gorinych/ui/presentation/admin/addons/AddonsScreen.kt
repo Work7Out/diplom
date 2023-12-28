@@ -76,6 +76,7 @@ fun AddonsScreen(
         topBar = {
             AppBarAdmin(
                 navController = navController,
+                onClick = { onEvent(AddonScreenEvent.Exit) }
             )
         },
         bottomBar = {

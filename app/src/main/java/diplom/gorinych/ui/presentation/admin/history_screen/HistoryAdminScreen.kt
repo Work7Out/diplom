@@ -30,6 +30,7 @@ import diplom.gorinych.R
 import diplom.gorinych.domain.utils.ACTIVE
 import diplom.gorinych.domain.utils.INACTIVE
 import diplom.gorinych.domain.utils.WAITING_CONFIRM
+import diplom.gorinych.ui.presentation.admin.addons.AddonScreenEvent
 import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
 import diplom.gorinych.ui.presentation.base.LoadingScreen
@@ -51,6 +52,7 @@ fun HistoryAdminScreen(
         topBar = {
             AppBarAdmin(
                 navController = navController,
+                onClick = { onEvent(HistoryScreenEvent.Exit) }
             )
         },
         bottomBar = {

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import diplom.gorinych.domain.repository.MailRepository
 import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.EMAIL_LOGIN
 import diplom.gorinych.domain.utils.EMAIL_PASSWORD
 import diplom.gorinych.domain.utils.OLD_PASSWORD_INCORRECT
@@ -25,7 +26,8 @@ import javax.inject.Inject
 class SettingsScreenViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository,
     private val savedStateHandle: SavedStateHandle,
-    private val mailRepository: MailRepository
+    private val mailRepository: MailRepository,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(SettingsScreenState())
     val state = _state.asStateFlow()
@@ -85,6 +87,11 @@ class SettingsScreenViewModel @Inject constructor(
                         }
                     }
                 }
+            }
+
+            SettingsEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
             }
         }
     }

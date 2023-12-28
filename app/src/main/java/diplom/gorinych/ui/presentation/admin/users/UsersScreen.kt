@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import diplom.gorinych.ui.presentation.admin.addons.AddonScreenEvent
 import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
 import diplom.gorinych.ui.presentation.base.LoadingScreen
+import diplom.gorinych.ui.presentation.user.settings.SettingsEvent
 import diplom.gorinych.ui.theme.grey
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,7 +35,8 @@ fun UsersScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             AppBarAdmin(
-                navController = navController
+                navController = navController,
+                onClick = { onEvent(UsersScreenEvent.Exit) }
             )
         },
         bottomBar = {

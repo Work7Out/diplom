@@ -22,6 +22,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import diplom.gorinych.R
+import diplom.gorinych.ui.presentation.admin.addons.AddonScreenEvent
 import diplom.gorinych.ui.presentation.base.AppBarAdmin
 import diplom.gorinych.ui.presentation.base.BottomBarAdmin
 import diplom.gorinych.ui.presentation.base.LoadingScreen
@@ -54,6 +55,7 @@ fun NewsScreen(
         topBar = {
             AppBarAdmin(
                 navController = navController,
+                onClick = { onEvent(NewsScreenEvent.Exit) }
             )
         },
         bottomBar = {
