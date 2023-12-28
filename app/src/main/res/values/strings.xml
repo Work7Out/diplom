@@ -16,6 +16,7 @@
     <string name="history_reserve">Бронирования</string>
     <string name="history_feedback">Отзывы</string>
     <string name="addons_add">Дополнительно</string>
+    <string name="update_addon">Изменить доп.услугу</string>
     <string name="addons_promo">Промо</string>
     <string name="blocked">Заблокирован</string>
     <string name="not_blocked">Не заблокирован</string>

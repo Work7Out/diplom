@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import diplom.gorinych.domain.model.Addon
 import diplom.gorinych.domain.repository.RemoteRepository
 import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.GET_IS_AWAITED
@@ -80,6 +81,28 @@ class AddonScreenViewModel @Inject constructor(
             AddonScreenEvent.Exit -> {
                 sharedRepository.setUser(-1)
                 sharedRepository.setRole("")
+            }
+
+            is AddonScreenEvent.DeleteAddon -> {
+                viewModelScope.launch {
+                    remoteRepository.deleteAddon(
+                        addonId = event.addon.id
+                    )
+                    loadAddons()
+                }
+            }
+
+            is AddonScreenEvent.UpdateAddon -> {
+                viewModelScope.launch {
+                    remoteRepository.updateAddon(
+                        addon = Addon(
+                            id = event.id,
+                            title = event.title,
+                            price = event.price
+                        )
+                    )
+                    loadAddons()
+                }
             }
         }
     }

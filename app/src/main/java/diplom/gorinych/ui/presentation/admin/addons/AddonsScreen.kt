@@ -59,7 +59,8 @@ fun AddonsScreen(
         Dialog(onDismissRequest = { isShowDialogAddPromo.value = false }) {
             AddDialogPromo(
                 isShowDialogAddPromo = isShowDialogAddPromo,
-                onEvent = onEvent)
+                onEvent = onEvent
+            )
         }
     }
 
@@ -67,7 +68,8 @@ fun AddonsScreen(
         Dialog(onDismissRequest = { isShowDialogAddAddon.value = false }) {
             AddDialogAddon(
                 isShowDialogAddAddon = isShowDialogAddAddon,
-                onEvent = onEvent)
+                onEvent = onEvent
+            )
         }
     }
 
@@ -162,7 +164,10 @@ fun AddonsScreen(
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             items(state.value.addons) { addon ->
-                                ItemAddon(addon = addon)
+                                ItemAddon(
+                                    addon = addon,
+                                    onEvent = onEvent
+                                )
                             }
                         }
                     }

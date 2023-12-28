@@ -48,3 +48,8 @@ fun isEmailValid(email: String): Boolean {
                 ")+"
     return email.matches(emailPattern.toRegex())
 }
+
+fun isNumeric(toCheck: String): Boolean {
+    val regex = "-?[0-9]+(\\.[0-9]+)?".toRegex()
+    return toCheck.matches(regex)
+}

@@ -1,5 +1,6 @@
 package diplom.gorinych.ui.presentation.admin.addons
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,14 +38,16 @@ import diplom.gorinych.ui.theme.white
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddDialogAddon(
+fun DialogUpdateAddon(
     modifier: Modifier = Modifier,
-    onEvent: (AddonScreenEvent) -> Unit,
-    isShowDialogAddAddon: MutableState<Boolean>,
-
-    ) {
-    val titleAddon = remember { mutableStateOf("") }
-    val priceAddon = remember { mutableStateOf("") }
+    title:String,
+    price: Double,
+    id: Int,
+    isShowDialog: MutableState<Boolean>,
+    onEvent: (AddonScreenEvent) -> Unit
+) {
+    val titleAddon = remember { mutableStateOf(title) }
+    val priceAddon = remember { mutableStateOf(price.toString()) }
 
     Column(
         modifier = modifier
@@ -60,7 +63,7 @@ fun AddDialogAddon(
                 Text(
                     text = stringResource(id = R.string.enter_name_addon),
                     style = TextStyle(
-                        fontSize = 13.sp,
+                        fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.gilroy)),
                         fontWeight = FontWeight(500),
                         color = secondText,
@@ -101,12 +104,13 @@ fun AddDialogAddon(
                 .align(alignment = Alignment.CenterHorizontally),
             onClick = {
                 onEvent(
-                    AddonScreenEvent.InsertAddon(
+                    AddonScreenEvent.UpdateAddon(
+                        id = id,
                         title = titleAddon.value,
                         price = priceAddon.value.toDouble()
                     )
                 )
-                isShowDialogAddAddon.value = false
+                isShowDialog.value = false
             },
             shape = RoundedCornerShape(10.dp),
             contentPadding = PaddingValues(vertical = 16.dp),
@@ -117,7 +121,7 @@ fun AddDialogAddon(
                     && isNumeric(priceAddon.value)
         ) {
             Text(
-                text = stringResource(id = R.string.add_addon),
+                text = stringResource(id = R.string.update_addon),
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(R.font.gilroy)),

@@ -8,6 +8,7 @@ import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
+import diplom.gorinych.data.remote.body_dto.UpdateAddonBody
 import diplom.gorinych.data.remote.body_dto.UpdateCallBody
 import diplom.gorinych.data.remote.body_dto.UpdateFeedbackBody
 import diplom.gorinych.data.remote.body_dto.UpdateHistoryBody
@@ -74,6 +75,12 @@ interface HouseBoatApi {
     //Addons
     @POST("addons")
     suspend fun addAddon(@Body addAddonBody: AddAddonBody)
+
+    @PATCH("")
+    suspend fun updateAddon(@Body updateAddonBody: UpdateAddonBody)
+
+    @DELETE("")
+    suspend fun deleteAddon(@Path("addonId") newsId: Int)
 
     @GET("addons")
     suspend fun getAllAddons(): List<AddonDto>

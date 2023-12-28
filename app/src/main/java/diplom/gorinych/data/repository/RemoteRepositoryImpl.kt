@@ -21,6 +21,7 @@ import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
+import diplom.gorinych.data.remote.body_dto.UpdateAddonBody
 import diplom.gorinych.data.remote.body_dto.UpdateCallBody
 import diplom.gorinych.data.remote.body_dto.UpdateFeedbackBody
 import diplom.gorinych.data.remote.body_dto.UpdateHistoryBody
@@ -174,6 +175,39 @@ class RemoteRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateAddon(
+        addon: Addon
+    ) {
+        Resource.handleResponse {
+            diplomaApi.updateAddon(
+                UpdateAddonBody(
+                    id = addon.id,
+                    title = addon.title,
+                    price = addon.price
+                )
+            )
+        }
+    }
+
+    override suspend fun deleteAddon(
+        addonId: Int
+    ) {
+        Resource.handleResponse {
+            diplomaApi.deleteAddon(addonId)
+        }
+    }
+
+    override suspend fun getAllAddons(): Resource<List<Addon>> {
+        return Resource.handleResponse {
+            diplomaApi.getAllAddons().map { it.mapFromDtoToAddon() }
+        }
+    }
+
+    override suspend fun getAllPromos(): Resource<List<Promo>> {
+        return Resource.handleResponse {
+            diplomaApi.getAllPromos().map { it.mapFromDtoToPromo() }
+        }
+    }
     override suspend fun addNewPromo(
         description: String,
         valueDiscount: Int,
@@ -205,18 +239,6 @@ class RemoteRepositoryImpl @Inject constructor(
                     isActive = isActive
                 )
             )
-        }
-    }
-
-    override suspend fun getAllAddons(): Resource<List<Addon>> {
-        return Resource.handleResponse {
-            diplomaApi.getAllAddons().map { it.mapFromDtoToAddon() }
-        }
-    }
-
-    override suspend fun getAllPromos(): Resource<List<Promo>> {
-        return Resource.handleResponse {
-            diplomaApi.getAllPromos().map { it.mapFromDtoToPromo() }
         }
     }
 
