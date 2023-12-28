@@ -7,7 +7,7 @@ sealed class HouseDetailEvent {
     class AddReserve(
         val dateBegin: LocalDate,
         val dateEnd: LocalDate,
-        val valueDays: Int,
+        val amount: Double,
     ): HouseDetailEvent()
 
     class AddFeedback(

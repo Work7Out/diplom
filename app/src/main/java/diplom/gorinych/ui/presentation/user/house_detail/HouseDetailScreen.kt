@@ -356,7 +356,7 @@ fun HouseDetailScreen(
                             HouseDetailEvent.AddReserve(
                                 dateBegin = calendarState.selectionState.selection.first(),
                                 dateEnd = calendarState.selectionState.selection.last(),
-                                valueDays = calendarState.selectionState.selection.size,
+                                amount = amount.value,
                             )
                         )
                         calendarState.selectionState.selection = emptyList()

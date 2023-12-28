@@ -18,7 +18,6 @@ data class HouseDetailScreenState (
     val nameUser: String = "",
     val idHouse: Int = -1,
     val isLoading: Boolean = true,
-    val amountReserve: Double = 0.0,
     val isEnableFeedback: Boolean = false,
 ) {
     val sumAddons = additionsSelected.sumOf { it.price }
