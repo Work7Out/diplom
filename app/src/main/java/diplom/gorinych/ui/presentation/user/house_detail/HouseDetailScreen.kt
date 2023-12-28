@@ -39,6 +39,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -91,7 +93,6 @@ fun HouseDetailScreen(
 ) {
     val state = viewModel.state.collectAsState()
     val onEvent = viewModel::onEvent
-    val context = LocalContext.current
     val calendarState: CalendarState<DynamicSelectionState> = rememberSelectableCalendarState(
         initialSelectionMode = SelectionMode.Period,
         initialSelection = listOf()
@@ -102,6 +103,9 @@ fun HouseDetailScreen(
     val promo = remember {
         mutableStateOf("")
     }
+    val amount = remember { mutableDoubleStateOf(0.0) }
+    amount.doubleValue = (calendarState.selectionState.selection.size * (state.value.house?.price
+        ?: 0.0) + state.value.sumAddons) * (1.0 - (state.value.promo?.valueDiscount ?: 1) / 100)
     if (isShowDialog.value) {
         Dialog(onDismissRequest = { isShowDialog.value = false }) {
             FeedbackDialog(
@@ -259,22 +263,6 @@ fun HouseDetailScreen(
                 Spacer(modifier = modifier.height(5.dp))
                 Text(
                     modifier = modifier.fillMaxWidth(),
-                    text = "${stringResource(id = R.string.amount_reserve)} ${state.value.amountReserve} ${
-                        stringResource(
-                            id = R.string.byn
-                        )
-                    }",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.gilroy)),
-                        fontWeight = FontWeight(600),
-                        color = baseText
-                    ),
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = modifier.height(5.dp))
-                Text(
-                    modifier = modifier.fillMaxWidth(),
                     text = stringResource(id = R.string.choose_promo),
                     style = TextStyle(
                         fontSize = 16.sp,
@@ -328,7 +316,23 @@ fun HouseDetailScreen(
                 Spacer(modifier = modifier.height(5.dp))
                 Text(
                     modifier = modifier.fillMaxWidth(),
-                    text = "${stringResource(id = R.string.percent_discount)} ${state.value.promo?.valueDiscount?:0}",
+                    text = "${stringResource(id = R.string.percent_discount)} ${state.value.promo?.valueDiscount ?: 0}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    ),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    modifier = modifier.fillMaxWidth(),
+                    text = "${stringResource(id = R.string.amount_reserve)} ${amount.value} ${
+                        stringResource(
+                            id = R.string.byn
+                        )
+                    }",
                     style = TextStyle(
                         fontSize = 16.sp,
                         fontFamily = FontFamily(Font(R.font.gilroy)),
