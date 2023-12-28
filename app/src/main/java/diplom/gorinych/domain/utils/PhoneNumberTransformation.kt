@@ -33,7 +33,7 @@ private fun phoneNumFilterBel(text: AnnotatedString): TransformedText {
             if (offset <= 7) return offset +4
             if (offset <= 9) return offset +5
             if (offset <= 11) return offset +6
-            return 17
+            return 18
 
         }
 
@@ -44,7 +44,7 @@ private fun phoneNumFilterBel(text: AnnotatedString): TransformedText {
             if (offset <=12) return offset -4
             if (offset <=15) return offset -5
             if (offset <=18) return offset -6
-            return 11
+            return 12
         }
     }
 

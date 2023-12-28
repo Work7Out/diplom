@@ -59,7 +59,7 @@ fun RegistrationScreen(
     val state = viewModel.state.collectAsState()
     val name = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val phone = remember { mutableStateOf("") }
+    val phone = remember { mutableStateOf("+375") }
     val email = remember { mutableStateOf("") }
     val onEvent = viewModel::onEvent
     val scope = rememberCoroutineScope()
@@ -145,12 +145,13 @@ fun RegistrationScreen(
                     )
                 },
                 onValueChange = {
+                    if (phone.value.length<13)
                     phone.value = it
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Phone
                 ),
-                visualTransformation = PhoneNumberTransformation()
+                //visualTransformation = PhoneNumberTransformation()
             )
             Spacer(modifier = modifier.height(10.dp))
             TextField(
