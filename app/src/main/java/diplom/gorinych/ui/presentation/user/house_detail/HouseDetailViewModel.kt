@@ -71,7 +71,10 @@ class HouseDetailViewModel @Inject constructor(
                     } else {
                         val sumAddons = _state.value.additionsSelected.sumOf { it.price }
                         val price = _state.value.house?.price ?: 0.0
+                        val priceWithPromo = (houseDetailEvent.valueDays * price + sumAddons) * (1 - (_state.value.promo?.valueDiscount
+                            ?: 0).toDouble() / 100)
                         _state.value.copy(
+                            amountReserve = priceWithPromo,
                             additionsSelected = emptyList(),
                             message = ""
                         )
@@ -83,8 +86,7 @@ class HouseDetailViewModel @Inject constructor(
                             dateCreate = LocalDate.now().formatLocalDateRu(),
                             dataBegin = houseDetailEvent.dateBegin.formatLocalDateRu(),
                             dataEnd = houseDetailEvent.dateEnd.formatLocalDateRu(),
-                            amount = (houseDetailEvent.valueDays * price + sumAddons) * (1 - (_state.value.promo?.valueDiscount
-                                ?: 0).toDouble() / 100),
+                            amount = priceWithPromo,
                             additions = _state.value.additionsSelected.joinToString(separator = ", ") { it.title }
                         )
                         loadReserves()

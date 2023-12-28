@@ -52,6 +52,16 @@ fun ItemHistory(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
+            text = "${stringResource(id = R.string.amount_reserve)} ${reserve.amount} ${stringResource(id = R.string.byn)} ",
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.gilroy)),
+                fontWeight = FontWeight(600),
+                color = baseText
+            )
+        )
+        Spacer(modifier = modifier.height(5.dp))
+        Text(
             text = "${stringResource(id = R.string.status)} ${reserve.confirmReservation}",
             style = TextStyle(
                 fontSize = 16.sp,

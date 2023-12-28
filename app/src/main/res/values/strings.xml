@@ -60,7 +60,7 @@
     <string name="do_reserve">Забронировать</string>
     <string name="do_feedback">Оставить отзыв</string>
     <string name="enter_feedback">Введите отзыв</string>
-
+    <string name="amount_reserve">Сумма:</string>
 
     <string name="user_login">логин -</string>
     <string name="user_password">пароль -</string>

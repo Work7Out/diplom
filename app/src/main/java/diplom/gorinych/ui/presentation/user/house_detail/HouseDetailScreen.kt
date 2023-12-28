@@ -167,7 +167,7 @@ fun HouseDetailScreen(
             ) {
                 AsyncImage(
                     modifier = modifier.fillMaxWidth(),
-                    model = BASE_URL_IMAGE+state.value.house?.image,
+                    model = BASE_URL_IMAGE + state.value.house?.image,
                     contentDescription = "",
                     contentScale = ContentScale.FillWidth
                 )
@@ -268,6 +268,22 @@ fun HouseDetailScreen(
                 Spacer(modifier = modifier.height(5.dp))
                 Text(
                     modifier = modifier.fillMaxWidth(),
+                    text = "${stringResource(id = R.string.amount_reserve)} ${state.value.amountReserve} ${
+                        stringResource(
+                            id = R.string.byn
+                        )
+                    }",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    ),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    modifier = modifier.fillMaxWidth(),
                     text = stringResource(id = R.string.choose_promo),
                     style = TextStyle(
                         fontSize = 16.sp,
@@ -318,6 +334,18 @@ fun HouseDetailScreen(
                         )
                     }
                 }
+                Spacer(modifier = modifier.height(5.dp))
+                Text(
+                    modifier = modifier.fillMaxWidth(),
+                    text = "${stringResource(id = R.string.percent_discount)} ${state.value.promo?.valueDiscount?:0}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.gilroy)),
+                        fontWeight = FontWeight(600),
+                        color = baseText
+                    ),
+                    textAlign = TextAlign.Center
+                )
                 Spacer(modifier = modifier.height(10.dp))
                 Button(
                     modifier = modifier
@@ -459,7 +487,7 @@ fun <T : SelectionState> ItemDay(
         ),
         border = if (state.isCurrentDay) BorderStroke(1.dp, currentDayColor) else null,
         colors = CardDefaults.cardColors(
-            containerColor = white,
+            containerColor = blue,
             contentColor = if (isSelected) selectionColor else contentColorFor(
                 backgroundColor = white
             )
