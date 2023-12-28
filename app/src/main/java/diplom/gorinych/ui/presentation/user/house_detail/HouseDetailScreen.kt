@@ -388,6 +388,7 @@ fun HouseDetailScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = blue
                     ),
+                    enabled = state.value.isEnableFeedback,
                     onClick = {
                         isShowDialog.value = true
                     }) {

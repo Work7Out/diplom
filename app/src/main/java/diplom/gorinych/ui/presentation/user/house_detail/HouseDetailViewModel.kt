@@ -238,11 +238,22 @@ class HouseDetailViewModel @Inject constructor(
             }
 
             is Resource.Success -> {
-                _state.value.copy(
-                    message = "",
-                    reserves = resultReserves.data ?: emptyList()
-                )
-                    .updateStateUI()
+                val reservesUser = resultReserves.data?.filter { it.idUser==_state.value.idUser }
+                if (reservesUser.isNullOrEmpty()||reservesUser.all { convertStringToDate(it.dateBegin)< LocalDate.now() }) {
+                    _state.value.copy(
+                        isEnableFeedback = false,
+                        message = "",
+                        reserves = resultReserves.data ?: emptyList()
+                    )
+                        .updateStateUI()
+                } else {
+                    _state.value.copy(
+                        isEnableFeedback = true,
+                        message = "",
+                        reserves = resultReserves.data
+                    )
+                        .updateStateUI()
+                }
             }
         }
     }
