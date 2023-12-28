@@ -75,6 +75,7 @@ class HouseDetailViewModel @Inject constructor(
                             ?: 0).toDouble() / 100)
                         _state.value.copy(
                             amountReserve = priceWithPromo,
+                            promo = null,
                             additionsSelected = emptyList(),
                             message = ""
                         )
@@ -99,7 +100,6 @@ class HouseDetailViewModel @Inject constructor(
                     )
                     delay(500)
                     _state.value.copy(
-                        promo = null,
                         message = ""
                     )
                         .updateStateUI()
