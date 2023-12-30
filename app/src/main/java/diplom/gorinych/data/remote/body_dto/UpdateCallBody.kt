@@ -9,6 +9,6 @@ data class UpdateCallBody(
     val name: String,
     @SerializedName("phone")
     val phone: String,
-    @SerializedName("is_response")
+    @SerializedName("is_cancelled")
     val isResponse: Boolean
 )

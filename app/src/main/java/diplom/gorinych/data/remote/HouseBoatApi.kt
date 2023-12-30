@@ -76,11 +76,11 @@ interface HouseBoatApi {
     @POST("addons")
     suspend fun addAddon(@Body addAddonBody: AddAddonBody)
 
-    @PATCH("")
+    @PATCH("addons")
     suspend fun updateAddon(@Body updateAddonBody: UpdateAddonBody)
 
-    @DELETE("")
-    suspend fun deleteAddon(@Path("addonId") newsId: Int)
+    @DELETE("addons/{addonId}")
+    suspend fun deleteAddon(@Path("addonId") addonId: Int)
 
     @GET("addons")
     suspend fun getAllAddons(): List<AddonDto>
@@ -130,7 +130,7 @@ interface HouseBoatApi {
     @POST("calls")
     suspend fun addCall(@Body callBody: AddCallBody)
 
-    @PATCH("")
+    @PATCH("calls")
     suspend fun updateCall(@Body updateCallBody: UpdateCallBody)
 
     @GET("calls")
