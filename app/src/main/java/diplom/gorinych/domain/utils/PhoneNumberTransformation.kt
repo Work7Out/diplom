@@ -21,8 +21,7 @@ private fun phoneNumFilterBel(text: AnnotatedString): TransformedText {
         if (i==3) out += "("
         out += trimmed[i]
         if (i==4) out +=") "
-        if (i==6 || i==8 ) out += " "
-
+        if (i==7 || i==9 ) out += " "
     }
 
     val phoneNumberOffsetTranslator = object : OffsetMapping {
@@ -30,9 +29,9 @@ private fun phoneNumFilterBel(text: AnnotatedString): TransformedText {
             if (offset <= 0) return offset
             if (offset <= 3) return offset +1
             if (offset <= 4) return offset +2
-            if (offset <= 7) return offset +4
-            if (offset <= 9) return offset +5
-            if (offset <= 11) return offset +6
+            if (offset <= 8) return offset +4
+            if (offset <= 10) return offset +5
+            if (offset <= 12) return offset +6
             return 18
 
         }
@@ -40,10 +39,10 @@ private fun phoneNumFilterBel(text: AnnotatedString): TransformedText {
         override fun transformedToOriginal(offset: Int): Int {
             if (offset <=0) return offset
             if (offset <=4) return offset -1
-            if (offset <=9) return offset -2
-            if (offset <=12) return offset -4
-            if (offset <=15) return offset -5
-            if (offset <=18) return offset -6
+            if (offset <=8) return offset -2
+            if (offset <=13) return offset -4
+            if (offset <=16) return offset -5
+            if (offset <=19) return offset -6
             return 12
         }
     }
