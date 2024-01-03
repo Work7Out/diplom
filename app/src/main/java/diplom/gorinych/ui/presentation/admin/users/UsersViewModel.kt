@@ -17,7 +17,6 @@ import diplom.gorinych.domain.utils.UNBLOCKED
 import diplom.gorinych.domain.utils.USER
 import diplom.gorinych.domain.utils.USER_BLOCKED
 import diplom.gorinych.domain.utils.USER_UNBLOCKED
-import diplom.gorinych.domain.utils.WAITING_CONFIRM
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeRoleUser
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeStatusBlock
 import javax.inject.Inject
@@ -45,7 +44,7 @@ class UsersViewModel @Inject constructor(
                 idUser = userId
             )
                 .updateStateUI()
-            async { loadData() }.onAwait
+            async { loadUsers() }.onAwait
             async { loadNewReserves() }.onAwait
         }
     }
@@ -63,7 +62,7 @@ class UsersViewModel @Inject constructor(
                             role = usersScreenEvent.role
                         )
                     )
-                    loadData()
+                    loadUsers()
                 }
             }
 
@@ -79,7 +78,7 @@ class UsersViewModel @Inject constructor(
                             isBlocked = newStatus
                         )
                     )
-                    loadData()
+                    loadUsers()
                 }
                 viewModelScope.launch(Dispatchers.IO) {
                     mailRepository.sendEmail(
@@ -120,7 +119,7 @@ class UsersViewModel @Inject constructor(
 
     }
 
-    private suspend fun loadData() {
+    private suspend fun loadUsers() {
         when (val resultUser = remoteRepository.getAllUsers()) {
             is Resource.Error -> {
                 _state.value.copy(

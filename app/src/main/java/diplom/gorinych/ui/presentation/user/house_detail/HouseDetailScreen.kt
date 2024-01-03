@@ -103,7 +103,7 @@ fun HouseDetailScreen(
     }
     val amount = remember { mutableDoubleStateOf(0.0) }
     amount.doubleValue = (calendarState.selectionState.selection.size * (state.value.house?.price
-        ?: 0.0) + state.value.sumAddons) * (1.0 - (state.value.promo?.valueDiscount ?: 1) / 100)
+        ?: 0.0) + state.value.sumAddons) * (1.0 - (state.value.promo?.valueDiscount ?: 0) / 100)
     if (isShowDialog.value) {
         Dialog(onDismissRequest = { isShowDialog.value = false }) {
             FeedbackDialog(
@@ -326,7 +326,7 @@ fun HouseDetailScreen(
                 Spacer(modifier = modifier.height(5.dp))
                 Text(
                     modifier = modifier.fillMaxWidth(),
-                    text = "${stringResource(id = R.string.amount_reserve)} ${amount.value} ${
+                    text = "${stringResource(id = R.string.amount_reserve)} ${amount.doubleValue} ${
                         stringResource(
                             id = R.string.byn
                         )
@@ -354,7 +354,7 @@ fun HouseDetailScreen(
                             HouseDetailEvent.AddReserve(
                                 dateBegin = calendarState.selectionState.selection.first(),
                                 dateEnd = calendarState.selectionState.selection.last(),
-                                amount = amount.value,
+                                amount = amount.doubleValue,
                             )
                         )
                         calendarState.selectionState.selection = emptyList()

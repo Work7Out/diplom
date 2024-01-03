@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "diplom.gorinych"
-        minSdk = 26
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -75,19 +75,16 @@ dependencies {
     kapt ("com.google.dagger:hilt-compiler:2.48.1")
     implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
 
-    //Room
-    val roomVersion = "2.6.0"
-    implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-
+    //Calendar
     implementation ("io.github.boguszpawlowski.composecalendar:kotlinx-datetime:1.1.1")
     implementation ("io.github.boguszpawlowski.composecalendar:composecalendar:1.1.1")
 
+    //Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Icons
     implementation ("androidx.compose.material:material-icons-extended:1.5.4")
+
     //Mail
     implementation ("com.sun.mail:android-mail:1.6.2")
     implementation ("com.sun.mail:android-activation:1.6.2")
