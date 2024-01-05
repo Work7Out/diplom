@@ -93,6 +93,7 @@ fun FeedbackDto.mapFromDtoToFeedback(): Feedback {
         dateFeedback = this.dateCreate,
         idUser = this.idUser,
         idHouse = this.idHouse,
+        name = this.name,
         isBlocked = this.isBlocked,
         rang = this.rang
     )

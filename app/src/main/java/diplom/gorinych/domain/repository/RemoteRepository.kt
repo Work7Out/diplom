@@ -53,6 +53,7 @@ interface RemoteRepository {
     suspend fun addNewFeedback(
         idUser: Int,
         idHouse: Int,
+        name: String,
         dateFeedback: String,
         content: String,
         isBlocked: Boolean,

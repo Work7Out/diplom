@@ -1,6 +1,8 @@
 package diplom.gorinych.ui.presentation.user.house_detail
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -50,7 +52,7 @@ class HouseDetailViewModel @Inject constructor(
             async { loadAdditions() }.onAwait
         }
     }
-
+    @RequiresApi(Build.VERSION_CODES.O)
     fun onEvent(houseDetailEvent: HouseDetailEvent) {
         when (houseDetailEvent) {
             is AddReserve -> {
@@ -110,6 +112,7 @@ class HouseDetailViewModel @Inject constructor(
                     remoteRepository.addNewFeedback(
                         idUser = _state.value.idUser,
                         idHouse = _state.value.house?.id ?: -1,
+                        name = _state.value.nameUser,
                         dateFeedback = LocalDate.now().formatLocalDateRu(),
                         isBlocked = false,
                         rang = houseDetailEvent.rang,
@@ -221,6 +224,7 @@ class HouseDetailViewModel @Inject constructor(
             }
         }
     }
+
 
     private suspend fun loadReserves() {
         when (val resultReserves = remoteRepository.getHistoryByHouse(_state.value.idHouse)) {

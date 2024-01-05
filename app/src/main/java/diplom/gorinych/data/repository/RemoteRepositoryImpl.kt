@@ -295,6 +295,7 @@ class RemoteRepositoryImpl @Inject constructor(
     override suspend fun addNewFeedback(
         idUser: Int,
         idHouse: Int,
+        name: String,
         dateFeedback: String,
         content: String,
         isBlocked: Boolean,
@@ -307,6 +308,7 @@ class RemoteRepositoryImpl @Inject constructor(
                     dateCreate = dateFeedback,
                     idHouse = idHouse,
                     idUser = idUser,
+                    name = name,
                     isBlocked = isBlocked,
                     rang = rang
                 )
@@ -325,6 +327,7 @@ class RemoteRepositoryImpl @Inject constructor(
                     dateCreate = feedback.dateFeedback,
                     idHouse = feedback.idHouse,
                     idUser = feedback.idUser,
+                    name = feedback.name,
                     isBlocked = feedback.isBlocked,
                     rang = feedback.rang
                 )

@@ -43,7 +43,7 @@ fun ItemFeedbackScreen(
             .padding(10.dp)
     ) {
         Text(
-            text = "${stringResource(id = R.string.user_login)} ${feedback.idUser}",
+            text = "${stringResource(id = R.string.user_login)} ${feedback.name}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.gilroy)),
