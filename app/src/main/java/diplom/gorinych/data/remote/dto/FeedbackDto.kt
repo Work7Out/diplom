@@ -14,7 +14,7 @@ data class FeedbackDto(
     val idHouse: Int,
     @SerializedName("id_user")
     val idUser: Int,
-    @SerializedName("name")
+    @SerializedName("user_name")
     val name: String,
     @SerializedName("is_blocked")
     val isBlocked: Boolean,
