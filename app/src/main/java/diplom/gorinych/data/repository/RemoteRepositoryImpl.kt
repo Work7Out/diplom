@@ -20,6 +20,7 @@ import diplom.gorinych.data.remote.body_dto.AddHistoryBody
 import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
+import diplom.gorinych.data.remote.body_dto.PasswordChangeBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
 import diplom.gorinych.data.remote.body_dto.UpdateAddonBody
 import diplom.gorinych.data.remote.body_dto.UpdateCallBody
@@ -65,9 +66,25 @@ class RemoteRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserBiId(idUser:Int): Resource<User> {
+    override suspend fun getUserBiId(idUser: Int): Resource<User> {
         return Resource.handleResponse {
             diplomaApi.getUserById(userId = idUser).mapDtoToUser()
+        }
+    }
+
+    override suspend fun changePassword(
+        idUser: Int,
+        newPassword: String,
+        oldPassword: String
+    ) {
+        Resource.handleResponse {
+            diplomaApi.changePassword(
+                PasswordChangeBody(
+                    id = idUser,
+                    newPassword = newPassword,
+                    oldPassword = oldPassword
+                )
+            )
         }
     }
 
@@ -149,7 +166,6 @@ class RemoteRepositoryImpl @Inject constructor(
                 UpdateUserBody(
                     id = user.id,
                     name = user.name,
-                    password = user.password,
                     phone = user.phone,
                     eMail = user.email,
                     role = user.role,

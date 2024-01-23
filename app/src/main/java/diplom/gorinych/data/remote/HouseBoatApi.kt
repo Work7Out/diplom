@@ -7,6 +7,7 @@ import diplom.gorinych.data.remote.body_dto.AddHistoryBody
 import diplom.gorinych.data.remote.body_dto.AddNewsBody
 import diplom.gorinych.data.remote.body_dto.AddPromoBody
 import diplom.gorinych.data.remote.body_dto.LoginBody
+import diplom.gorinych.data.remote.body_dto.PasswordChangeBody
 import diplom.gorinych.data.remote.body_dto.RegistrationBody
 import diplom.gorinych.data.remote.body_dto.UpdateAddonBody
 import diplom.gorinych.data.remote.body_dto.UpdateCallBody
@@ -45,6 +46,9 @@ interface HouseBoatApi {
 
     @PATCH("users")
     suspend fun updateUser(@Body updateUserBody: UpdateUserBody)
+
+    @PATCH("users/changePassword")
+    suspend fun changePassword (@Body passwordChangeBody: PasswordChangeBody)
 
     @POST("users")
     suspend fun registration(@Body registrationBody: RegistrationBody): UserDto?

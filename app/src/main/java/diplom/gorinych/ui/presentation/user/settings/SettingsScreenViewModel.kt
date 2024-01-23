@@ -52,40 +52,38 @@ class SettingsScreenViewModel @Inject constructor(
             }
 
             is SettingsEvent.OnChangePassword -> {
-                if (event.oldPassword != _state.value.user?.password) {
+                if (event.password != event.repeatPassword) {
                     _state.value.copy(
-                        message = OLD_PASSWORD_INCORRECT
+                        message = PASSWORD_DONT_MATCH
                     )
                         .updateStateUI()
                 } else {
-                    if (event.password != event.repeatPassword) {
+                    viewModelScope.launch {
                         _state.value.copy(
-                            message = PASSWORD_DONT_MATCH
+                            message = PASSWORD_IS_CHANGED,
                         )
                             .updateStateUI()
-                    } else {
-                        viewModelScope.launch {
-                            _state.value.copy(
-                                message = PASSWORD_IS_CHANGED,
+                        _state.value.user?.let {
+                            remoteRepository.changePassword(
+                                idUser = it.id,
+                                oldPassword = event.oldPassword,
+                                newPassword = event.password
                             )
-                                .updateStateUI()
-                            _state.value.user?.copy(password = event.password)
-                                ?.let { remoteRepository.updateUser(it) }
-                            viewModelScope.launch(Dispatchers.IO) {
-                                mailRepository.sendEmail(
-                                    login = EMAIL_LOGIN,
-                                    password = EMAIL_PASSWORD,
-                                    email = _state.value.user?.email ?: "",
-                                    theme = PASSWORD_IS_CHANGED,
-                                    content = event.password
-                                )
-                            }
-                            delay(2000)
-                            _state.value.copy(
-                                message = "",
-                            )
-                                .updateStateUI()
                         }
+                        viewModelScope.launch(Dispatchers.IO) {
+                            mailRepository.sendEmail(
+                                login = EMAIL_LOGIN,
+                                password = EMAIL_PASSWORD,
+                                email = _state.value.user?.email ?: "",
+                                theme = PASSWORD_IS_CHANGED,
+                                content = event.password
+                            )
+                        }
+                        delay(2000)
+                        _state.value.copy(
+                            message = "",
+                        )
+                            .updateStateUI()
                     }
                 }
             }

@@ -59,17 +59,6 @@ fun ItemUser(
         )
         Spacer(modifier = modifier.height(5.dp))
         Text(
-            text = "${stringResource(id = string.user_password)} ${user.password}",
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontFamily = FontFamily(Font(R.font.gilroy)),
-                fontWeight = FontWeight(600),
-                color = baseText,
-
-                )
-        )
-        Spacer(modifier = modifier.height(5.dp))
-        Text(
             text = "${stringResource(id = string.user_role)} ${user.role}",
             style = TextStyle(
                 fontSize = 16.sp,

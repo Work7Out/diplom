@@ -75,4 +75,5 @@ interface RemoteRepository {
     suspend fun updateCall(call: Call)
     suspend fun updateAddon(addon: Addon)
     suspend fun deleteAddon(addonId: Int)
+    suspend fun changePassword(idUser: Int, newPassword: String, oldPassword: String)
 }
