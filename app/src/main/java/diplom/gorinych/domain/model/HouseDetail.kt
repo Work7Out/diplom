@@ -5,6 +5,5 @@ data class HouseDetail(
     val name: String,
     val description: String,
     val price: Double,
-    val image: Int,
-    val feedbacks: List<Feedback>
+    val image: String
 )

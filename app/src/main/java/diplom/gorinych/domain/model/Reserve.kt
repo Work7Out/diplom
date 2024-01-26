@@ -9,5 +9,6 @@ data class Reserve(
     val dateEnd: String,
     val confirmReservation: String,
     val amount: Double,
+    val additions: String,
     val dateCreate: String
 )

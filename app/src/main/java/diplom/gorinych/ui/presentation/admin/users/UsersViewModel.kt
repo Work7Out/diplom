@@ -1,14 +1,27 @@
 package diplom.gorinych.ui.presentation.admin.users
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.MailRepository
+import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
+import diplom.gorinych.domain.utils.BLOCKED
+import diplom.gorinych.domain.utils.EMAIL_LOGIN
+import diplom.gorinych.domain.utils.EMAIL_PASSWORD
+import diplom.gorinych.domain.utils.GET_IS_AWAITED
 import diplom.gorinych.domain.utils.Resource
+import diplom.gorinych.domain.utils.UNBLOCKED
+import diplom.gorinych.domain.utils.USER
+import diplom.gorinych.domain.utils.USER_BLOCKED
+import diplom.gorinych.domain.utils.USER_UNBLOCKED
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeRoleUser
 import diplom.gorinych.ui.presentation.admin.users.UsersScreenEvent.OnChangeStatusBlock
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -16,8 +29,10 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(
-    private val repository: HouseRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val remoteRepository: RemoteRepository,
+    private val mailRepository: MailRepository,
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(UsersScreenState())
     val state = _state.asStateFlow()
@@ -29,7 +44,8 @@ class UsersViewModel @Inject constructor(
                 idUser = userId
             )
                 .updateStateUI()
-            loadData()
+            async { loadUsers() }.onAwait
+            async { loadNewReserves() }.onAwait
         }
     }
 
@@ -37,32 +53,77 @@ class UsersViewModel @Inject constructor(
         when (usersScreenEvent) {
             is OnChangeRoleUser -> {
                 viewModelScope.launch {
-                    repository.updateUser(
+                    _state.value.copy(
+                        isLoading = true,
+                    )
+                        .updateStateUI()
+                    remoteRepository.updateUser(
                         usersScreenEvent.user.copy(
                             role = usersScreenEvent.role
                         )
                     )
-                    loadData()
+                    loadUsers()
                 }
             }
 
             is OnChangeStatusBlock -> {
+                val newStatus = !usersScreenEvent.user.isBlocked
                 viewModelScope.launch {
-                    repository.updateUser(
+                    _state.value.copy(
+                        isLoading = true,
+                    )
+                        .updateStateUI()
+                    remoteRepository.updateUser(
                         usersScreenEvent.user.copy(
-                            isBlocked = !usersScreenEvent.user.isBlocked
+                            isBlocked = newStatus
                         )
                     )
-                    loadData()
+                    loadUsers()
                 }
+                viewModelScope.launch(Dispatchers.IO) {
+                    mailRepository.sendEmail(
+                        login = EMAIL_LOGIN,
+                        password = EMAIL_PASSWORD,
+                        email = usersScreenEvent.user.email,
+                        theme = if (newStatus) USER_BLOCKED else USER_UNBLOCKED,
+                        content = if (newStatus) "$USER ${usersScreenEvent.user.name} $BLOCKED" else "$USER ${usersScreenEvent.user.name} $UNBLOCKED"
+                    )
+                }
+            }
+
+            UsersScreenEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
             }
         }
     }
 
-    private suspend fun loadData() {
-        when (val resultUser = repository.getAllUsers()) {
+    private suspend fun loadNewReserves() {
+        when (val result = remoteRepository.getHistoryByStatus(status = GET_IS_AWAITED)) {
+            is Resource.Error -> {
+                Log.d("test users viewmodel", "new reserves error ${result.message}")
+                _state.value.copy(
+                    message = result.message
+                )
+                    .updateStateUI()
+            }
+
+            is Resource.Success -> {
+                Log.d("test users viewmodel", "new reserves data  ${result.data}")
+                _state.value.copy(
+                    countNewReserves = result.data?.size ?: 0
+                )
+                    .updateStateUI()
+            }
+        }
+
+    }
+
+    private suspend fun loadUsers() {
+        when (val resultUser = remoteRepository.getAllUsers()) {
             is Resource.Error -> {
                 _state.value.copy(
+                    isLoading = false,
                     message = resultUser.message
                 )
                     .updateStateUI()
@@ -70,6 +131,8 @@ class UsersViewModel @Inject constructor(
 
             is Resource.Success -> {
                 _state.value.copy(
+                    isLoading = false,
+                    message = null,
                     users = resultUser.data ?: emptyList()
                 )
                     .updateStateUI()

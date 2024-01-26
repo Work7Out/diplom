@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">HouseBoat</string>
     <string name="registration">Регистрация</string>
     <string name="already_login">Уже зарегистированы?</string>
     <string name="enter_login">Введите логин</string>
@@ -7,4 +7,73 @@
     <string name="enter_phone">Введите телефон</string>
     <string name="enter_email">Введите e-mail</string>
     <string name="do_registration">Зарегистрироваться</string>
+
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="enter">Вход</string>
+    <string name="authorization">АВТОРИЗАЦИЯ</string>
+    <string name="registration_upper">РЕГИСТРАЦИЯ</string>
+    <string name="history_reserve">Бронирования</string>
+    <string name="history_feedback">Отзывы</string>
+    <string name="addons_add">Дополнительно</string>
+    <string name="update_addon">Изменить доп.услугу</string>
+    <string name="addons_promo">Промо</string>
+    <string name="blocked">Заблокирован</string>
+    <string name="not_blocked">Не заблокирован</string>
+    <string name="make_unblocked">Разблокировать</string>
+    <string name="make_blocked">Заблокировать</string>
+    <string name="price">Цена</string>
+    <string name="code_discount">Код</string>
+    <string name="percent_discount">Процент скидки</string>
+    <string name="expired_discount">Использован</string>
+    <string name="not_expired_discount">Не использован</string>
+    <string name="enter_description_promo">Введите код промо</string>
+    <string name="enter_value_promo">введите величину скидки в %</string>
+    <string name="add_promo">Добавить промокод</string>
+    <string name="enter_name_addon">Введите название допа</string>
+    <string name="enter_price_addon">Введите цену допа</string>
+    <string name="add_addon">Добавить доп</string>
+
+    <string name="enter_title_news">Введите заголовок</string>
+    <string name="enter_content_news">Введите текст</string>
+    <string name="add_note">Добавить новость</string>
+    <string name="update_note">Исправить новость</string>
+
+    <string name="all_orders">Всего заказов -</string>
+    <string name="confirm_orders">Из них подтвержденных -</string>
+    <string name="amount">Всего заработано -</string>
+    <string name="amount_last_month">За последний месяц -</string>
+    <string name="amount_last_year">За год -</string>
+    <string name="byn">BYN</string>
+    <string name="history_calls">Заказанные звонки</string>
+    <string name="phone">телефон -</string>
+    <string name="status_call">статус ответа:</string>
+    <string name="recall">перезвонили</string>
+    <string name="not_recall">не перезвонили</string>
+    <string name="name">пользователь - </string>
+    <string name="status">статус:</string>
+    <string name="delete_reserve">Удалить бронь</string>
+    <string name="additional">доп. услуги -</string>
+    <string name="change_password">Сменить пароль</string>
+    <string name="old_password">Введите старый пароль</string>
+    <string name="new_password">Введите новый пароль</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="choose_dates">Выберите даты для бронирования</string>
+    <string name="choose_addons">Выберите доп. услуги</string>
+    <string name="choose_promo">Добавьте промокод</string>
+    <string name="do_reserve">Забронировать</string>
+    <string name="do_feedback">Оставить отзыв</string>
+    <string name="enter_feedback">Введите отзыв</string>
+    <string name="amount_reserve">Сумма:</string>
+
+    <string name="user_login">логин -</string>
+    <string name="user_password">пароль -</string>
+    <string name="user_role">роль -</string>
+    <string name="user_email">email -</string>
+    <string name="house_boat">хоуз бот -</string>
+    <string name="begin">начало -</string>
+    <string name="end">конец -</string>
+    <string name="reserve_amount">сумма -</string>
+    <string name="state_reserve">статус регистрации -</string>
+    <string name="rang">оценка -</string>
 </resources>

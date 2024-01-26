@@ -5,5 +5,5 @@ data class House (
     val name: String,
     val description: String,
     val price: Double,
-    val image: Int,
+    val image: String,
 )

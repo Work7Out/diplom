@@ -17,7 +17,7 @@ fun convertStringToDate(dateString: String): LocalDate {
 }
 
 
-fun calculateComfirmOrders(reserves: List<Reserve>): Int {
+fun calculateConfirmOrders(reserves: List<Reserve>): Int {
     return reserves.count { it.confirmReservation == ACTIVE }
 }
 
@@ -47,4 +47,9 @@ fun isEmailValid(email: String): Boolean {
                 "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
                 ")+"
     return email.matches(emailPattern.toRegex())
+}
+
+fun isNumeric(toCheck: String): Boolean {
+    val regex = "-?[0-9]+(\\.[0-9]+)?".toRegex()
+    return toCheck.matches(regex)
 }

@@ -6,4 +6,6 @@ data class UsersScreenState(
     val users: List<User> = emptyList(),
     val message:String? = null,
     val idUser: Int = -1,
+    val isLoading: Boolean = true,
+    val countNewReserves: Int = 0
 )

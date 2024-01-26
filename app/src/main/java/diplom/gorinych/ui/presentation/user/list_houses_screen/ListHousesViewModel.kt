@@ -4,58 +4,87 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import diplom.gorinych.domain.repository.HouseRepository
+import diplom.gorinych.domain.repository.RemoteRepository
+import diplom.gorinych.domain.repository.SharedRepository
 import diplom.gorinych.domain.utils.Resource
+import javax.inject.Inject
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ListHousesViewModel @Inject constructor(
-    private val repository: HouseRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val remoteRepository: RemoteRepository,
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedRepository: SharedRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(ListHousesScreenState())
     val state = _state.asStateFlow()
 
-    init {
-        loadData()
-    }
 
-    private fun loadData() {
+    init {
         viewModelScope.launch {
             val userId = savedStateHandle.get<Int>("idUser") ?: return@launch
-            when (val resultUser = repository.getUserById(userId)) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = resultUser.message
-                    )
-                        .updateStateUI()
-                }
+            async{ loadUserData(userId) } .onAwait
+            async{ loadHousesData() } .onAwait
+        }
+    }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        user = resultUser.data
+    fun onEvent(event: ListHousesEvent) {
+        when (event) {
+            ListHousesEvent.OnSendCall -> {
+                viewModelScope.launch {
+                    remoteRepository.addNewCall(
+                        name = _state.value.user?.name ?: "",
+                        phone = _state.value.user?.phone ?: "",
+                        isResponse = false
                     )
-                        .updateStateUI()
                 }
             }
-            when (val resultHouses = repository.getAllHouses()) {
-                is Resource.Error -> {
-                    _state.value.copy(
-                        message = resultHouses.message
-                    )
-                        .updateStateUI()
-                }
 
-                is Resource.Success -> {
-                    _state.value.copy(
-                        houses = resultHouses.data ?: emptyList()
-                    )
-                        .updateStateUI()
-                }
+            ListHousesEvent.Exit -> {
+                sharedRepository.setUser(-1)
+                sharedRepository.setRole("")
+            }
+        }
+    }
+
+    private suspend fun loadUserData(userId: Int) {
+        when (val resultUser = remoteRepository.getUserBiId(userId)) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    message = resultUser.message
+                )
+                    .updateStateUI()
+            }
+
+            is Resource.Success -> {
+                _state.value.copy(
+                    user = resultUser.data
+                )
+                    .updateStateUI()
+            }
+        }
+    }
+
+    private suspend fun loadHousesData() {
+        when (val houses = remoteRepository.getAllHouses()) {
+            is Resource.Error -> {
+                _state.value.copy(
+                    isLoading = false,
+                    message = houses.message
+                )
+                    .updateStateUI()
+            }
+
+            is Resource.Success -> {
+                _state.value.copy(
+                    isLoading = false,
+                    houses = houses.data ?: emptyList()
+                )
+                    .updateStateUI()
             }
         }
     }

@@ -1,12 +1,13 @@
 package diplom.gorinych.ui.presentation.user.house_detail
 
+import diplom.gorinych.domain.model.Addon
 import java.time.LocalDate
 
 sealed class HouseDetailEvent {
     class AddReserve(
         val dateBegin: LocalDate,
         val dateEnd: LocalDate,
-        val valueDays: Int,
+        val amount: Double,
     ): HouseDetailEvent()
 
     class AddFeedback(
@@ -14,14 +15,7 @@ sealed class HouseDetailEvent {
         val content:String
     ):HouseDetailEvent()
 
-  /*  class DeleteReserve(
-        val id: Int,
-        val idUser: Int,
-        val idHouse: Int,
-        val dateBegin: String,
-        val dateEnd: String,
-        val confirmReservation: String,
-        val amount: Double,
-        val dateCreate: String
-    ): HouseDetailEvent()*/
+    class AddAddon(val addon: Addon):HouseDetailEvent()
+    class CheckPromo(val query: String):HouseDetailEvent()
+
 }
